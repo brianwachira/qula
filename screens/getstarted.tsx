@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {
   Image,
@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import theme from '../styles/themes';
-import { RootStackParamList } from '../types';
+import {RootStackParamList} from '../types';
 
 const styles = StyleSheet.create({
   sectionLogo: {
