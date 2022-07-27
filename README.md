@@ -3,7 +3,7 @@
 Contributing
 ===
 
-<img align="right" width="25%" style="margin-bottom: 2em" src="https://s3.amazonaws.com/fullstackfeed/images/react-3.jpg">
+<img align="right" width="30%" style="margin-bottom: 2em" src="https://uploads.sitepoint.com/wp-content/uploads/2017/04/1493235373large_react_apps_A-01.png">
 
 ### Commit Conventions
 
