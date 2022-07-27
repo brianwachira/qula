@@ -1,6 +1,8 @@
 const theme = {
   colors: {
     primary: '#FF4B3A',
+    white: '#FFFFFF',
+    black: '#000000',
   },
   borderRadius: {
     button: 30,
