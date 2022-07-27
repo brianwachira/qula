@@ -1,6 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {
+  Dimensions,
   Image,
   SafeAreaView,
   StatusBar,
@@ -20,31 +21,49 @@ const styles = StyleSheet.create({
   logo: {
     width: 73,
     height: 73,
+    marginHorizontal: 50,
+    marginTop: 50,
   },
   content: {
     fontStyle: 'normal',
     fontSize: 65,
     fontWeight: '800',
     lineHeight: 80,
+    marginHorizontal: 50,
   },
   images: {
-    position: 'relative',
+    // marginBottom: Dimensions.get('screen').height / 2,
+    flex: 0.9,
   },
   imageLeft: {
     position: 'absolute',
-    left: 0,
+    left: -110,
     zIndex: 6,
+    top: 0,
   },
   imageRight: {
     position: 'absolute',
-    right: 0,
+    right: -110,
     zIndex: 2,
-    top: 90,
+    top: 80,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    zIndex: 9,
   },
   buttonStyle: {
-    width: 100,
-    paddingVertical: 15,
+    width: Dimensions.get('screen').width - 100,
+    paddingVertical: 20,
     backgroundColor: '#ffffff',
+    borderRadius: theme.borderRadius.button,
+    ...theme.boxShadowAndroid,
+  },
+  buttonText: {
+    fontSize: 17,
+    color: theme.colors.primary,
+    textAlign: 'center',
   },
 });
 const GetStarted = ({
@@ -72,19 +91,21 @@ const GetStarted = ({
       <View style={styles.images}>
         <Image
           style={styles.imageLeft}
-          source={require('../assets/ToyFaces_Tansparent_BG_49.png')}
+          source={require('../assets/Group67.png')}
         />
         <Image
           style={styles.imageRight}
-          source={require('../assets/ToyFaces_Tansparent_BG_29.png')}
+          source={require('../assets/Group68.png')}
         />
       </View>
       {/* button */}
-      <TouchableOpacity>
-        <View style={styles.buttonStyle}>
-          <Text>Get Started</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity>
+          <View style={styles.buttonStyle}>
+            <Text style={styles.buttonText}>Get Started</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

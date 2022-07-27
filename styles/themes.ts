@@ -2,6 +2,9 @@ const theme = {
   colors: {
     primary: '#FF4B3A',
   },
+  borderRadius: {
+    button: 30,
+  },
   fonts: {},
   fontSizes: {
     label: {
