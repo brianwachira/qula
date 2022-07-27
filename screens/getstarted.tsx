@@ -76,6 +76,10 @@ const GetStarted = ({
     height: '100%',
   };
 
+  const onNavigate = () => {
+    navigation.navigate('Auth');
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -100,7 +104,7 @@ const GetStarted = ({
       </View>
       {/* button */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onNavigate()}>
           <View style={styles.buttonStyle}>
             <Text style={styles.buttonText}>Get Started</Text>
           </View>

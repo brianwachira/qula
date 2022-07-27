@@ -28,6 +28,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from './types';
 import GetStarted from './screens/getstarted';
+import Auth from './screens/auth';
 
 // const Section: React.FC<
 //   PropsWithChildren<{
@@ -71,6 +72,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="GetStarted" component={GetStarted} />
+        <Stack.Screen name="Auth" component={Auth} />
       </Stack.Navigator>
       {/* <SafeAreaView style={backgroundStyle}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
