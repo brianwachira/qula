@@ -3,7 +3,7 @@
 Contributing
 ===
 
-<img align="right" width="25%" style="margin-bottom: 2em" src="https://owlbert.io/images/owlberts-png/Waiter.psd.png">
+<img align="right" width="25%" style="margin-bottom: 2em" src="https://s3.amazonaws.com/fullstackfeed/images/react-3.jpg">
 
 ### Commit Conventions
 
