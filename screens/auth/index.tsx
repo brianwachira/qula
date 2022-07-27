@@ -10,17 +10,10 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
+import {TabBar, TabView} from 'react-native-tab-view';
 import theme from '../../styles/themes';
 import {RootStackParamList} from '../../types';
-
-const FirstRoute = () => {
-  return (
-    <View style={{flex: 1, backgroundColor: '#F2F2F2'}}>
-      <Text>Login</Text>
-    </View>
-  );
-};
+import Login from './login';
 
 const SecondRoute = () => {
   return (
@@ -29,10 +22,6 @@ const SecondRoute = () => {
     </View>
   );
 };
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
-});
 
 const Auth = ({
   navigation,
@@ -56,7 +45,7 @@ const Auth = ({
           renderScene={({route}) => {
             switch (route.key) {
               case 'first':
-                return <FirstRoute />;
+                return <Login />;
               case 'second':
                 return <SecondRoute />;
               default:
@@ -103,8 +92,8 @@ const Auth = ({
           style={{
             position: 'absolute',
             top: 100,
-            left: Dimensions.get('screen').width / 2 ,
-            right: Dimensions.get('screen').width / 2 ,
+            left: Dimensions.get('screen').width / 2,
+            right: Dimensions.get('screen').width /2,
           }}
         />
       </View>
