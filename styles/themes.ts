@@ -3,6 +3,7 @@ const theme = {
     primary: '#FF4B3A',
     white: '#FFFFFF',
     black: '#000000',
+    danger: '#d73a4a',
   },
   borderRadius: {
     button: 30,
@@ -15,7 +16,7 @@ const theme = {
         lineHeight: 22,
       },
       button: {
-        fontSize: 14,
+        fontSize: 17,
         lineHeight: 20,
         letterSpacing: 0.1,
       },
