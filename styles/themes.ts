@@ -1,6 +1,6 @@
 const theme = {
   colors: {
-    primary: '#FF4B3A',
+    primary: '#FA4A0C',
     white: '#FFFFFF',
     black: '#000000',
     danger: '#d73a4a',
@@ -11,6 +11,12 @@ const theme = {
   fonts: {},
   fontSizes: {
     label: {
+      input: {
+        fontStyle: 'normal',
+        fontSize: 15,
+        fontWeight: '600',
+        lineHeight: 18,
+      },
       sideBar: {
         fontSize: 18,
         lineHeight: 22,
@@ -21,9 +27,9 @@ const theme = {
         letterSpacing: 0.1,
       },
       normal: {
-        fontSize: 12,
-        lineHeight: 16,
-        letterSpacing: 0.5,
+        fontSize: 17,
+        lineHeight: 20,
+        fontWeight: '600',
       },
       small: {
         fontSize: 11,
