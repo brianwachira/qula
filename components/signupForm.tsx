@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formContainer: {
-    flex: 0.8,
+    flex: 0.85,
     justifyContent: 'center',
     marginHorizontal: 50,
   },
@@ -44,6 +44,8 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
             textContentType="emailAddress"
             autoComplete="email"
             style={styles.onBoardingInput}
+            returnKeyType="next"
+            autoFocus
           />
         </View>
         {/* password */}
@@ -55,6 +57,8 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
             autoComplete="password"
             style={styles.onBoardingInput}
             secureTextEntry
+            returnKeyType="next"
+            autoFocus
           />
         </View>
 
