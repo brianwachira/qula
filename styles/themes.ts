@@ -4,6 +4,7 @@ const theme = {
     white: '#FFFFFF',
     black: '#000000',
     danger: '#d73a4a',
+    tab: '#F2F2F2',
   },
   borderRadius: {
     button: 30,
