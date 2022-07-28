@@ -1,16 +1,15 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {
-  Dimensions,
   Image,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
+import Button from '../components/shared-ui/button';
 import theme from '../styles/themes';
 import {RootStackParamList} from '../types';
 
@@ -30,6 +29,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     lineHeight: 80,
     marginHorizontal: 50,
+    color: theme.colors.white,
   },
   images: {
     // marginBottom: Dimensions.get('screen').height / 2,
@@ -52,18 +52,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     zIndex: 9,
-  },
-  buttonStyle: {
-    width: Dimensions.get('screen').width - 100,
-    paddingVertical: 20,
-    backgroundColor: '#ffffff',
-    borderRadius: theme.borderRadius.button,
-    ...theme.boxShadowAndroid,
-  },
-  buttonText: {
-    fontSize: 17,
-    color: theme.colors.primary,
-    textAlign: 'center',
   },
 });
 const GetStarted = ({
@@ -104,11 +92,12 @@ const GetStarted = ({
       </View>
       {/* button */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => onNavigate()}>
-          <View style={styles.buttonStyle}>
-            <Text style={styles.buttonText}>Get Started</Text>
-          </View>
-        </TouchableOpacity>
+        <Button
+          onPress={() => onNavigate()}
+          title="Get Started"
+          textType="labelButtonWhite"
+          accessibilityLabel="Get Started"
+        />
       </View>
     </SafeAreaView>
   );
