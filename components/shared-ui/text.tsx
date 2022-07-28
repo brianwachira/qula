@@ -13,7 +13,14 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
     fontSize: theme.fontSizes.label.normal.fontSize,
     lineHeight: theme.fontSizes.label.normal.lineHeight,
-    letterSpacing: theme.fontSizes.label.normal.letterSpacing,
+  },
+  fontLabelInput: {
+    opacity: 0.4,
+    ...theme.fontSizes.label.input,
+  },
+  fontLabelLink: {
+    opacity: 1,
+    ...theme.fontSizes.label.input,
   },
   fontLabelSideBar: {
     ...theme.fontSizes.label.sideBar,
@@ -53,10 +60,16 @@ const styles = StyleSheet.create({
   textAlignCenter: {
     ...theme.textAlignCenter,
   },
+  colorPrimary: {
+    color: theme.colors.primary,
+  },
+  colorWhite: {
+    color: theme.colors.white,
+  },
 });
 
 export type textProps = {
-  color?: 'primary' | 'secondary';
+  color?: 'primary' | 'white';
   font?:
     | 'newYorkMediumBold'
     | 'newYorkMediumBlack'
@@ -77,17 +90,23 @@ export type textProps = {
     | 'appBarTitle'
     | 'subheading'
     | 'empty'
-    | 'calendarNumber';
+    | 'calendarNumber'
+    | 'labelInput'
+    | 'labelLink';
   textAlign?: 'center';
 };
+
 const Text = ({
   style,
   textType,
   textAlign,
+  color,
   ...props
 }: textProps & NativeText['props']) => {
   const textStyle = [
     styles.text,
+    textType === 'labelInput' && styles.fontLabelInput,
+    textType === 'labelLink' && styles.fontLabelLink,
     textType === 'labelSideBar' && styles.fontLabelSideBar,
     textType === 'labelButtonOrange' && styles.fontLabelButtonOrange,
     textType === 'labelButtonWhite' && styles.fontLabelButtonWhite,
@@ -100,6 +119,8 @@ const Text = ({
     textType === 'empty' && styles.fontEmpty,
     textType === 'calendarNumber' && styles.fontCalendarNumber,
     textAlign === 'center' && styles.textAlignCenter,
+    color === 'primary' && styles.colorPrimary,
+    color === 'white' && styles.colorWhite,
     style,
   ];
   return <NativeText style={textStyle} {...props} />;
