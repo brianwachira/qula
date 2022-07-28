@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formContainer: {
-    flex: 0.8,
+    flex: 0.85,
     justifyContent: 'center',
     marginHorizontal: 50,
   },
