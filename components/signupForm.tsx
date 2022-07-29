@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import EyeIcon from '../assets/icons/eyeIcon';
+import EyeIconClosed from '../assets/icons/eyeIconClosed';
 import theme from '../styles/themes';
 import Button from './shared-ui/button';
 import FormikTextInput from './shared-ui/formikTextInput';
@@ -30,9 +32,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  iconPassword: {
+    position: 'absolute',
+    right: 0,
+    bottom: 10,
+  },
 });
 
 const SignupForm = ({onSubmit}: {onSubmit: any}) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   return (
     <>
       <View style={styles.formContainer}>
@@ -56,10 +66,23 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
             textContentType="password"
             autoComplete="password"
             style={styles.onBoardingInput}
-            secureTextEntry
+            secureTextEntry={!showPassword}
             returnKeyType="next"
             autoFocus
           />
+          {showPassword ? (
+            <EyeIconClosed
+              style={styles.iconPassword}
+              onPress={() => setShowPassword(!showPassword)}
+              fill={theme.colors.black}
+            />
+          ) : (
+            <EyeIcon
+              style={styles.iconPassword}
+              onPress={() => setShowPassword(!showPassword)}
+              fill={theme.colors.black}
+            />
+          )}
         </View>
 
         {/* confirm password */}
@@ -70,8 +93,21 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
             textContentType="password"
             autoComplete="password"
             style={styles.onBoardingInput}
-            secureTextEntry
+            secureTextEntry={!showConfirmPassword}
           />
+          {showConfirmPassword ? (
+            <EyeIconClosed
+              style={styles.iconPassword}
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              fill={theme.colors.black}
+            />
+          ) : (
+            <EyeIcon
+              style={styles.iconPassword}
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              fill={theme.colors.black}
+            />
+          )}
         </View>
 
         {/* forgot password link */}
