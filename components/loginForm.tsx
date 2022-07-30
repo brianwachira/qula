@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import EyeIcon from '../assets/icons/eyeIcon';
-import EyeIconClosed from '../assets/icons/eyeIconClosed';
 import theme from '../styles/themes';
 import Button from './shared-ui/button';
 import FormikTextInput from './shared-ui/formikTextInput';
@@ -42,6 +40,9 @@ const styles = StyleSheet.create({
 const LoginForm = ({onSubmit}: {onSubmit: any}) => {
   const [showPassword, setShowPassword] = useState(false);
 
+  //function to toggle password
+  const togglePassword = () => setShowPassword(!showPassword);
+
   return (
     <>
       <View style={styles.formContainer}>
@@ -64,20 +65,10 @@ const LoginForm = ({onSubmit}: {onSubmit: any}) => {
             autoComplete="password"
             style={styles.onBoardingInput}
             secureTextEntry={!showPassword}
+            isPasswordField
+            togglePassword={togglePassword}
+            togglePasswordStyle={styles.iconPassword}
           />
-          {showPassword ? (
-            <EyeIconClosed
-              style={styles.iconPassword}
-              onPress={() => setShowPassword(!showPassword)}
-              fill={theme.colors.black}
-            />
-          ) : (
-            <EyeIcon
-              style={styles.iconPassword}
-              onPress={() => setShowPassword(!showPassword)}
-              fill={theme.colors.black}
-            />
-          )}
         </View>
 
         {/* forgot password link */}

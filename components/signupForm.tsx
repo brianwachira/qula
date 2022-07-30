@@ -43,6 +43,13 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  //function to toggle password
+  const togglePassword = () => setShowPassword(!showPassword);
+
+  //function to toggle confirm password
+  const toggleConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
   return (
     <>
       <View style={styles.formContainer}>
@@ -67,22 +74,12 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
             autoComplete="password"
             style={styles.onBoardingInput}
             secureTextEntry={!showPassword}
+            isPasswordField
+            togglePassword={togglePassword}
+            togglePasswordStyle={styles.iconPassword}
             returnKeyType="next"
             autoFocus
           />
-          {showPassword ? (
-            <EyeIconClosed
-              style={styles.iconPassword}
-              onPress={() => setShowPassword(!showPassword)}
-              fill={theme.colors.black}
-            />
-          ) : (
-            <EyeIcon
-              style={styles.iconPassword}
-              onPress={() => setShowPassword(!showPassword)}
-              fill={theme.colors.black}
-            />
-          )}
         </View>
 
         {/* confirm password */}
@@ -94,6 +91,9 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
             autoComplete="password"
             style={styles.onBoardingInput}
             secureTextEntry={!showConfirmPassword}
+            isPasswordField
+            togglePassword={toggleConfirmPassword}
+            togglePasswordStyle={styles.iconPassword}
           />
           {showConfirmPassword ? (
             <EyeIconClosed

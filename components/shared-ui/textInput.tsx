@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   borderDanger: {
     borderBottomColor: theme.colors.danger,
     borderBottomWidth: 1,
+    height: 40,
   },
 });
 interface textInputProps extends TextInputProps {

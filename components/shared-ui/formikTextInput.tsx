@@ -1,10 +1,11 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import {StyleSheet, TextInputProps} from 'react-native';
+import {StyleProp, StyleSheet, TextInputProps, ViewStyle} from 'react-native';
 import {useField} from 'formik';
 import TextInput from './textInput';
 import Text from './text';
 import theme from '../../styles/themes';
+import EyeIcon from '../../assets/icons/eyeIcon';
+import EyeIconClosed from '../../assets/icons/eyeIconClosed';
 
 const styles = StyleSheet.create({
   errorText: {
@@ -15,10 +16,24 @@ const styles = StyleSheet.create({
 
 interface formikTextInputProps extends TextInputProps {
   name: string;
+  isPasswordField?: boolean;
+  togglePassword?: () => void;
+  togglePasswordStyle?: StyleProp<ViewStyle>;
 }
 
 const FormikTextInput = (props: formikTextInputProps) => {
-  const {name}: {name: string} = props;
+  const {
+    name,
+    isPasswordField,
+    togglePassword,
+    togglePasswordStyle,
+  }: {
+    name: string;
+    isPasswordField?: boolean | undefined;
+    showPassword?: boolean;
+    togglePassword?: (() => void) | undefined;
+    togglePasswordStyle?: StyleProp<ViewStyle>;
+  } = props;
   const [field, meta, helpers] = useField(name);
 
   // Check if the field is touched and the error message is present
@@ -33,6 +48,24 @@ const FormikTextInput = (props: formikTextInputProps) => {
         error={showError}
         {...props}
       />
+      {/* show toggle password field incase it's a password field */}
+      {isPasswordField && (
+        <>
+          {!props?.secureTextEntry ? (
+            <EyeIconClosed
+              onPress={togglePassword}
+              style={togglePasswordStyle}
+              fill={theme.colors.black}
+            />
+          ) : (
+            <EyeIcon
+              onPress={togglePassword}
+              style={togglePasswordStyle}
+              fill={theme.colors.black}
+            />
+          )}
+        </>
+      )}
       {/* Show the error message if the value of showError variable is true */}
       {showError && (
         <Text style={styles.errorText} textType="labelSmall">
