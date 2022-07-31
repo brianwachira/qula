@@ -3,7 +3,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {View} from 'react-native';
 import LoginForm from '../../components/loginForm';
-
+import * as RootNavigation from '../../navigation/rootNavigation';
 // formik initial values
 const initialValues = {
   email: '',
@@ -20,6 +20,7 @@ const Login = () => {
   // onsubmit function
   const onSubmit = (values: any) => {
     console.log(values);
+    RootNavigation.navigate('Home' as never, {} as never);
   };
 
   return (
