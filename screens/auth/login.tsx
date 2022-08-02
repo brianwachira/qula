@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import {View} from 'react-native';
 import LoginForm from '../../components/loginForm';
 import * as RootNavigation from '../../navigation/rootNavigation';
-import MMKV, { MMKVLoader,useMMKVStorage} from 'react-native-mmkv-storage';
 
 // formik initial values
 const initialValues = {
@@ -18,17 +17,15 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-const storage = new MMKVLoader().initialize();
-
 const Login = () => {
-
   // onsubmit function
   const onSubmit = (values: any) => {
     const user = {
       email: values.email,
-    },
-    console.log(values);
-    RootNavigation.navigate('Home' as never, {} as never);
+      otp: 12345,
+    };
+    //console.log(values);
+    RootNavigation.navigate('Otp' as never, user as never);
   };
 
   return (
