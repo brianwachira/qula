@@ -5,4 +5,5 @@ export type RootStackParamList = {
   Liked: undefined;
   History: undefined;
   Profile: undefined;
+  Otp: {email: string; otp: string};
 };
