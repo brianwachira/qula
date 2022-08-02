@@ -65,10 +65,13 @@ const styles = StyleSheet.create({
   colorWhite: {
     color: theme.colors.white,
   },
+  colorBlack: {
+    color: theme.colors.black,
+  },
 });
 
 export type textProps = {
-  color?: 'primary' | 'white';
+  color?: 'primary' | 'white' | 'dark';
   font?:
     | 'newYorkMediumBold'
     | 'newYorkMediumBlack'
@@ -120,6 +123,7 @@ const Text = ({
     textAlign === 'center' && styles.textAlignCenter,
     color === 'primary' && styles.colorPrimary,
     color === 'white' && styles.colorWhite,
+    color === 'dark' && styles.colorBlack,
     style,
   ];
   return <NativeText style={textStyle} {...props} />;
