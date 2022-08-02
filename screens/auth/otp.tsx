@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     marginBottom: 10,
+    textAlign: 'left',
   },
 });
 
@@ -38,7 +39,7 @@ const Otp = ({
 }: NativeStackScreenProps<RootStackParamList, 'Otp'>) => {
   const [otp, setOTP] = useState('');
   const [isPinReady, setIsPinReady] = useState(false);
-  const maximumLength = 5;
+  const maximumLength = 4;
 
   const [user, setUser] = useStorage('email');
 
@@ -55,8 +56,10 @@ const Otp = ({
 
   return (
     <Pressable style={styles.container} onPress={Keyboard.dismiss}>
-      <View style={{flex: 0.2}}>
+      <View style={{flex: 0.1}}>
         <Text style={styles.textStyle}>Enter OTP</Text>
+      </View>
+      <View style={{flex: 0.15}}>
         <OTPInput
           code={otp}
           setCode={setOTP}
