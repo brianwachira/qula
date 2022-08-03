@@ -1,5 +1,8 @@
 import React, {Suspense} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
 import DrawerNavigator from './drawerNavigation';
 import {navigationRef} from './rootNavigation';
 import {useStorage} from '../hooks/useStorage';
@@ -10,6 +13,8 @@ const MainStackNavigator = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useStorage('email');
 
+  const nav: () => NavigationContainerRef<ReactNavigation.RootParamList> = () =>
+    navigationRef.current as NavigationContainerRef<ReactNavigation.RootParamList>;
   return (
     <NavigationContainer ref={navigationRef}>
       {!user?.email ? (
@@ -17,7 +22,7 @@ const MainStackNavigator = () => {
           <AuthNavigation />
         </Suspense>
       ) : (
-        <DrawerNavigator />
+        <DrawerNavigator nav={nav} />
       )}
     </NavigationContainer>
   );
