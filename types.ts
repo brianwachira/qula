@@ -3,7 +3,8 @@ export type RootStackParamList = {
   Auth: undefined;
   Home: undefined;
   Liked: undefined;
-  History: undefined;
+  Orders: undefined;
+  Cart: undefined;
   Profile: undefined;
   Otp: {email: string; otp: string};
 };
