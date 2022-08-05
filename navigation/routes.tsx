@@ -35,7 +35,7 @@ export const routes = [
     showInTab: true,
     showInDrawer: true,
     icon: (focused: any) => (
-      <HomeIcon fill={focused ? theme.colors.primary : '#000'} />
+      <HomeIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
     ),
   },
   {
@@ -45,7 +45,7 @@ export const routes = [
     showInTab: true,
     showInDrawer: false,
     icon: (focused: any) => (
-      <HomeIcon fill={focused ? theme.colors.primary : '#000'} />
+      <HomeIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
     ),
   },
   {
@@ -55,7 +55,7 @@ export const routes = [
     showInTab: true,
     showInDrawer: true,
     icon: (focused: any) => (
-      <RefreshIcon fill={focused ? theme.colors.primary : '#000'} />
+      <RefreshIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
     ),
   },
   {
@@ -65,7 +65,7 @@ export const routes = [
     showInTab: true,
     showInDrawer: false,
     icon: (focused: any) => (
-      <RefreshIcon fill={focused ? theme.colors.primary : '#000'} />
+      <RefreshIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
     ),
   },
   {
@@ -74,7 +74,9 @@ export const routes = [
     title: 'Cart',
     showInTab: true,
     showInDrawer: true,
-    icon: (focused: any) => <CartIcon />,
+    icon: (focused: any) => (
+      <CartIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+    ),
   },
   {
     name: screens.Cart,
@@ -82,7 +84,9 @@ export const routes = [
     title: 'Cart',
     showInTab: true,
     showInDrawer: false,
-    icon: (focused: any) => <CartIcon />,
+    icon: (focused: any) => (
+      <CartIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+    ),
   },
   {
     name: screens.ProfileStack,
@@ -90,7 +94,9 @@ export const routes = [
     title: 'Profile',
     showInTab: true,
     showInDrawer: true,
-    icon: (focused: any) => <UserCircleIcon />,
+    icon: (focused: any) => (
+      <UserCircleIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+    ),
   },
   {
     name: screens.Profile,
@@ -98,6 +104,8 @@ export const routes = [
     title: 'Profile',
     showInTab: true,
     showInDrawer: false,
-    icon: (focused: any) => <UserCircleIcon />,
+    icon: (focused: any) => (
+      <UserCircleIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+    ),
   },
 ];
