@@ -25,45 +25,54 @@ const CustomDrawerContent = (
   const currentRouteName = props.nav()?.getCurrentRoute()?.name;
 
   return (
-    <DrawerContentScrollView {...props} style={styles.drawerContainer}>
-      {routes
-        .filter(route => route.showInDrawer)
-        .map(route => {
-          const focusedRoute = routes.find(r => r.name === currentRouteName);
-          const focused = focusedRoute
-            ? route.name === focusedRoute?.focusedRoute
-            : route.name === screens.HomeStack;
-          return (
-            <DrawerItem
-              key={route.name}
-              label={() => (
-                <View style={styles.drawerItemContainer}>
-                  <View
-                    style={[
-                      styles.drawerItemIconContainer,
-                      focused && styles.marginTop0,
-                    ]}>
-                    {route?.iconDrawer(focused)}
+    <DrawerContentScrollView
+      {...props}
+      contentContainerStyle={styles.drawerContainer}>
+      <View style={styles.drawerItemsContainer}>
+        {routes
+          .filter(route => route.showInDrawer)
+          .map(route => {
+            const focusedRoute = routes.find(r => r.name === currentRouteName);
+            const focused = focusedRoute
+              ? route.name === focusedRoute?.focusedRoute
+              : route.name === screens.HomeStack;
+            return (
+              <DrawerItem
+                key={route.name}
+                label={() => (
+                  <View style={styles.drawerItemContainer}>
+                    <View
+                      style={[
+                        styles.drawerItemIconContainer,
+                        focused && styles.marginTop0,
+                      ]}>
+                      {route?.iconDrawer(focused)}
+                    </View>
+                    <View style={styles.drawerItemTextContainer}>
+                      <Text
+                        style={
+                          focused
+                            ? styles.drawerLabelFocused
+                            : styles.drawerLabel
+                        }>
+                        {route.title}
+                      </Text>
+                      {!focused && (
+                        <View style={styles.horizontalDividerStyle} />
+                      )}
+                    </View>
                   </View>
-                  <View style={styles.drawerItemTextContainer}>
-                    <Text
-                      style={
-                        focused ? styles.drawerLabelFocused : styles.drawerLabel
-                      }>
-                      {route.title}
-                    </Text>
-                    {!focused && <View style={styles.horizontalDividerStyle} />}
-                  </View>
-                </View>
-              )}
-              onPress={() => props.navigation.navigate(route.name)}
-              style={[
-                styles.drawerItem,
-                focused ? styles.drawerItemFocused : null,
-              ]}
-            />
-          );
-        })}
+                )}
+                onPress={() => props.navigation.navigate(route.name)}
+                style={[
+                  styles.drawerItem,
+                  focused ? styles.drawerItemFocused : null,
+                ]}
+              />
+            );
+          })}
+      </View>
+      {/* log out button */}
       <DrawerItem
         onPress={() => console.log('logout')}
         label={() => (
@@ -92,6 +101,7 @@ const DrawerNavigator = ({
 }) => {
   return (
     <Drawer.Navigator
+      // Allows us to get drawerProgress from another component ( ie TabNavigation )
       useLegacyImplementation
       screenOptions={{
         // the drawer screen animated should be slide
@@ -119,6 +129,11 @@ const DrawerNavigator = ({
 const styles = StyleSheet.create({
   drawerContainer: {
     backgroundColor: theme.colors.primary,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  drawerItemsContainer: {
+    flexGrow: 0.5,
   },
   headerLeft: {
     marginLeft: 15,
@@ -168,6 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     marginVertical: 20,
     maxWidth: '80%',
+    borderRadius: 10,
   },
   drawerItemLogout: {},
   drawerItemIconLogout: {
