@@ -12,6 +12,7 @@ import Text from '../components/shared-ui/text';
 import {StyleSheet, View} from 'react-native';
 import {NavigationContainerRef} from '@react-navigation/native';
 import theme from '../styles/themes';
+import LogoutIcon from '../assets/icons/logoutIcon';
 const Drawer = createDrawerNavigator();
 
 type customDrawerContentProps = {
@@ -54,6 +55,15 @@ const CustomDrawerContent = (
             />
           );
         })}
+      <DrawerItem
+        label={() => (
+          <View style={styles.drawerItemContainer}>
+            <LogoutIcon fill={theme.colors.white} />
+            <Text style={styles.drawerLabel}>Sign Out</Text>
+          </View>
+        )}
+        style={styles.drawerItem}
+      />
     </DrawerContentScrollView>
   );
 };
