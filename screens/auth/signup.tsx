@@ -1,8 +1,14 @@
 import React from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import SignupForm from '../../components/signupForm';
+
+const styles = StyleSheet.create({
+  formikContainer: {
+    flex: 1,
+  },
+});
 
 // formik initial values
 const initialValues = {
@@ -27,7 +33,7 @@ const Signup = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.formikContainer}>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
