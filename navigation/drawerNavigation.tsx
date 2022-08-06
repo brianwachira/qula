@@ -9,8 +9,9 @@ import {
 import BottomNavigation from './bottomNavigation';
 import {routes, screens} from './routes';
 import Text from '../components/shared-ui/text';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {NavigationContainerRef} from '@react-navigation/native';
+import theme from '../styles/themes';
 const Drawer = createDrawerNavigator();
 
 type customDrawerContentProps = {
@@ -21,8 +22,9 @@ const CustomDrawerContent = (
   props: DrawerContentComponentProps & customDrawerContentProps,
 ) => {
   const currentRouteName = props.nav()?.getCurrentRoute()?.name;
+
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props} style={styles.drawerContainer}>
       {routes
         .filter(route => route.showInDrawer)
         .map(route => {
@@ -34,12 +36,15 @@ const CustomDrawerContent = (
             <DrawerItem
               key={route.name}
               label={() => (
-                <Text
-                  style={
-                    focused ? styles.drawerLabelFocused : styles.drawerLabel
-                  }>
-                  {route.title}
-                </Text>
+                <View style={styles.drawerItemContainer}>
+                  {route.icon(focused)}
+                  <Text
+                    style={
+                      focused ? styles.drawerLabelFocused : styles.drawerLabel
+                    }>
+                    {route.title}
+                  </Text>
+                </View>
               )}
               onPress={() => props.navigation.navigate(route.name)}
               style={[
@@ -58,8 +63,32 @@ const DrawerNavigator = ({
 }: {
   nav: () => NavigationContainerRef<ReactNavigation.RootParamList>;
 }) => {
+  //const [progress, setProgress] = useState(new Animated.Value(0));
+  // const scale = Animated.interpolateNode(progress, {
+  //   inputRange: [0, 1],
+  //   outputRange: [1, 0.8],
+  // });
+  // const borderRadius = Animated.interpolateNode(progress, {
+  //   inputRange: [0, 1],
+  //   outputRange: [0, 16],
+  // });
+
+  //const animatedStyle = {borderRadius, transform: [{scale}]};
   return (
     <Drawer.Navigator
+      screenOptions={{
+        // the drawer screen animated should be slide
+        drawerType: 'slide',
+        overlayColor: 'transparent',
+        drawerActiveBackgroundColor: theme.colors.primary,
+        drawerActiveTintColor: theme.colors.primary,
+        sceneContainerStyle: {backgroundColor: theme.colors.primary},
+        headerShown: false,
+        drawerStyle: {
+          width: '55%',
+          marginRight: 0,
+        },
+      }}
       drawerContent={props => <CustomDrawerContent {...props} nav={nav} />}>
       <Drawer.Screen
         name={screens.HomeTab}
@@ -71,6 +100,9 @@ const DrawerNavigator = ({
 };
 
 const styles = StyleSheet.create({
+  drawerContainer: {
+    backgroundColor: theme.colors.primary,
+  },
   headerLeft: {
     marginLeft: 15,
   },
@@ -85,18 +117,23 @@ const styles = StyleSheet.create({
   // drawer content
   drawerLabel: {
     fontSize: 14,
+    color: theme.colors.white,
   },
   drawerLabelFocused: {
     fontSize: 14,
-    color: '#551E18',
+    color: theme.colors.primary,
     fontWeight: '500',
+  },
+  drawerItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   drawerItem: {
     height: 50,
     justifyContent: 'center',
   },
   drawerItemFocused: {
-    backgroundColor: '#ba9490',
+    backgroundColor: theme.colors.white,
   },
 });
 

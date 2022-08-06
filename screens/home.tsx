@@ -1,6 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Text from '../components/shared-ui/text';
 import {RootStackParamList} from '../types';
 
@@ -16,9 +17,11 @@ const Home = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
   return (
-    <View style={styles.container}>
-      <Text>Home</Text>
-    </View>
+    <SafeAreaView style={{height: '100%', marginVertical: 40,}}>
+      <View style={styles.container}>
+        <Text>Home</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
