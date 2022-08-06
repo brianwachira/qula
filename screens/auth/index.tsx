@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
-
 const Auth = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'GetStarted'>) => {
@@ -65,7 +64,10 @@ const Auth = ({
   ]);
   return (
     <SafeAreaView style={styles.tabContainer}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        barStyle={'dark-content'}
+        backgroundColor={theme.colors.white}
+      />
       <View style={{height: Dimensions.get('screen').height}}>
         <TabView
           navigationState={{index, routes}}
