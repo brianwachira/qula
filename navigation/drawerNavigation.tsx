@@ -38,13 +38,22 @@ const CustomDrawerContent = (
               key={route.name}
               label={() => (
                 <View style={styles.drawerItemContainer}>
-                  {route.icon(focused)}
-                  <Text
-                    style={
-                      focused ? styles.drawerLabelFocused : styles.drawerLabel
-                    }>
-                    {route.title}
-                  </Text>
+                  <View
+                    style={[
+                      styles.drawerItemIconContainer,
+                      focused && styles.marginTop0,
+                    ]}>
+                    {route?.iconDrawer(focused)}
+                  </View>
+                  <View style={styles.drawerItemTextContainer}>
+                    <Text
+                      style={
+                        focused ? styles.drawerLabelFocused : styles.drawerLabel
+                      }>
+                      {route.title}
+                    </Text>
+                    {!focused && <View style={styles.horizontalDividerStyle} />}
+                  </View>
                 </View>
               )}
               onPress={() => props.navigation.navigate(route.name)}
@@ -56,10 +65,18 @@ const CustomDrawerContent = (
           );
         })}
       <DrawerItem
+        onPress={() => console.log('logout')}
         label={() => (
           <View style={styles.drawerItemContainer}>
-            <LogoutIcon fill={theme.colors.white} />
-            <Text style={styles.drawerLabel}>Sign Out</Text>
+            <View style={[styles.drawerItemIconContainer, styles.marginTop0]}>
+              <LogoutIcon
+                fill={theme.colors.white}
+                style={styles.drawerItemIconLogout}
+              />
+            </View>
+            <View>
+              <Text style={styles.drawerLabel}>Sign Out</Text>
+            </View>
           </View>
         )}
         style={styles.drawerItem}
@@ -114,6 +131,20 @@ const styles = StyleSheet.create({
   headerRight: {
     marginRight: 15,
   },
+  drawerItemIconContainer: {
+    flexDirection: 'row',
+    marginTop: -20,
+  },
+  drawerItemTextContainer: {
+    flexDirection: 'column',
+    marginLeft: 10,
+  },
+  horizontalDividerStyle: {
+    marginTop: 20,
+    borderBottomColor: theme.colors.white,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    minWidth: '80%',
+  },
   // drawer content
   drawerLabel: {
     fontSize: 14,
@@ -123,6 +154,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.primary,
     fontWeight: '500',
+    alignItems: 'center',
   },
   drawerItemContainer: {
     flexDirection: 'row',
@@ -134,6 +166,15 @@ const styles = StyleSheet.create({
   },
   drawerItemFocused: {
     backgroundColor: theme.colors.white,
+    marginVertical: 20,
+    maxWidth: '80%',
+  },
+  drawerItemLogout: {},
+  drawerItemIconLogout: {
+    marginRight: 20,
+  },
+  marginTop0: {
+    marginTop: 0,
   },
 });
 
