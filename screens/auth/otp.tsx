@@ -57,7 +57,6 @@ const Otp = ({
     setUser(userToSave);
 
     console.log(user);
-    navigation.navigate('Home');
   };
 
   return (
