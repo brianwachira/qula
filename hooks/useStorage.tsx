@@ -9,12 +9,12 @@ const MMKV: MMKVInstance = new MMKVLoader().initialize();
 type LiteralUnion<T extends U, U = string> = T | (U & {});
 
 type defaultObject = {
-  email: string;
+  email?: string;
 };
 
 export const useStorage = (
   key: LiteralUnion<'user' | 'email' | 'password'>,
-  defaultValue?: defaultObject,
+  defaultValue?: defaultObject | null,
 ) => {
   const [value, setValue] = useMMKVStorage(key, MMKV, defaultValue);
   return [value, setValue] as const;
