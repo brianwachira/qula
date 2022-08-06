@@ -25,7 +25,7 @@ export const routes = [
     showInTab: false,
     showInDrawer: false,
     icon: (focused: any) => (
-      <HomeIcon color={focused ? theme.colors.primary : '#000'} />
+      <HomeIcon color={focused ? theme.colors.primary : theme.colors.icon} />
     ),
   },
   {
@@ -35,7 +35,10 @@ export const routes = [
     showInTab: true,
     showInDrawer: true,
     icon: (focused: any) => (
-      <HomeIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <HomeIcon fill={focused ? theme.colors.primary : theme.colors.icon} />
+    ),
+    iconDrawer: (focused: any) => (
+      <HomeIcon fill={focused ? theme.colors.primary : theme.colors.white} />
     ),
   },
   {
@@ -45,7 +48,7 @@ export const routes = [
     showInTab: true,
     showInDrawer: false,
     icon: (focused: any) => (
-      <HomeIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <HomeIcon fill={focused ? theme.colors.primary : theme.colors.icon} />
     ),
   },
   {
@@ -55,7 +58,10 @@ export const routes = [
     showInTab: true,
     showInDrawer: true,
     icon: (focused: any) => (
-      <RefreshIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <RefreshIcon fill={focused ? theme.colors.primary : theme.colors.icon} />
+    ),
+    iconDrawer: (focused: any) => (
+      <RefreshIcon fill={focused ? theme.colors.primary : theme.colors.white} />
     ),
   },
   {
@@ -65,27 +71,33 @@ export const routes = [
     showInTab: true,
     showInDrawer: false,
     icon: (focused: any) => (
-      <RefreshIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <RefreshIcon fill={focused ? theme.colors.primary : theme.colors.icon} />
     ),
   },
   {
     name: screens.CartStack,
-    focusedRoute: screens.OrdersStack,
+    focusedRoute: screens.CartStack,
     title: 'Cart',
     showInTab: true,
     showInDrawer: true,
     icon: (focused: any) => (
-      <CartIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <CartIcon fill={focused ? theme.colors.primary : theme.colors.icon} />
+    ),
+    iconDrawer: (focused: any) => (
+      <CartIcon fill={focused ? theme.colors.primary : theme.colors.white} />
     ),
   },
   {
     name: screens.Cart,
-    focusedRoute: screens.OrdersStack,
+    focusedRoute: screens.CartStack,
     title: 'Cart',
     showInTab: true,
     showInDrawer: false,
     icon: (focused: any) => (
-      <CartIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <CartIcon fill={focused ? theme.colors.primary : theme.colors.icon} />
+    ),
+    iconDrawer: (focused: any) => (
+      <CartIcon fill={focused ? theme.colors.primary : theme.colors.white} />
     ),
   },
   {
@@ -95,7 +107,14 @@ export const routes = [
     showInTab: true,
     showInDrawer: true,
     icon: (focused: any) => (
-      <UserCircleIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <UserCircleIcon
+        fill={focused ? theme.colors.primary : theme.colors.icon}
+      />
+    ),
+    iconDrawer: (focused: any) => (
+      <UserCircleIcon
+        fill={focused ? theme.colors.primary : theme.colors.white}
+      />
     ),
   },
   {
@@ -105,7 +124,9 @@ export const routes = [
     showInTab: true,
     showInDrawer: false,
     icon: (focused: any) => (
-      <UserCircleIcon fill={focused ? theme.colors.primary : '#ADADAF'} />
+      <UserCircleIcon
+        fill={focused ? theme.colors.primary : theme.colors.tab}
+      />
     ),
   },
 ];
