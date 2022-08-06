@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   transparentCardStyle: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#F2F2F2',
+    backgroundColor: theme.colors.tab,
     opacity: 0.3,
     borderRadius: 30,
     flexGrow: 1,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   ScreenContentStyle: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#F2F2F2',
+    backgroundColor: theme.colors.tab,
     position: 'absolute',
     top: 0,
     left: 0,
