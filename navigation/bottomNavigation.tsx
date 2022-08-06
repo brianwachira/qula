@@ -3,12 +3,52 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../screens/home';
 import Profile from '../screens/profile';
 import {routes, screens} from './routes';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Orders from '../screens/orders';
 import Cart from '../screens/cart';
 import {useDrawerProgress} from '@react-navigation/drawer';
 
 import Animated, {Adaptable, Extrapolate} from 'react-native-reanimated';
+import theme from '../styles/themes';
+
+const styles = StyleSheet.create({
+  tabNone: {
+    width: 0,
+  },
+  tabStyleEmpty: {
+    backgroundColor: theme.colors.tab,
+    borderTop: 0,
+    borderTopWidth: 0,
+  },
+  tabStyleWithContent: {
+    backgroundColor: theme.colors.tab,
+    borderTop: 0,
+    borderTopWidth: 0,
+    elevation: 0,
+    marginBottom: 30,
+  },
+  transitionContainerStyle: {
+    flex: 1,
+    flexGrow: 1,
+  },
+  transparentCardStyle: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F2F2F2',
+    opacity: 0.3,
+    borderRadius: 30,
+    flexGrow: 1,
+  },
+  ScreenContentStyle: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F2F2F2',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    overflow: 'hidden',
+  },
+});
 
 const Tab = createBottomTabNavigator();
 
@@ -17,14 +57,10 @@ const tabOptions = (props: {route: {name: string}}) => {
 
   if (!item?.showInTab) {
     return {
-      tabBarButton: () => <View style={{width: 0}} />,
+      tabBarButton: () => <View style={styles.tabNone} />,
       headerShown: false,
       title: item?.title,
-      tabBarStyle: {
-        backgroundColor: '#F2F2F2',
-        borderTop: 0,
-        borderTopWidth: 0,
-      },
+      tabBarStyle: styles.tabStyleEmpty,
     };
   }
 
@@ -33,13 +69,7 @@ const tabOptions = (props: {route: {name: string}}) => {
     tabBarLabel: () => null,
     headerShown: false,
     title: item.title,
-    tabBarStyle: {
-      backgroundColor: '#F2F2F2',
-      borderTop: 0,
-      borderTopWidth: 0,
-      elevation: 0,
-      marginBottom: 30,
-    },
+    tabBarStyle: styles.tabStyleWithContent,
   };
 };
 
@@ -72,6 +102,15 @@ const BottomNavigation = () => {
     },
   );
 
+  // transparent card
+  const translateTransparentCard = Animated.interpolateNode(
+    drawerProgress as Adaptable<number>,
+    {
+      inputRange: [0, 0.5, 1],
+      outputRange: [0, 0, -50],
+    },
+  );
+
   // animation styles
   const animatedStyle = {
     borderRadius,
@@ -85,24 +124,34 @@ const BottomNavigation = () => {
     ],
   };
   return (
-    <Animated.View
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        flexGrow: 1,
-        backgroundColor: '#F2F2F2',
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...animatedStyle,
-      }}>
-      <Tab.Navigator screenOptions={tabOptions}>
-        <Tab.Screen name={screens.HomeStack} component={Home} />
-        <Tab.Screen name={screens.OrdersStack} component={Orders} />
-        <Tab.Screen name={screens.CartStack} component={Cart} />
-        <Tab.Screen name={screens.ProfileStack} component={Profile} />
-      </Tab.Navigator>
+    <Animated.View style={[styles.transitionContainerStyle, animatedStyle]}>
+      <Animated.View
+        style={[
+          styles.transparentCardStyle,
+          {
+            transform: [
+              {
+                translateX: translateTransparentCard,
+              },
+              {scale: 0.9},
+            ],
+          },
+        ]}
+      />
+      <Animated.View
+        style={[
+          styles.ScreenContentStyle,
+          {
+            borderRadius: borderRadius,
+          },
+        ]}>
+        <Tab.Navigator screenOptions={tabOptions}>
+          <Tab.Screen name={screens.HomeStack} component={Home} />
+          <Tab.Screen name={screens.OrdersStack} component={Orders} />
+          <Tab.Screen name={screens.CartStack} component={Cart} />
+          <Tab.Screen name={screens.ProfileStack} component={Profile} />
+        </Tab.Navigator>
+      </Animated.View>
     </Animated.View>
   );
 };
