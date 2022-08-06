@@ -15,6 +15,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  labelContainer: {
+    flex: 0.1,
+  },
+  inputContainer: {
+    flex: 0.15,
+  },
   buttonContainer: {
     backgroundColor: theme.colors.white,
     padding: 20,
@@ -24,7 +30,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   buttonText: {
-    color: '#000000',
+    color: theme.colors.black,
     fontSize: 20,
   },
   textStyle: {
@@ -56,10 +62,10 @@ const Otp = ({
 
   return (
     <Pressable style={styles.container} onPress={Keyboard.dismiss}>
-      <View style={{flex: 0.1}}>
+      <View style={styles.labelContainer}>
         <Text style={styles.textStyle}>Enter OTP</Text>
       </View>
-      <View style={{flex: 0.15}}>
+      <View style={styles.inputContainer}>
         <OTPInput
           code={otp}
           setCode={setOTP}
