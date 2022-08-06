@@ -1,13 +1,14 @@
-import React, {useEffect, useRef} from 'react';
+import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../screens/home';
 import Profile from '../screens/profile';
 import {routes, screens} from './routes';
-import {Animated, View} from 'react-native';
+import {View} from 'react-native';
 import Orders from '../screens/orders';
 import Cart from '../screens/cart';
-import {useDrawerStatus} from '@react-navigation/drawer';
-import theme from '../styles/themes';
+import {useDrawerProgress} from '@react-navigation/drawer';
+
+import Animated, {Adaptable, Extrapolate} from 'react-native-reanimated';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,40 +44,46 @@ const tabOptions = (props: {route: {name: string}}) => {
 };
 
 const BottomNavigation = () => {
-  //const drawerProgress = useDrawerProgress();
+  const drawerProgress = useDrawerProgress();
 
-  const offsetValue = useRef(new Animated.Value(0)).current;
-  // Scale Intially must be One...
-  const scaleValue = useRef(new Animated.Value(1)).current;
-  const closeButtonOffset = useRef(new Animated.Value(0)).current;
+  // scaling animation
+  const scale = Animated.interpolateNode(drawerProgress as Adaptable<number>, {
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 0.7, 0.65],
+    extrapolate: Extrapolate.CLAMP,
+  });
 
-  const drawerStatus = useDrawerStatus();
+  // border radius animation
+  const borderRadius = Animated.interpolateNode(
+    drawerProgress as Adaptable<number>,
+    {
+      inputRange: [0, 1],
+      outputRange: [1, 30],
+      extrapolate: Extrapolate.CLAMP,
+    },
+  );
 
-  useEffect(() => {
-    // scaling the view
-    Animated.timing(scaleValue, {
-      toValue: drawerStatus === 'open' ? 0.7 : 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+  // offset in the x axis
+  const offsetX = Animated.interpolateNode(
+    drawerProgress as Adaptable<number>,
+    {
+      inputRange: [0, 1],
+      outputRange: [0, -80],
+    },
+  );
 
-    Animated.timing(offsetValue, {
-      // Your Random Value...
-      toValue: drawerStatus === 'open' ? -70 : 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(closeButtonOffset, {
-      // YOur Random Value...
-      toValue: drawerStatus === 'open' ? 0 : -30,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [drawerStatus]);
-
+  // animation styles
+  const animatedStyle = {
+    borderRadius,
+    transform: [
+      {
+        scale,
+      },
+      {
+        translateX: offsetX,
+      },
+    ],
+  };
   return (
     <Animated.View
       // eslint-disable-next-line react-native/no-inline-styles
@@ -88,10 +95,7 @@ const BottomNavigation = () => {
         bottom: 0,
         left: 0,
         right: 0,
-        borderRadius: drawerStatus === 'open' ? 30 : 0,
-        borderTopLeftRadius: 30,
-        // transforming view
-        transform: [{scale: scaleValue}, {translateX: offsetValue}],
+        ...animatedStyle,
       }}>
       <Tab.Navigator screenOptions={tabOptions}>
         <Tab.Screen name={screens.HomeStack} component={Home} />

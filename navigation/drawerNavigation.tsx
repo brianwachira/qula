@@ -63,19 +63,9 @@ const DrawerNavigator = ({
 }: {
   nav: () => NavigationContainerRef<ReactNavigation.RootParamList>;
 }) => {
-  //const [progress, setProgress] = useState(new Animated.Value(0));
-  // const scale = Animated.interpolateNode(progress, {
-  //   inputRange: [0, 1],
-  //   outputRange: [1, 0.8],
-  // });
-  // const borderRadius = Animated.interpolateNode(progress, {
-  //   inputRange: [0, 1],
-  //   outputRange: [0, 16],
-  // });
-
-  //const animatedStyle = {borderRadius, transform: [{scale}]};
   return (
     <Drawer.Navigator
+      useLegacyImplementation
       screenOptions={{
         // the drawer screen animated should be slide
         drawerType: 'slide',
