@@ -13,6 +13,7 @@ import {StyleSheet, View} from 'react-native';
 import {NavigationContainerRef} from '@react-navigation/native';
 import theme from '../styles/themes';
 import LogoutIcon from '../assets/icons/logoutIcon';
+import {useStorage} from '../hooks/useStorage';
 const Drawer = createDrawerNavigator();
 
 type customDrawerContentProps = {
@@ -23,7 +24,13 @@ const CustomDrawerContent = (
   props: DrawerContentComponentProps & customDrawerContentProps,
 ) => {
   const currentRouteName = props.nav()?.getCurrentRoute()?.name;
+  // import useStorage from '../hooks/useStorage';
+  const [user, setUser] = useStorage('email');
 
+  // function to logout user
+  const logout = () => {
+    setUser(null);
+  };
   return (
     <DrawerContentScrollView
       {...props}
@@ -74,7 +81,7 @@ const CustomDrawerContent = (
       </View>
       {/* log out button */}
       <DrawerItem
-        onPress={() => console.log('logout')}
+        onPress={() => logout()}
         label={() => (
           <View style={styles.drawerItemContainer}>
             <View style={[styles.drawerItemIconContainer, styles.marginTop0]}>
