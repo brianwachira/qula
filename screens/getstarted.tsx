@@ -70,7 +70,10 @@ const GetStarted = ({
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.colors.primary}
+      />
       {/* logo */}
       <View style={styles.sectionLogo}>
         <Image style={styles.logo} source={require('../assets/Group3.png')} />
