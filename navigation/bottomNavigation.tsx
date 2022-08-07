@@ -6,10 +6,11 @@ import {routes, screens} from './routes';
 import {StyleSheet, View} from 'react-native';
 import Orders from '../screens/orders';
 import Cart from '../screens/cart';
-import {useDrawerProgress} from '@react-navigation/drawer';
+import {useDrawerProgress, useDrawerStatus} from '@react-navigation/drawer';
 
 import Animated, {Adaptable, Extrapolate} from 'react-native-reanimated';
 import theme from '../styles/themes';
+import FocusAwareStatusBar from '../components/shared-ui/focusAwareStatusBar';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -123,36 +124,48 @@ const BottomNavigation = () => {
       },
     ],
   };
+
+  const drawerStatus = useDrawerStatus();
   return (
-    <Animated.View style={[styles.transitionContainerStyle, animatedStyle]}>
-      <Animated.View
-        style={[
-          styles.transparentCardStyle,
-          {
-            transform: [
-              {
-                translateX: translateTransparentCard,
-              },
-              {scale: 0.9},
-            ],
-          },
-        ]}
+    <>
+      <FocusAwareStatusBar
+        animated
+        showHideTransition={'slide'}
+        backgroundColor={
+          drawerStatus === 'open' ? theme.colors.primary : theme.colors.tab
+        }
+        barStyle={drawerStatus === 'open' ? 'light-content' : 'dark-content'}
       />
-      <Animated.View
-        style={[
-          styles.ScreenContentStyle,
-          {
-            borderRadius: borderRadius,
-          },
-        ]}>
-        <Tab.Navigator screenOptions={tabOptions}>
-          <Tab.Screen name={screens.HomeStack} component={Home} />
-          <Tab.Screen name={screens.OrdersStack} component={Orders} />
-          <Tab.Screen name={screens.CartStack} component={Cart} />
-          <Tab.Screen name={screens.ProfileStack} component={Profile} />
-        </Tab.Navigator>
+      <Animated.View style={[styles.transitionContainerStyle, animatedStyle]}>
+        <Animated.View
+          style={[
+            styles.transparentCardStyle,
+            {
+              transform: [
+                {
+                  translateX: translateTransparentCard,
+                },
+                {scale: 0.9},
+              ],
+            },
+          ]}
+        />
+        <Animated.View
+          style={[
+            styles.ScreenContentStyle,
+            {
+              borderRadius: borderRadius,
+            },
+          ]}>
+          <Tab.Navigator screenOptions={tabOptions}>
+            <Tab.Screen name={screens.HomeStack} component={Home} />
+            <Tab.Screen name={screens.OrdersStack} component={Orders} />
+            <Tab.Screen name={screens.CartStack} component={Cart} />
+            <Tab.Screen name={screens.ProfileStack} component={Profile} />
+          </Tab.Navigator>
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
+    </>
   );
 };
 
