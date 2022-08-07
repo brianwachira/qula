@@ -65,7 +65,7 @@ const Button = ({
     style,
   ];
   return (
-    <TouchableOpacity onPress={onPress} {...props}>
+    <TouchableOpacity onPress={onPress} {...props} activeOpacity={0.9}>
       <View style={ButtonStyle}>
         <Text
           font={textFont || 'sfProDisplayMedium'}
