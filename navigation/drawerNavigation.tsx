@@ -14,6 +14,7 @@ import {NavigationContainerRef} from '@react-navigation/native';
 import theme from '../styles/themes';
 import LogoutIcon from '../assets/icons/logoutIcon';
 import {useStorage} from '../hooks/useStorage';
+
 const Drawer = createDrawerNavigator();
 
 type customDrawerContentProps = {
@@ -25,6 +26,7 @@ const CustomDrawerContent = (
 ) => {
   const currentRouteName = props.nav()?.getCurrentRoute()?.name;
   // import useStorage from '../hooks/useStorage';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useStorage('email');
 
   // function to logout user
