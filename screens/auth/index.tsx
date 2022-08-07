@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   StatusBar,
   Text,
-  useColorScheme,
   View,
   useWindowDimensions,
   Dimensions,
@@ -50,10 +49,9 @@ const styles = StyleSheet.create({
   },
 });
 const Auth = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'GetStarted'>) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
   const layout = useWindowDimensions();
 
   const [index, setIndex] = useState(0);

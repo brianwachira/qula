@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 });
 
 const Profile = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Profile'>) => {
   return (
