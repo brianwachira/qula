@@ -64,8 +64,8 @@ const theme = {
       letterSpacing: 0.5,
     },
     empty: {
-      fontSize: 22,
-      lineHeight: 28,
+      fontSize: 28,
+      lineHeight: 33,
     },
     calendar: {
       number: {
