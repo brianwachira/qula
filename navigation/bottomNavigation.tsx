@@ -70,7 +70,7 @@ const tabOptions = (props: {
     return {
       tabBarButton: () => <View style={styles.tabNone} />,
       headerShown: false,
-      title: item?.title,
+      title: item?.title === 'Home' ? null : item?.title,
       tabBarStyle: styles.tabStyleEmpty,
     };
   }
@@ -80,7 +80,13 @@ const tabOptions = (props: {
   return {
     tabBarIcon: (props2: {focused: any}) => item?.icon(props2.focused),
     tabBarLabel: () => null,
-    title: null,
+    title: item?.title === 'Home' ? null : item?.title,
+    headerTitleAlign: 'center',
+    headerTitleStyle: {
+      marginTop: 35,
+      fonstSize: theme.fontSizes.label.normal.fontSize,
+      lineHeight: theme.fontSizes.label.normal.lineHeight,
+    },
     headerTransparent: true,
     tabBarStyle: styles.tabStyleWithContent,
     // menu icon
