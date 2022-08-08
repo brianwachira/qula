@@ -1,12 +1,9 @@
 import React from 'react';
-import {
-  BottomTabNavigationOptions,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../screens/home';
 import Profile from '../screens/profile';
 import {routes, screens} from './routes';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Orders from '../screens/orders';
 import Cart from '../screens/cart';
 import {useDrawerProgress, useDrawerStatus} from '@react-navigation/drawer';
@@ -16,6 +13,7 @@ import theme from '../styles/themes';
 import FocusAwareStatusBar from '../components/shared-ui/focusAwareStatusBar';
 import MenuIcon from '../assets/icons/menuIcon';
 import {ParamListBase, RouteProp} from '@react-navigation/native';
+import CloseIcon from '../assets/icons/closeIcon';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -76,6 +74,8 @@ const tabOptions = (props: {
       tabBarStyle: styles.tabStyleEmpty,
     };
   }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const drawerStatus = useDrawerStatus();
 
   return {
     tabBarIcon: (props2: {focused: any}) => item?.icon(props2.focused),
@@ -83,10 +83,13 @@ const tabOptions = (props: {
     title: null,
     headerTransparent: true,
     tabBarStyle: styles.tabStyleWithContent,
+    // menu icon
     headerLeft: () => (
-      <View style={styles.menuIconStyle}>
-        <MenuIcon onPress={() => props.navigation.openDrawer()} />
-      </View>
+      <TouchableOpacity
+        style={styles.menuIconStyle}
+        onPress={() => props.navigation.toggleDrawer()}>
+        {drawerStatus === 'closed' ? <MenuIcon /> : <CloseIcon />}
+      </TouchableOpacity>
     ),
   };
 };
