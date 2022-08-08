@@ -1,5 +1,8 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import Home from '../screens/home';
 import Profile from '../screens/profile';
 import {routes, screens} from './routes';
@@ -11,6 +14,8 @@ import {useDrawerProgress, useDrawerStatus} from '@react-navigation/drawer';
 import Animated, {Adaptable, Extrapolate} from 'react-native-reanimated';
 import theme from '../styles/themes';
 import FocusAwareStatusBar from '../components/shared-ui/focusAwareStatusBar';
+import MenuIcon from '../assets/icons/menuIcon';
+import {ParamListBase, RouteProp} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -49,11 +54,18 @@ const styles = StyleSheet.create({
     left: 0,
     overflow: 'hidden',
   },
+  menuIconStyle: {
+    marginLeft: 35,
+    marginTop: 35,
+  },
 });
 
 const Tab = createBottomTabNavigator();
 
-const tabOptions = (props: {route: {name: string}}) => {
+const tabOptions = (props: {
+  route: RouteProp<ParamListBase, string>;
+  navigation: any;
+}) => {
   const item = routes.find(routeItem => routeItem.name === props.route.name);
 
   if (!item?.showInTab) {
@@ -68,9 +80,14 @@ const tabOptions = (props: {route: {name: string}}) => {
   return {
     tabBarIcon: (props2: {focused: any}) => item?.icon(props2.focused),
     tabBarLabel: () => null,
-    headerShown: false,
-    title: item.title,
+    title: null,
+    headerTransparent: true,
     tabBarStyle: styles.tabStyleWithContent,
+    headerLeft: () => (
+      <View style={styles.menuIconStyle}>
+        <MenuIcon onPress={() => props.navigation.openDrawer()} />
+      </View>
+    ),
   };
 };
 
