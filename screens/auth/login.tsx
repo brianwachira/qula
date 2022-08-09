@@ -7,7 +7,7 @@ import * as RootNavigation from '../../navigation/rootNavigation';
 
 const styles = StyleSheet.create({
   formikContainer: {
-    flex: 1,
+    flex: 0.9,
   },
 });
 
