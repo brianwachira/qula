@@ -3,6 +3,7 @@ import Svg, {SvgProps, Path} from 'react-native-svg';
 
 const UserCircleIcon = (props: SvgProps) => (
   <Svg
+    viewBox="0 0 29 29"
     width={29}
     height={29}
     fill="none"
