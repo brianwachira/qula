@@ -29,7 +29,10 @@ const styles = StyleSheet.create({
     borderTop: 0,
     borderTopWidth: 0,
     elevation: 0,
-    marginBottom: 30,
+    paddingVertical: 0,
+    marginVertical: 0,
+    alignItems: 'center',
+    flex: 0.07,
   },
   transitionContainerStyle: {
     flex: 1,
