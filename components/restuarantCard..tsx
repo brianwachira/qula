@@ -13,15 +13,16 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   image: {
-    borderRadius: 80,
-    height: 160,
-    width: 160,
+    borderRadius: 100,
+    height: 200,
+    width: 200,
     resizeMode: 'cover',
   },
   cardContent: {
     flexDirection: 'column',
     alignItems: 'center',
-    padding: 30,
+    paddingHorizontal: 50,
+    paddingVertical: 30,
   },
   timeWrapper: {
     flexDirection: 'row',
