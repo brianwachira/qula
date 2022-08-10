@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: 20,
     marginRight: 15,
   },
   image: {
