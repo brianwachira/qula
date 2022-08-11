@@ -15,6 +15,7 @@ export const screens = {
   Cart: 'Cart',
   ProfileStack: 'ProfileStack',
   Profile: 'Profile',
+  SearchResults: 'SearchResults',
 };
 
 export const routes = [
@@ -128,5 +129,12 @@ export const routes = [
         fill={focused ? theme.colors.primary : theme.colors.tab}
       />
     ),
+  },
+  {
+    name: screens.SearchResults,
+    focusedRoute: screens.SearchResults,
+    title: 'Search Results',
+    showInTab: false,
+    showInDrawer: false,
   },
 ];
