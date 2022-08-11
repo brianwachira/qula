@@ -14,6 +14,8 @@ import FocusAwareStatusBar from '../components/shared-ui/focusAwareStatusBar';
 import MenuIcon from '../assets/icons/menuIcon';
 import {ParamListBase, RouteProp} from '@react-navigation/native';
 import CloseIcon from '../assets/icons/closeIcon';
+import SearchResults from '../screens/searchResults';
+import TextInput from '../components/shared-ui/textInput';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -191,6 +193,14 @@ const BottomNavigation = () => {
             <Tab.Screen name={screens.OrdersStack} component={Orders} />
             <Tab.Screen name={screens.CartStack} component={Cart} />
             <Tab.Screen name={screens.ProfileStack} component={Profile} />
+            <Tab.Screen
+              name={screens.SearchResults}
+              component={SearchResults}
+              options={({navigation}) => ({
+                headerTitle: () => <TextInput value={navigation.title} />,
+                headerBackVisible: true,
+              })}
+            />
           </Tab.Navigator>
         </Animated.View>
       </Animated.View>
