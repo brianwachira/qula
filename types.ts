@@ -8,4 +8,5 @@ export type RootStackParamList = {
   Profile: undefined;
   Otp: {email: string; otp: string};
   HomeStack: {screen: 'Home' | 'Liked' | 'Orders' | 'Cart' | 'Profile'};
+  SearchResults: undefined;
 };
