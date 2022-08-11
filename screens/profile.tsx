@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native';
 import ChevronLeftIcon from '../assets/icons/chevronLeftIcon';
 import UserCircleIcon from '../assets/icons/userCircleIcon';
 import Text from '../components/shared-ui/text';
