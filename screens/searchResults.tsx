@@ -12,7 +12,7 @@ import {
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import ResultsCard from '../components/resultsCard';
 import TextInput from '../components/shared-ui/textInput';
-import {localRestaurants} from '../mockdata';
+import {foods} from '../mockdata';
 import theme from '../styles/themes';
 import {RootStackParamList} from '../types';
 
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginTop: StatusBar.currentHeight,
     flex: 1,
-    marginHorizontal: 40,
     backgroundColor: theme.colors.tab,
   },
   contentContainer: {
@@ -47,6 +46,24 @@ const styles = StyleSheet.create({
   separator: {
     height: 15,
   },
+  marginRight0: {
+    marginRight: 0,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  cardsContainer: {
+    backgroundColor: '#F9F9F9',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    paddingVertical: 30,
+    paddingHorizontal: 40,
+  },
+  backIcon: {marginRight: 10},
 });
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -55,18 +72,9 @@ const SearchResults = ({
 }: NativeStackScreenProps<RootStackParamList, 'SearchResults'>) => {
   return (
     <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          backgroundColor: '#EFEEEE',
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginBottom: 20,
-          borderRadius: 30,
-          paddingHorizontal: 15,
-          paddingVertical: 5,
-        }}>
+      <View style={styles.searchBar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeftIcon style={{marginRight: 10}} />
+          <ArrowLeftIcon style={styles.backIcon} />
         </TouchableOpacity>
         <TextInput
           style={{
@@ -79,10 +87,18 @@ const SearchResults = ({
         />
       </View>
       <FlatList
+        contentContainerStyle={styles.cardsContainer}
         ItemSeparatorComponent={ItemSeparator}
-        data={localRestaurants}
-        renderItem={({item}) => (
-          <ResultsCard item={item} onPress={() => console.log('pressed')} />
+        data={foods}
+        renderItem={({item, index}) => (
+          <ResultsCard
+            item={item}
+            onPress={() => console.log('pressed')}
+            stylesCustom={
+              (index % 2 === 1 || index === foods.length - 1) &&
+              styles.marginRight0
+            }
+          />
         )}
         keyExtractor={(item, index) => `restaurant-${index}`}
         numColumns={2}

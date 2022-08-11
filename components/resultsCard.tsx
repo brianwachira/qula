@@ -1,6 +1,13 @@
 // results card
 import React from 'react';
-import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Image,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import theme from '../styles/themes';
 
 import Text from './shared-ui/text';
@@ -10,22 +17,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    marginRight: 40,
+    marginTop: 20,
   },
   image: {
-    borderRadius: 50,
-    height: 100,
-    width: 100,
+    borderRadius: 60,
+    height: 120,
+    width: 120,
     resizeMode: 'cover',
   },
   cardContent: {
     flexDirection: 'column',
     alignItems: 'center',
-    paddingHorizontal: 50,
-    paddingVertical: 30,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
   },
   timeWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginTop: 10,
   },
   ratingWrapper: {
     justifyContent: 'center',
@@ -39,26 +47,40 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: theme.colors.white,
     borderRadius: 30,
-    top: '20%',
+    top: '25%',
   },
 });
 
-const ResultsCard = ({onPress, item}: {onPress: () => void; item: any}) => {
+const ResultsCard = ({
+  onPress,
+  item,
+  stylesCustom,
+}: {
+  onPress: () => void;
+  item: any;
+  stylesCustom?: StyleProp<ViewStyle>;
+}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.container, stylesCustom]}
+      onPress={onPress}>
       <View style={styles.backdrop} />
       <Image
         source={{
-          uri: item.image_url,
+          uri: item.image,
         }}
         style={styles.image}
       />
       <View style={styles.cardContent}>
-        <Text numberOfLines={1}>{item.name}</Text>
-        {/* <View style={styles.timeWrapper}>
-          <Text> 20-30 • min • {item.price}</Text>
+        <Text textAlign="center" numberOfLines={1}>
+          {item.title}
+        </Text>
+        <View style={styles.timeWrapper}>
+          <Text textAlign="center" color="primary">
+            ${item.price}
+          </Text>
         </View>
-        <View style={styles.ratingWrapper}>
+        {/* <View style={styles.ratingWrapper}>
           <Text color="primary">{item.rating}</Text>
         </View> */}
       </View>
