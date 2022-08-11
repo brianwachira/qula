@@ -1,9 +1,16 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import SearchIcon from '../assets/icons/searchIcon';
 import CategoriesCard from '../components/categoriesCard';
-import RestuarantCard from '../components/restuarantCard.';
+import RestuarantCard from '../components/restuarantCard';
 import Text from '../components/shared-ui/text';
 import TextInput from '../components/shared-ui/textInput';
 import {categoriesData, localRestaurants} from '../mockdata';
@@ -43,6 +50,10 @@ const ItemSeparator2 = () => <View style={styles.separator} />;
 const Home = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
+  // function to navigate to search results screen
+  const onPress = () => {
+    navigation.navigate('SearchResults');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -50,16 +61,19 @@ const Home = ({
           <Text textType="empty">Delicious</Text>
           <Text textType="empty">food for you</Text>
         </View>
-        <View style={styles.searchBar}>
+        {/* SEARCH BAR */}
+        <TouchableOpacity style={styles.searchBar} onPress={onPress}>
           <SearchIcon />
           <TextInput
             style={{
               color: theme.colors.black,
+              width: Dimensions.get('screen').width - 100,
             }}
             placeholder="Search"
             placeholderTextColor={theme.colors.black}
+            editable={false}
           />
-        </View>
+        </TouchableOpacity>
 
         <FlatList
           data={categoriesData}
