@@ -118,6 +118,10 @@ const styles = StyleSheet.create({
     left: 16, //left-4
     zIndex: 30,
     alignItems: 'center',
+    backgroundColor: theme.colors.white,
+    borderRadius: 30,
+    padding: 5,
+    justifyContent: 'center',
   },
   mapImageWrapper: {
     position: 'absolute',
