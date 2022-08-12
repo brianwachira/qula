@@ -16,6 +16,7 @@ import {ParamListBase, RouteProp} from '@react-navigation/native';
 import CloseIcon from '../assets/icons/closeIcon';
 import SearchResults from '../screens/searchResults';
 import TextInput from '../components/shared-ui/textInput';
+import RestuarantDetails from '../screens/restuarantDetails';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -201,6 +202,9 @@ const BottomNavigation = () => {
                 headerBackVisible: true,
               })}
             />
+            <Tab.Screen
+              name={screens.RestuarantDetails}
+              component={RestuarantDetails} />
           </Tab.Navigator>
         </Animated.View>
       </Animated.View>

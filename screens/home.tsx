@@ -94,7 +94,9 @@ const Home = ({
           renderItem={({item}) => (
             <RestuarantCard
               item={item}
-              onPress={() => console.log('pressed')}
+              onPress={() =>
+                navigation.navigate('RestuarantDetails', {restuarant: item})
+              }
             />
           )}
           keyExtractor={(item, index) => `restaurant-${index}`}

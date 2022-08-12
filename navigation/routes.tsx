@@ -16,6 +16,7 @@ export const screens = {
   ProfileStack: 'ProfileStack',
   Profile: 'Profile',
   SearchResults: 'SearchResults',
+  RestuarantDetails: 'RestuarantDetails',
 };
 
 export const routes = [
@@ -134,6 +135,13 @@ export const routes = [
     name: screens.SearchResults,
     focusedRoute: screens.SearchResults,
     title: 'Search Results',
+    showInTab: false,
+    showInDrawer: false,
+  },
+  {
+    name: screens.RestuarantDetails,
+    focusedRoute: screens.RestuarantDetails,
+    title: 'Restuarant Details',
     showInTab: false,
     showInDrawer: false,
   },
