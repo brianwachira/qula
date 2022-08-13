@@ -241,6 +241,7 @@ const RestuarantDetails = ({
             {foods?.map(
               (
                 food: {
+                  id: string;
                   title: string;
                   price: number;
                   description: string;
@@ -248,7 +249,12 @@ const RestuarantDetails = ({
                 },
                 index: React.Key | null | undefined,
               ) => (
-                <TouchableOpacity key={index} style={styles.menuContentWrapper}>
+                <TouchableOpacity
+                  key={index}
+                  style={styles.menuContentWrapper}
+                  onPress={() =>
+                    navigation.navigate('FoodDetails', {food: food})
+                  }>
                   <View>
                     <Image
                       source={{uri: food.image}}
