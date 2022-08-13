@@ -17,6 +17,7 @@ export const screens = {
   Profile: 'Profile',
   SearchResults: 'SearchResults',
   RestuarantDetails: 'RestuarantDetails',
+  FoodDetails: 'FoodDetails',
 };
 
 export const routes = [
@@ -142,6 +143,13 @@ export const routes = [
     name: screens.RestuarantDetails,
     focusedRoute: screens.RestuarantDetails,
     title: 'Restuarant Details',
+    showInTab: false,
+    showInDrawer: false,
+  },
+  {
+    name: screens.FoodDetails,
+    focusedRoute: screens.FoodDetails,
+    title: 'Food Details',
     showInTab: false,
     showInDrawer: false,
   },
