@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import Text from '../components/shared-ui/text';
@@ -15,6 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import theme from '../styles/themes';
 import {foods} from '../mockdata';
+import Map from '../components/map';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,8 +39,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingVertical: 25,
-    paddingHorizontal: 25,
+    paddingTop: 40,
+    paddingHorizontal: 40,
     marginTop: 220,
     paddingBottom: 10,
   },
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   title: {
-    fontSize: 23,
+    fontSize: 20,
     color: '#0c0c0c',
     fontWeight: '700',
     maxWidth: '80%',
@@ -83,6 +85,8 @@ const styles = StyleSheet.create({
   categoryText: {
     borderBottomColor: theme.colors.primary,
     fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   menuContainer: {
     marginTop: 20, // mt-5
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 12,
-    borderBottomColor: theme.colors.primary,
+    borderBottomColor: theme.colors.tab,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   menuContent: {
@@ -108,14 +112,14 @@ const styles = StyleSheet.create({
     paddingLeft: 8, // pl-2
   },
   menuImage: {
-    height: 64, //h-16
-    width: 64, //w-16
-    borderRadius: 20, //rounded-lg
+    height: 100, //h-16
+    width: 100, //w-16
+    borderRadius: 50, //rounded-lg
   },
   backIconContainer: {
     position: 'absolute',
     top: 36, //top-9
-    left: 16, //left-4
+    left: 36, //left-4
     zIndex: 30,
     alignItems: 'center',
     backgroundColor: theme.colors.white,
@@ -135,6 +139,23 @@ const styles = StyleSheet.create({
   zIndexScrollView: {
     zIndex: 20,
   },
+  foodName: {
+    fontSize: 16,
+  },
+  foodPrice: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  foodDescription: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  textCategory: {
+    fontSize: 12,
+  },
+  categoryContainer: {
+    marginTop: 12,
+  },
 });
 const RestuarantDetails = ({
   route,
@@ -143,7 +164,7 @@ const RestuarantDetails = ({
   const [mapActive, setMapActive] = useState(false);
   const {
     categories,
-    //coordinates,
+    coordinates,
     image_url,
     name,
     price,
@@ -153,6 +174,11 @@ const RestuarantDetails = ({
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={!mapActive ? 'light-content' : 'dark-content'}
+      />
       {/* Back icon */}
       <TouchableOpacity
         style={styles.backIconContainer}
@@ -162,7 +188,7 @@ const RestuarantDetails = ({
       <View style={styles.mapImageWrpper}>
         {/* image or map wrapper */}
         {mapActive ? (
-          <Text>Map</Text>
+          <Map coordinates={coordinates} title={name} />
         ) : (
           <Image source={{uri: image_url}} style={styles.restuarantImage} />
         )}
@@ -202,12 +228,11 @@ const RestuarantDetails = ({
               </View>
             </View>
           </View>
-          <View>
+          <View style={styles.categoryContainer}>
             <Text style={styles.categoryText}>Categories</Text>
             {categories.map((category, index) => (
-              <Text key={index}>
-                <Text style={{color: theme.colors.primary}}>•</Text>
-                {category}
+              <Text key={index} style={styles.textCategory}>
+                <Text style={{color: theme.colors.primary}}>•</Text> {category}
               </Text>
             ))}
           </View>
@@ -223,21 +248,23 @@ const RestuarantDetails = ({
                 },
                 index: React.Key | null | undefined,
               ) => (
-                <View key={index} style={styles.menuContentWrapper}>
-                  <View style={styles.menuContent}>
-                    <View style={styles.menuContentInfo}>
-                      <Text>{food.title}</Text>
-                      <Text>{food.price}</Text>
-                      <Text>{food.description}</Text>
-                    </View>
-                  </View>
+                <TouchableOpacity key={index} style={styles.menuContentWrapper}>
                   <View>
                     <Image
                       source={{uri: food.image}}
                       style={styles.menuImage}
                     />
                   </View>
-                </View>
+                  <View style={styles.menuContent}>
+                    <View style={styles.menuContentInfo}>
+                      <Text style={styles.foodName}>{food.title}</Text>
+                      <Text style={styles.foodPrice}>${food.price}</Text>
+                      <Text style={styles.foodDescription} numberOfLines={2}>
+                        {food.description}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
               ),
             )}
           </View>

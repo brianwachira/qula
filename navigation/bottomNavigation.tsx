@@ -204,7 +204,8 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
               name={screens.RestuarantDetails}
-              component={RestuarantDetails} />
+              component={RestuarantDetails}
+            />
           </Tab.Navigator>
         </Animated.View>
       </Animated.View>
