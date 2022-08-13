@@ -12,6 +12,13 @@ type restuarant = {
   };
   review_count: number;
 };
+type food = {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+};
 export type RootStackParamList = {
   GetStarted: undefined;
   Auth: undefined;
@@ -24,4 +31,5 @@ export type RootStackParamList = {
   HomeStack: {screen: 'Home' | 'Liked' | 'Orders' | 'Cart' | 'Profile'};
   SearchResults: undefined;
   RestuarantDetails: {restuarant: restuarant};
+  FoodDetails: {food: food};
 };
