@@ -17,6 +17,7 @@ import CloseIcon from '../assets/icons/closeIcon';
 import SearchResults from '../screens/searchResults';
 import TextInput from '../components/shared-ui/textInput';
 import RestuarantDetails from '../screens/restuarantDetails';
+import FoodDetails from '../screens/foodDetails';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -206,6 +207,7 @@ const BottomNavigation = () => {
               name={screens.RestuarantDetails}
               component={RestuarantDetails}
             />
+            <Tab.Screen name={screens.FoodDetails} component={FoodDetails} />
           </Tab.Navigator>
         </Animated.View>
       </Animated.View>
