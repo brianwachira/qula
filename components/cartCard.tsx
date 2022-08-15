@@ -31,7 +31,6 @@ interface CartCardProps
     price: number;
     image: string;
   };
-  key: string;
   onDismiss?: (food: {
     id: string;
     title: string;
@@ -104,7 +103,7 @@ const CartCard = (props: CartCardProps) => {
 
   return (
     <Animated.View
-      key={props.key || props.item.id}
+      key={props.item.id}
       style={[styles.cartItemContainer, rItemContainerStyle]}>
       <Animated.View style={[styles.iconContainer, rIconContainerStyle]}>
         <IonIcons name="trash" size={LIST_ITEM_HEIGHT * 0.3} color={'red'} />
