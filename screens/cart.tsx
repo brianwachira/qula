@@ -1,12 +1,6 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {
-  Dimensions,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from '../components/shared-ui/button';
 import {foods} from '../mockdata';
 import {RootStackParamList} from '../types';
@@ -16,7 +10,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    marginTop: StatusBar.currentHeight + 50,
+    marginTop: 50,
     flex: 0.97,
     marginHorizontal: 40,
   },
