@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -70,6 +70,14 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const SearchResults = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'SearchResults'>) => {
+  // create a ref for search bar
+  const searchBarRef = useRef();
+
+  useEffect(() => {
+    // focus on search bar on screen enter
+    searchBarRef?.current?.focus();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.searchBar}>
@@ -84,6 +92,7 @@ const SearchResults = ({
           selectionColor={theme.colors.black}
           placeholder="Search"
           placeholderTextColor={theme.colors.black}
+          ref={searchBarRef}
         />
       </View>
       <FlatList
