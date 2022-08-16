@@ -1,11 +1,12 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Dimensions, Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from '../components/shared-ui/button';
 import {foods} from '../mockdata';
 import {RootStackParamList} from '../types';
 import CartCard from '../components/cartCard';
 import {ScrollView} from 'react-native-gesture-handler';
+import Text from '../components/shared-ui/text';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +31,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonRow: {justifyContent: 'center', alignItems: 'center'},
+  instructionsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  swipeImage: {marginRight: 5},
+  instructionsText: {fontSize: 10, fontWeight: '400'},
 });
 
 const Cart = ({
@@ -55,6 +65,13 @@ const Cart = ({
   const scrollRef = useRef(null);
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.instructionsContainer}>
+        <Image
+          style={styles.swipeImage}
+          source={require('../assets/iwwa_swipe.png')}
+        />
+        <Text style={styles.instructionsText}>Swipe on an item to delete</Text>
+      </View>
       <ScrollView
         style={styles.scrollViewContainer}
         showsVerticalScrollIndicator={false}

@@ -43,7 +43,7 @@ interface CartCardProps
 const LIST_ITEM_HEIGHT = 120;
 
 const {width: SCREEN_WIDTH} = Dimensions.get('screen');
-const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * 0.4;
+const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * 0.2;
 
 const CartCard = (props: CartCardProps) => {
   const translateX = useSharedValue(0);
@@ -106,9 +106,11 @@ const CartCard = (props: CartCardProps) => {
       key={props.item.id}
       style={[styles.cartItemContainer, rItemContainerStyle]}>
       <Animated.View style={[styles.iconContainer, rIconContainerStyle]}>
-        <IonIcons name="trash" size={LIST_ITEM_HEIGHT * 0.3} color={'red'} />
+        <IonIcons name="trash" size={LIST_ITEM_HEIGHT * 0.25} color={'white'} />
       </Animated.View>
       <PanGestureHandler
+        failOffsetY={[-5, 5]}
+        activeOffsetX={[-5, 5]}
         simultaneousHandlers={props.simultaneousHandlers}
         onGestureEvent={panGesture}>
         <Animated.View style={[styles.cartItem, rStyle]}>
@@ -119,15 +121,17 @@ const CartCard = (props: CartCardProps) => {
             />
           </View>
           <View style={styles.cartItemContentContainer}>
-            <Text numberOfLines={1}>{props.item.title}</Text>
             <View style={styles.cartItemContentRow}>
-              <Text color="primary">${props.item.price}</Text>
+              <View style={styles.cartContentColumn}>
+                <Text numberOfLines={1}>{props.item.title}</Text>
+                <Text color="primary">${props.item.price}</Text>
+              </View>
               <View style={styles.cartItemQuantityButton}>
                 <TouchableOpacity style={styles.plusButton}>
                   <Text style={{color: theme.colors.white}}>-</Text>
                 </TouchableOpacity>
                 <View style={styles.quantityLabel}>
-                  <Text style={{color: theme.colors.white}}>0</Text>
+                  <Text style={{color: theme.colors.white}}>3</Text>
                 </View>
                 <TouchableOpacity style={styles.minusButton}>
                   <Text style={{color: theme.colors.white}}>+</Text>
@@ -145,6 +149,7 @@ const styles = StyleSheet.create({
   cartItemContainer: {
     width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   cartItem: {
     width: '95%',
@@ -178,7 +183,6 @@ const styles = StyleSheet.create({
   },
   cartItemContentContainer: {
     flex: 1,
-    justifyContent: 'space-around',
   },
   cartItemContentRow: {
     flexDirection: 'row',
@@ -191,9 +195,18 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.button,
     padding: 4,
     display: 'flex',
-    flex: 0.5,
-    flexDirection: 'row',
+    flex: 0.15,
+    flexDirection: 'column',
     alignItems: 'center',
+    // Shadow for iOS
+    shadowOpacity: 0.08,
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowRadius: 10,
+    // Shadow for Android
+    elevation: 5,
   },
   plusButton: {
     alignItems: 'center',
@@ -214,12 +227,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconContainer: {
-    height: LIST_ITEM_HEIGHT,
-    width: LIST_ITEM_HEIGHT,
+    backgroundColor: '#FF0000',
+    height: LIST_ITEM_HEIGHT / 2.5,
+    width: LIST_ITEM_HEIGHT / 2.5,
     position: 'absolute',
     right: '10%',
     justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    borderRadius: LIST_ITEM_HEIGHT / 2.5,
+    textAlign: 'center',
+    // Shadow for iOS
+    shadowOpacity: 0.08,
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowRadius: 10,
+    // Shadow for Android
+    elevation: 10,
+  },
+  cartContentColumn: {
+    flex: 1,
   },
 });
 export default CartCard;
