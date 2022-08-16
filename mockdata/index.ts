@@ -299,6 +299,7 @@ const localRestaurants = [
   },
 ];
 
+// eslint-disable-next-line no-sparse-arrays
 const meals = [
   {
     title: 'Baked salmon with fennel & tomatoes',
@@ -435,7 +436,6 @@ const meals = [
     image: 'https://www.themealdb.com/images/media/meals/yypwwq1511304979.jpg',
     id: '5285i2',
   },
-  ,
 ];
 
 export {categoriesData, localRestaurants, meals, foods};
