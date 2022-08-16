@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 15,
     paddingVertical: 5,
+    elevation: 10,
   },
 });
 
