@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef, LegacyRef} from 'react';
 import {
   TextInput as NativeTextInput,
   StyleSheet,
@@ -19,12 +19,18 @@ interface textInputProps extends TextInputProps {
   error?: boolean;
 }
 
-const TextInput = ({style, error, ...props}: textInputProps) => {
+const TextInput = forwardRef((props: textInputProps, ref) => {
   const textInputStyle: StyleProp<TextStyle> = [
-    style,
-    error && styles.borderDanger,
+    props.style,
+    props.error && styles.borderDanger,
   ];
-  return <NativeTextInput style={textInputStyle} {...props} />;
-};
+  return (
+    <NativeTextInput
+      style={textInputStyle}
+      {...props}
+      ref={ref as LegacyRef<NativeTextInput> | undefined}
+    />
+  );
+});
 
 export default TextInput;
