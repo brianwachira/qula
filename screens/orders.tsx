@@ -2,7 +2,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {
   Dimensions,
-  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
