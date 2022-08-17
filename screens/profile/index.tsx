@@ -60,14 +60,16 @@ const styles = StyleSheet.create({
 });
 
 const Profile = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Profile'>) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <Text style={styles.textProfileLabel}>Personal Details</Text>
-        <TouchableOpacity style={styles.profileCard} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.profileCard}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('EditProfile')}>
           {/* icon goes here */}
           <UserCircleIcon width={100} height={100} fill={theme.colors.icon} />
           <View style={styles.profileContent}>
