@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  StatusBar,
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import Text from '../components/shared-ui/text';
@@ -174,11 +173,11 @@ const RestuarantDetails = ({
 
   return (
     <View style={styles.container}>
-      <StatusBar
+      {/* <StatusBar
         translucent
         backgroundColor="transparent"
         barStyle={!mapActive ? 'light-content' : 'dark-content'}
-      />
+      /> */}
       {/* Back icon */}
       <TouchableOpacity
         style={styles.backIconContainer}
