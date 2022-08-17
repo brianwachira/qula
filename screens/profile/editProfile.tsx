@@ -13,12 +13,13 @@ import EditProfileForm from '../../components/editProfileForm';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import ArrowLeftIcon from '../../assets/icons/arrowLeftIcon';
+import Text from '../../components/shared-ui/text';
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    marginHorizontal: 40,
+    marginHorizontal: 50,
     marginTop: StatusBar.currentHeight,
   },
   backIcon: {
@@ -53,9 +54,14 @@ const EditProfile = ({
       <SafeAreaView style={styles.container}>
         {/* this wrapper dismisses keyboard on press */}
         <Pressable onPress={Keyboard.dismiss} style={{flex: 1}}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            style={{zIndex: 30}}
+            onPress={() => navigation.goBack()}>
             <ArrowLeftIcon style={styles.backIcon} />
           </TouchableOpacity>
+          <Text style={{top: -25}} textAlign="center">
+            Edit Profile
+          </Text>
           <Formik
             enableReinitialize
             initialValues={initialValues}
