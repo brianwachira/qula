@@ -15,7 +15,6 @@ import MenuIcon from '../assets/icons/menuIcon';
 import {ParamListBase, RouteProp} from '@react-navigation/native';
 import CloseIcon from '../assets/icons/closeIcon';
 import SearchResults from '../screens/searchResults';
-import TextInput from '../components/shared-ui/textInput';
 import RestuarantDetails from '../screens/restuarantDetails';
 import FoodDetails from '../screens/foodDetails';
 
@@ -86,7 +85,7 @@ const tabOptions = (props: {
 
   return {
     tabBarIcon: (props2: {focused: any}) => item?.icon(props2.focused),
-    tabBarLabel: () => null,
+    //tabBarLabel: () => null,
     title: item?.title === 'Home' ? null : item?.title,
     headerTitleAlign: 'center',
     headerTitleStyle: {
@@ -198,10 +197,6 @@ const BottomNavigation = () => {
             <Tab.Screen
               name={screens.SearchResults}
               component={SearchResults}
-              options={({navigation}) => ({
-                headerTitle: () => <TextInput value={navigation.title} />,
-                headerBackVisible: true,
-              })}
             />
             <Tab.Screen
               name={screens.RestuarantDetails}
