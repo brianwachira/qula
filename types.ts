@@ -32,4 +32,5 @@ export type RootStackParamList = {
   SearchResults: undefined;
   RestuarantDetails: {restuarant: restuarant};
   FoodDetails: {food: food};
+  EditProfile: undefined;
 };
