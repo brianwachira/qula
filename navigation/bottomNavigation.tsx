@@ -17,6 +17,7 @@ import CloseIcon from '../assets/icons/closeIcon';
 import SearchResults from '../screens/searchResults';
 import RestuarantDetails from '../screens/restuarantDetails';
 import FoodDetails from '../screens/foodDetails';
+import EditProfile from '../screens/profile/editProfile';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -85,7 +86,7 @@ const tabOptions = (props: {
 
   return {
     tabBarIcon: (props2: {focused: any}) => item?.icon(props2.focused),
-    //tabBarLabel: () => null,
+    tabBarLabel: () => null,
     title: item?.title === 'Home' ? null : item?.title,
     headerTitleAlign: 'center',
     headerTitleStyle: {
@@ -203,6 +204,7 @@ const BottomNavigation = () => {
               component={RestuarantDetails}
             />
             <Tab.Screen name={screens.FoodDetails} component={FoodDetails} />
+            <Tab.Screen name={screens.EditProfile} component={EditProfile} />
           </Tab.Navigator>
         </Animated.View>
       </Animated.View>
