@@ -52,8 +52,8 @@ const EditProfile = ({
     <>
       <SafeAreaView style={styles.container}>
         {/* this wrapper dismisses keyboard on press */}
-        <Pressable onPress={Keyboard.dismiss}>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        <Pressable onPress={Keyboard.dismiss} style={{flex: 1}}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeftIcon style={styles.backIcon} />
           </TouchableOpacity>
           <Formik
