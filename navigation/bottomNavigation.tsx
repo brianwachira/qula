@@ -18,6 +18,7 @@ import SearchResults from '../screens/searchResults';
 import RestuarantDetails from '../screens/restuarantDetails';
 import FoodDetails from '../screens/foodDetails';
 import EditProfile from '../screens/profile/editProfile';
+import Text from '../components/shared-ui/text';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -27,6 +28,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.tab,
     borderTop: 0,
     borderTopWidth: 0,
+    elevation: 0,
+    paddingVertical: 0,
+    marginVertical: 5,
+    alignItems: 'center',
+    flex: 0.07,
   },
   tabStyleWithContent: {
     backgroundColor: theme.colors.tab,
@@ -34,7 +40,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     elevation: 0,
     paddingVertical: 0,
-    marginVertical: 0,
+    marginVertical: 5,
     alignItems: 'center',
     flex: 0.07,
   },
@@ -86,7 +92,7 @@ const tabOptions = (props: {
 
   return {
     tabBarIcon: (props2: {focused: any}) => item?.icon(props2.focused),
-    tabBarLabel: () => null,
+    tabBarLabel: () => <Text textType="labelSmall">{item.title}</Text>,
     title: item?.title === 'Home' ? null : item?.title,
     headerTitleAlign: 'center',
     headerTitleStyle: {
