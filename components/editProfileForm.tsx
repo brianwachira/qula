@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     color: '#202731',
     borderColor: '#818298',
     borderWidth: 1,
-    height: 48,
-    borderRadius: 8,
+    height: 60,
+    borderRadius: 30,
     padding: 10,
   },
 });
@@ -70,6 +70,7 @@ const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
         title="Update Details"
         accessibilityLabel="Manage your account"
         testID="Update Details"
+        buttonType="orange"
       />
     </View>
   );
