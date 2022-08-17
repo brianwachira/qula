@@ -11,9 +11,10 @@ const styles = StyleSheet.create({
     color: '#202731',
     borderColor: '#818298',
     borderWidth: 1,
-    height: 60,
+    height: 58,
     borderRadius: 30,
     padding: 10,
+    paddingLeft: 20,
   },
 });
 
@@ -21,43 +22,58 @@ const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
   return (
     <View
       style={{
-        flex: 0.7,
+        flex: 1,
         justifyContent: 'center',
       }}>
       <View
         style={{
           marginBottom: 20,
         }}>
-        <Text textType="labelButtonWhite">Name</Text>
+        <Text
+          style={{marginLeft: 20, marginBottom: 10}}
+          textType="labelButtonWhite">
+          Name
+        </Text>
         <FormikTextInput
           name="name"
           testID="name"
           style={styles.input}
           placeholderTextColor={theme.colors.primary}
+          selectionColor={theme.colors.black}
         />
       </View>
       <View
         style={{
           marginBottom: 20,
         }}>
-        <Text textType="labelButtonWhite">Email Address</Text>
+        <Text
+          style={{marginLeft: 20, marginBottom: 10}}
+          textType="labelButtonWhite">
+          Email Address
+        </Text>
         <FormikTextInput
           name="email"
           testID="email"
           style={styles.input}
           placeholderTextColor={theme.colors.primary}
+          selectionColor={theme.colors.black}
         />
       </View>
       <View
         style={{
           marginBottom: 10,
         }}>
-        <Text textType="labelButtonWhite">Phone Number</Text>
+        <Text
+          style={{marginLeft: 20, marginBottom: 10}}
+          textType="labelButtonWhite">
+          Phone Number
+        </Text>
         <FormikTextInput
           name="phone"
           testID="phone"
           style={styles.input}
           placeholderTextColor={theme.colors.primary}
+          selectionColor={theme.colors.black}
         />
       </View>
       <View
