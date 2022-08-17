@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import RefreshIcon from '../assets/icons/refreshIcon';
+import OrdersCard from '../components/ordersCard';
 import Button from '../components/shared-ui/button';
 import Text from '../components/shared-ui/text';
 import {meals} from '../mockdata';
@@ -50,41 +51,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     flex: 1,
   },
-  cartItemContainer: {
-    backgroundColor: theme.colors.white,
-    borderRadius: 20,
-    padding: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    alignContent: 'center',
-    flex: 1,
-    marginBottom: 20,
-  },
-  cartItemImageContainer: {marginRight: 15},
-  cartItemImage: {width: 70, height: 70, borderRadius: 35},
-  cartItemContentContainer: {
-    flex: 1,
-    justifyContent: 'space-around',
-  },
-  cartItemContentRow: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  cartItemQuantityButton: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.button,
-    padding: 4,
-    display: 'flex',
-    flex: 0.5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    textAlign: 'center',
-    justifyContent: 'center',
-  },
 });
 
 const Orders = ({
@@ -98,7 +64,8 @@ const Orders = ({
 
   const [orders, setOrders] = useState<order[]>(meals);
 
-  if (meals.length < 1) {
+  // show this when order state is empty
+  if (orders.length < 1) {
     return (
       <SafeAreaView style={styles.containerEmpty}>
         <View style={styles.contentContainerEmpty}>
@@ -134,19 +101,11 @@ const Orders = ({
         showsVerticalScrollIndicator={false}>
         {/* orders card */}
         {orders.map((order: {id: string; title: string; image: string}) => (
-          <View key={order.id} style={styles.cartItemContainer}>
-            <View style={styles.cartItemImageContainer}>
-              <Image style={styles.cartItemImage} source={{uri: order.image}} />
-            </View>
-            <View style={styles.cartItemContentContainer}>
-              <Text>{order.title}</Text>
-              <View style={styles.cartItemContentRow}>
-                <View style={styles.cartItemQuantityButton}>
-                  <Text style={{color: theme.colors.white}}>3 servings</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+          <OrdersCard
+            key={order.id}
+            order={order}
+            onPress={() => console.log('clicked')}
+          />
         ))}
       </ScrollView>
     </SafeAreaView>
