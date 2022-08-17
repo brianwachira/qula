@@ -18,6 +18,7 @@ export const screens = {
   SearchResults: 'SearchResults',
   RestuarantDetails: 'RestuarantDetails',
   FoodDetails: 'FoodDetails',
+  EditProfile: 'EditProfile',
 };
 
 export const routes = [
