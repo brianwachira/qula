@@ -25,6 +25,13 @@ const styles = StyleSheet.create({
   backIcon: {
     marginRight: 10,
   },
+  presssableFlex: {
+    flex: 1,
+  },
+  backButtonContainer: {
+    zIndex: 30,
+  },
+  screenTitle: {top: -25},
 });
 
 // validation schema
@@ -53,13 +60,13 @@ const EditProfile = ({
     <>
       <SafeAreaView style={styles.container}>
         {/* this wrapper dismisses keyboard on press */}
-        <Pressable onPress={Keyboard.dismiss} style={{flex: 1}}>
+        <Pressable onPress={Keyboard.dismiss} style={styles.presssableFlex}>
           <TouchableOpacity
-            style={{zIndex: 30}}
+            style={styles.backButtonContainer}
             onPress={() => navigation.goBack()}>
             <ArrowLeftIcon style={styles.backIcon} />
           </TouchableOpacity>
-          <Text style={{top: -25}} textAlign="center">
+          <Text style={styles.screenTitle} textAlign="center">
             Edit Profile
           </Text>
           <Formik

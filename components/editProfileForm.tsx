@@ -16,22 +16,21 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
   },
+  inputSeparator: {
+    marginBottom: 20,
+  },
+  editProfileForm: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  inputLabel: {marginLeft: 20, marginBottom: 10},
 });
 
 const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-      }}>
-      <View
-        style={{
-          marginBottom: 20,
-        }}>
-        <Text
-          style={{marginLeft: 20, marginBottom: 10}}
-          textType="labelButtonWhite">
+    <View style={styles.editProfileForm}>
+      <View style={styles.inputSeparator}>
+        <Text style={styles.inputLabel} textType="labelButtonWhite">
           Name
         </Text>
         <FormikTextInput
@@ -42,13 +41,8 @@ const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
           selectionColor={theme.colors.black}
         />
       </View>
-      <View
-        style={{
-          marginBottom: 20,
-        }}>
-        <Text
-          style={{marginLeft: 20, marginBottom: 10}}
-          textType="labelButtonWhite">
+      <View style={styles.inputSeparator}>
+        <Text style={styles.inputLabel} textType="labelButtonWhite">
           Email Address
         </Text>
         <FormikTextInput
@@ -59,13 +53,8 @@ const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
           selectionColor={theme.colors.black}
         />
       </View>
-      <View
-        style={{
-          marginBottom: 10,
-        }}>
-        <Text
-          style={{marginLeft: 20, marginBottom: 10}}
-          textType="labelButtonWhite">
+      <View style={styles.inputSeparator}>
+        <Text style={styles.inputLabel} textType="labelButtonWhite">
           Phone Number
         </Text>
         <FormikTextInput
@@ -76,11 +65,7 @@ const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
           selectionColor={theme.colors.black}
         />
       </View>
-      <View
-        style={{
-          marginBottom: 20,
-        }}
-      />
+      <View style={styles.inputSeparator} />
       <Button
         onPress={onSubmit}
         title="Update Details"
