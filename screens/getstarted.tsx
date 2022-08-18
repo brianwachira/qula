@@ -15,13 +15,15 @@ import {RootStackParamList} from '../types';
 
 const styles = StyleSheet.create({
   sectionLogo: {
-    marginBottom: 31,
+    marginVertical: 30,
+    flex: 1,
+    flexDirection: 'row',
+    marginHorizontal: 50,
   },
   logo: {
-    width: 73,
-    height: 73,
-    marginHorizontal: 50,
-    marginTop: 50,
+    flex: 0.3,
+    height: undefined,
+    width: undefined,
   },
   content: {
     fontStyle: 'normal',
@@ -33,19 +35,19 @@ const styles = StyleSheet.create({
   },
   images: {
     // marginBottom: Dimensions.get('screen').height / 2,
-    flex: 0.9,
+    flex: 1,
+    flexDirection: 'row',
   },
   imageLeft: {
-    position: 'absolute',
-    left: -110,
-    zIndex: 6,
-    top: 0,
+    flex: 1,
+    height: undefined,
+    width: undefined,
   },
   imageRight: {
-    position: 'absolute',
-    right: -110,
-    zIndex: 2,
-    top: 80,
+    bottom: -10,
+    flex: 1,
+    height: undefined,
+    width: undefined,
   },
   buttonContainer: {
     display: 'flex',
