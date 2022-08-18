@@ -16,12 +16,12 @@ import {RootStackParamList} from '../types';
 const styles = StyleSheet.create({
   sectionLogo: {
     marginVertical: 30,
-    flex: 1,
     flexDirection: 'row',
     marginHorizontal: 50,
+    flex: 0.3,
   },
   logo: {
-    flex: 0.3,
+    flex: 0.25,
     height: undefined,
     width: undefined,
   },
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   images: {
     // marginBottom: Dimensions.get('screen').height / 2,
-    flex: 1,
+    flex: 0.6,
     flexDirection: 'row',
   },
   imageLeft: {
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     width: undefined,
   },
   imageRight: {
-    bottom: -10,
-    flex: 1,
+    bottom: -40,
+    flex: 0.7,
     height: undefined,
     width: undefined,
   },
@@ -78,21 +78,29 @@ const GetStarted = ({
       />
       {/* logo */}
       <View style={styles.sectionLogo}>
-        <Image style={styles.logo} source={require('../assets/Group3.png')} />
+        <Image
+          style={styles.logo}
+          source={require('../assets/Group3.png')}
+          resizeMode="contain"
+        />
       </View>
       {/* text content */}
       <View>
-        <Text style={styles.content}>Food For Everyone</Text>
+        <Text style={styles.content} adjustsFontSizeToFit>
+          Food For Everyone
+        </Text>
       </View>
       {/* images */}
       <View style={styles.images}>
         <Image
           style={styles.imageLeft}
           source={require('../assets/Group67.png')}
+          resizeMode="contain"
         />
         <Image
           style={styles.imageRight}
           source={require('../assets/Group68.png')}
+          resizeMode="cover"
         />
       </View>
       {/* button */}
