@@ -107,7 +107,11 @@ const tabOptions = (props: {
       <TouchableOpacity
         style={styles.menuIconStyle}
         onPress={() => props.navigation.toggleDrawer()}>
-        {drawerStatus === 'closed' ? <MenuIcon /> : <CloseIcon />}
+        {drawerStatus === 'closed' ? (
+          <MenuIcon width={40} height={40} />
+        ) : (
+          <CloseIcon width={40} height={40} />
+        )}
       </TouchableOpacity>
     ),
   };
