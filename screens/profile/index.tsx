@@ -84,7 +84,12 @@ const Profile = ({
           </View>
         </TouchableOpacity>
         {/* the rest of the cards */}
-        <TouchableOpacity style={styles.listCard} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.listCard}
+          activeOpacity={0.8}
+          onPress={() =>
+            navigation.navigate('HomeTab', {screen: 'OrdersStack'})
+          }>
           <Text style={styles.textProfileName}>Orders</Text>
           {/* chevron icon here */}
           <ChevronLeftIcon />

@@ -31,7 +31,7 @@ export type RootStackParamList = {
   HomeTab: {
     screen:
       | 'HomeStack'
-      | 'OrdersOrderStack'
+      | 'OrdersStack'
       | 'CartStack'
       | 'ProfileStack'
       | 'SearchResults'
