@@ -15,6 +15,15 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     flex: 1,
     marginBottom: 20,
+    // Shadow for iOS
+    shadowOpacity: 0.08,
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowRadius: 10,
+    // Shadow for Android
+    elevation: 5,
   },
   orderItemImageContainer: {marginRight: 15},
   orderItemImage: {width: 70, height: 70, borderRadius: 35},
@@ -38,6 +47,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     justifyContent: 'center',
+    // Shadow for iOS
+    shadowOpacity: 0.08,
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowRadius: 10,
+    // Shadow for Android
+    elevation: 5,
   },
 });
 
