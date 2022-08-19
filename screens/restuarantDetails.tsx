@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     zIndex: 30,
     alignItems: 'center',
     backgroundColor: theme.colors.white,
-    borderRadius: 30,
+    borderRadius: 24,
     padding: 5,
     justifyContent: 'center',
   },
@@ -182,7 +182,7 @@ const RestuarantDetails = ({
       <TouchableOpacity
         style={styles.backIconContainer}
         onPress={() => navigation.goBack()}>
-        <ArrowLeftIcon />
+        <ArrowLeftIcon width={35} height={35} />
       </TouchableOpacity>
       <View style={styles.mapImageWrpper}>
         {/* image or map wrapper */}
