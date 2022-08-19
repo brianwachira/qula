@@ -123,7 +123,9 @@ const CartCard = (props: CartCardProps) => {
           <View style={styles.cartItemContentContainer}>
             <View style={styles.cartItemContentRow}>
               <View style={styles.cartContentColumn}>
-                <Text numberOfLines={1}>{props.item.title}</Text>
+                <Text style={styles.cartItemTitle} numberOfLines={1}>
+                  {props.item.title}
+                </Text>
                 <Text color="primary">${props.item.price}</Text>
               </View>
               <View style={styles.cartItemQuantityButton}>
@@ -248,6 +250,9 @@ const styles = StyleSheet.create({
   },
   cartContentColumn: {
     flex: 1,
+  },
+  cartItemTitle: {
+    width: '90%',
   },
 });
 export default CartCard;
