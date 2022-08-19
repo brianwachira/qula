@@ -125,6 +125,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: 5,
     justifyContent: 'center',
+    // Shadow for Android
+    elevation: 10,
   },
   mapImageWrapper: {
     position: 'absolute',
@@ -181,7 +183,8 @@ const RestuarantDetails = ({
       {/* Back icon */}
       <TouchableOpacity
         style={styles.backIconContainer}
-        onPress={() => navigation.goBack()}>
+        onPress={() => navigation.goBack()}
+        activeOpacity={0.9}>
         <ArrowLeftIcon width={35} height={35} />
       </TouchableOpacity>
       <View style={styles.mapImageWrpper}>
