@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   backButtonContainer: {
     zIndex: 30,
   },
-  screenTitle: {top: -25},
+  screenTitle: {top: -29},
 });
 
 // validation schema
@@ -63,8 +63,10 @@ const EditProfile = ({
         <Pressable onPress={Keyboard.dismiss} style={styles.presssableFlex}>
           <TouchableOpacity
             style={styles.backButtonContainer}
-            onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon style={styles.backIcon} />
+            onPress={() =>
+              navigation.navigate('HomeTab', {screen: 'ProfileStack'})
+            }>
+            <ArrowLeftIcon width={35} height={35} style={styles.backIcon} />
           </TouchableOpacity>
           <Text style={styles.screenTitle} textAlign="center">
             Edit Profile

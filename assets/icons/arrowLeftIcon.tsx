@@ -3,6 +3,7 @@ import Svg, {SvgProps, Path} from 'react-native-svg';
 
 const ArrowLeftIcon = (props: SvgProps) => (
   <Svg
+    viewBox="0 0 25 25"
     width={25}
     height={25}
     fill="none"

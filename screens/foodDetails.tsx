@@ -59,7 +59,7 @@ const FoodDetails = ({
   return (
     <SafeAreaView key={id} style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <ArrowLeftIcon style={styles.backIcon} />
+        <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
       </TouchableOpacity>
       <View style={styles.imageContainer}>
         <Image source={{uri: image}} style={styles.image} />

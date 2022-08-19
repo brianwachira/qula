@@ -82,7 +82,7 @@ const SearchResults = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.searchBar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeftIcon style={styles.backIcon} />
+          <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
         </TouchableOpacity>
         <TextInput
           style={{

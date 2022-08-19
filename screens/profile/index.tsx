@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
 const Profile = ({
   navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Profile'>) => {
+}: NativeStackScreenProps<RootStackParamList, 'ProfileStack'>) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
