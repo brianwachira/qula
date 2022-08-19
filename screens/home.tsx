@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     elevation: 10,
   },
+  categoriesContainerStyle: {
+    paddingLeft: 4,
+    paddingVertical: 5,
+  },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -77,6 +81,7 @@ const Home = ({
         </TouchableOpacity>
 
         <FlatList
+          contentContainerStyle={styles.categoriesContainerStyle}
           data={categoriesData}
           ItemSeparatorComponent={ItemSeparator2}
           renderItem={({item}) => (
@@ -90,6 +95,7 @@ const Home = ({
         />
         <View style={{marginVertical: 10}} />
         <FlatList
+          contentContainerStyle={styles.categoriesContainerStyle}
           data={localRestaurants}
           ItemSeparatorComponent={ItemSeparator}
           renderItem={({item}) => (
