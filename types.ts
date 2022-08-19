@@ -26,9 +26,19 @@ export type RootStackParamList = {
   Liked: undefined;
   Orders: undefined;
   Cart: undefined;
-  Profile: undefined;
+  ProfileStack: undefined;
   Otp: {email: string; otp: string};
-  HomeStack: {screen: 'Home' | 'Liked' | 'Orders' | 'Cart' | 'Profile'};
+  HomeTab: {
+    screen:
+      | 'HomeStack'
+      | 'OrdersOrderStack'
+      | 'CartStack'
+      | 'ProfileStack'
+      | 'SearchResults'
+      | 'RestuarantDetails'
+      | 'FoodDetails'
+      | 'EditProfile';
+  };
   SearchResults: undefined;
   RestuarantDetails: {restuarant: restuarant};
   FoodDetails: {food: food};
