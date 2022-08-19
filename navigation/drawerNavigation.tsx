@@ -193,6 +193,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     maxWidth: '80%',
     borderRadius: 10,
+    // Shadow for Android
+    elevation: 5,
   },
   drawerItemLogout: {},
   drawerItemIconLogout: {
