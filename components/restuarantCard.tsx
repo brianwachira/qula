@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     height: 200,
     width: 200,
     resizeMode: 'cover',
+    // Shadow for Android
+    elevation: 5,
   },
   cardContent: {
     flexDirection: 'column',
@@ -41,12 +43,17 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: 30,
     top: '20%',
+    // Shadow for Android
+    elevation: 5,
   },
 });
 
 const RestuarantCard = ({onPress, item}: {onPress: () => void; item: any}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      activeOpacity={0.9}>
       <View style={styles.backdrop} />
       <Image
         source={{
