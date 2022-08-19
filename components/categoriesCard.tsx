@@ -11,6 +11,15 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 20,
     marginRight: 15,
+    // Shadow for iOS
+    shadowOpacity: 0.08,
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowRadius: 10,
+    // Shadow for Android
+    elevation: 5,
   },
   image: {
     width: 50,
