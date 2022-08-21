@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import theme from '../styles/themes';
 import Button from './shared-ui/button';
 import FormikTextInput from './shared-ui/formikTextInput';
@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formContainer: {
-    flex: 0.85,
+    height:
+      Dimensions.get('window').height - Dimensions.get('window').height / 2,
     justifyContent: 'center',
     marginHorizontal: 50,
   },

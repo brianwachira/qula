@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import EyeIcon from '../assets/icons/eyeIcon';
 import EyeIconClosed from '../assets/icons/eyeIconClosed';
 import theme from '../styles/themes';
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formContainer: {
-    flex: 0.85,
+    height:
+      Dimensions.get('window').height - Dimensions.get('window').height / 2,
     justifyContent: 'center',
     marginHorizontal: 50,
   },
