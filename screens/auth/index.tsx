@@ -19,13 +19,13 @@ import Signup from './signup';
 const styles = StyleSheet.create({
   tabContainer: {
     backgroundColor: theme.colors.tab,
+    flex: 1,
   },
   tabBarStyle: {
-    height: Dimensions.get('window').height / 3,
+    height: Dimensions.get('screen').height / 3,
     borderBottomRightRadius: theme.borderRadius.button,
     borderBottomLeftRadius: theme.borderRadius.button,
     backgroundColor: theme.colors.white,
-    flex: 0.5,
     justifyContent: 'flex-end',
   },
   tabBarLabel: {
@@ -39,12 +39,12 @@ const styles = StyleSheet.create({
   tabBarIndicatorStyle: {
     backgroundColor: theme.colors.primary,
     width: 100,
-    left: (Dimensions.get('window').width / 2 - 100) / 2,
+    left: (Dimensions.get('screen').width / 2 - 100) / 2,
     height: 3,
   },
   logo: {
     position: 'absolute',
-    top: Dimensions.get('window').height / 4 / 2,
+    top: Dimensions.get('screen').height / 4 / 2,
     alignSelf: 'center',
   },
 });
