@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   splitBoxesFocused: {
     borderColor: theme.colors.primary,
-    backgroundColor: theme.colors.black,
+    backgroundColor: theme.colors.tab,
   },
 });
 
