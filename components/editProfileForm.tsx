@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inputLabel: {marginLeft: 20, marginBottom: 10},
+  buttonContainer: {alignItems: 'center'},
 });
 
 const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
@@ -66,13 +67,15 @@ const EditProfileForm = ({onSubmit}: {onSubmit: any}) => {
         />
       </View>
       <View style={styles.inputSeparator} />
-      <Button
-        onPress={onSubmit}
-        title="Update Details"
-        accessibilityLabel="Manage your account"
-        testID="Update Details"
-        buttonType="orange"
-      />
+      <View style={styles.buttonContainer}>
+        <Button
+          onPress={onSubmit}
+          title="Update Details"
+          accessibilityLabel="Manage your account"
+          testID="Update Details"
+          buttonType="orange"
+        />
+      </View>
     </View>
   );
 };
