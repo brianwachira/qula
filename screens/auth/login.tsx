@@ -1,13 +1,14 @@
 import React from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import LoginForm from '../../components/loginForm';
 import * as RootNavigation from '../../navigation/rootNavigation';
 
 const styles = StyleSheet.create({
   formikContainer: {
-    flex: 0.9,
+    height:
+      Dimensions.get('screen').height - Dimensions.get('screen').height / 3,
   },
 });
 
