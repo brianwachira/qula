@@ -102,6 +102,7 @@ const tabOptions = (props: {
     },
     headerTransparent: true,
     tabBarStyle: styles.tabStyleWithContent,
+    lazy: false,
     // menu icon
     headerLeft: () => (
       <TouchableOpacity
