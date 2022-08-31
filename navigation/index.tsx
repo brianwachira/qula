@@ -17,7 +17,7 @@ const MainStackNavigator = () => {
     navigationRef.current as NavigationContainerRef<ReactNavigation.RootParamList>;
   return (
     <NavigationContainer ref={navigationRef}>
-      {!user?.email ? (
+      {!user.phone ? (
         <Suspense fallback={<Loading />}>
           <AuthNavigation />
         </Suspense>
