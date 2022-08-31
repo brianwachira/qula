@@ -46,7 +46,15 @@ export type RootStackParamList = {
       | 'EditProfile';
   };
   SearchResults: undefined;
-  RestuarantDetails: {restuarant: restuarant};
+  RestuarantDetails: {
+    token: string;
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    image: string;
+  };
   FoodDetails: {food: food};
   EditProfile: undefined;
 };
@@ -68,4 +76,5 @@ export type Imerchants = {
   api_secret: string;
   status: number;
   updated_at: string;
+  image: string;
 };
