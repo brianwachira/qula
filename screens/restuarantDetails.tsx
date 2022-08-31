@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import Text from '../components/shared-ui/text';
-import {RootStackParamList} from '../types/types';
+import {Icategories, RootStackParamList} from '../types/types';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
@@ -162,16 +162,24 @@ const RestuarantDetails = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'RestuarantDetails'>) => {
-  const [mapActive, setMapActive] = useState(false);
+  //const [mapActive, setMapActive] = useState(false);
   const {
-    categories,
-    coordinates,
-    image_url,
+    //categories,
+    //coordinates,
+    //image_url,
+    //name,
+    //price,
+    //rating,
+    //review_count,
+    id,
     name,
-    price,
-    rating,
-    review_count,
-  } = route.params.restuarant;
+    phone,
+    email,
+    address,
+    image,
+  } = route.params;
+
+  const [categories, setCategories] = useState<Icategories[]>([]);
 
   return (
     <View style={styles.container}>
@@ -189,32 +197,28 @@ const RestuarantDetails = ({
       </TouchableOpacity>
       <View style={styles.mapImageWrpper}>
         {/* image or map wrapper */}
-        {mapActive ? (
+        {/* {mapActive ? (
           <Map coordinates={coordinates} title={name} />
         ) : (
-          <Image source={{uri: image_url}} style={styles.restuarantImage} />
-        )}
+        )} */}
+        <Image source={{uri: image}} style={styles.restuarantImage} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={styles.title}>{name}</Text>
             {/* toggle map icon */}
-            <TouchableOpacity onPress={() => setMapActive(!mapActive)}>
-              <Entypo
-                name="location"
-                size={24}
-                color={`${mapActive ? theme.colors.primary : '#000'}`}
-              />
+            <TouchableOpacity
+            //onPress={() => setMapActive(!mapActive)}
+            >
+              <Entypo name="location" size={24} color={`${'#000'}`} />
             </TouchableOpacity>
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.info}>
               <View style={styles.infoItem}>
                 <AntDesign name="star" size={12} color="#FFC238" />
-                <Text style={styles.infoText}>
-                  {rating} • ({review_count})
-                </Text>
+                <Text style={styles.infoText}>4.5 • (20)</Text>
               </View>
               <View style={styles.infoItem}>
                 <AntDesign name="clockcircleo" size={10} color="#FFC238" />
@@ -226,7 +230,7 @@ const RestuarantDetails = ({
                   size={16}
                   color={theme.colors.primary}
                 />
-                <Text style={styles.infoText}>• {price}</Text>
+                <Text style={styles.infoText}>• KES</Text>
               </View>
             </View>
           </View>
