@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -13,9 +13,13 @@ import CategoriesCard from '../components/categoriesCard';
 import RestuarantCard from '../components/restuarantCard';
 import Text from '../components/shared-ui/text';
 import TextInput from '../components/shared-ui/textInput';
-import {categoriesData, localRestaurants} from '../mockdata';
+import {useStorage} from '../hooks/useStorage';
 import theme from '../styles/themes';
-import {RootStackParamList} from '../types';
+import {Icategories, Imerchants, RootStackParamList} from '../types/types';
+import hmac256 from 'crypto-js/hmac-sha256';
+import {encode} from '../utils/encoder';
+import axios, {AxiosResponse} from 'axios';
+import {API_URL} from '@env';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,6 +59,42 @@ const ItemSeparator2 = () => <View style={styles.separator} />;
 const Home = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
+  // user
+  const [user, setUser] = useStorage('user');
+  const [categories, setCategories] = useState<Icategories[]>([]);
+  const [merchants, setMerchants] = useState<Imerchants[]>([]);
+
+  // create a cipher text
+  const ciphertext: string = hmac256(
+    user.userId.toString(),
+    user.authKey,
+  ).toString();
+
+  // encoded cipher text
+  const encodedCipher = encode(ciphertext);
+
+  // params
+  const params = new URLSearchParams({
+    token: encodedCipher,
+    client_id: user.clientId,
+    msisdn: user.phone,
+  });
+
+  /**
+   * useEffect to fetch merchants and categories
+   */
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`${API_URL}/fetch-categories?${params}`),
+      axios.get(`${API_URL}/fetch-merchants?${params}`),
+    ]).then((responses: AxiosResponse[]) => {
+      responses[0].data.status === true &&
+        setCategories(responses[0].data?.data);
+      responses[0].data.status === true &&
+        setMerchants(responses[0].data?.data);
+    });
+  });
   // function to navigate to search results screen
   const onPress = () => {
     navigation.navigate('SearchResults');
@@ -82,7 +122,7 @@ const Home = ({
 
         <FlatList
           contentContainerStyle={styles.categoriesContainerStyle}
-          data={categoriesData}
+          data={categories}
           ItemSeparatorComponent={ItemSeparator2}
           renderItem={({item}) => (
             <CategoriesCard
@@ -96,7 +136,7 @@ const Home = ({
         <View style={{marginVertical: 10}} />
         <FlatList
           contentContainerStyle={styles.categoriesContainerStyle}
-          data={localRestaurants}
+          data={merchants}
           ItemSeparatorComponent={ItemSeparator}
           renderItem={({item}) => (
             <RestuarantCard
