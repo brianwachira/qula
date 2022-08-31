@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import EditProfileForm from '../../components/editProfileForm';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../types';
+import {RootStackParamList} from '../../types/types';
 import ArrowLeftIcon from '../../assets/icons/arrowLeftIcon';
 import Text from '../../components/shared-ui/text';
 

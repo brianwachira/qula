@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import Text from '../components/shared-ui/text';
-import {RootStackParamList} from '../types';
+import {RootStackParamList} from '../types/types';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';

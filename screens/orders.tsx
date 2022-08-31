@@ -13,7 +13,7 @@ import Button from '../components/shared-ui/button';
 import Text from '../components/shared-ui/text';
 import {meals} from '../mockdata';
 import theme from '../styles/themes';
-import {RootStackParamList} from '../types';
+import {RootStackParamList} from '../types/types';
 
 const styles = StyleSheet.create({
   containerEmpty: {

@@ -14,7 +14,7 @@ import ResultsCard from '../components/resultsCard';
 import TextInput from '../components/shared-ui/textInput';
 import {foods} from '../mockdata';
 import theme from '../styles/themes';
-import {RootStackParamList} from '../types';
+import {RootStackParamList} from '../types/types';
 
 const styles = StyleSheet.create({
   container: {
