@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
-import {RootStackParamList} from '../../types';
+import {RootStackParamList} from '../../types/types';
 import OTPInput from '../../components/shared-ui/otpInput';
 import theme from '../../styles/themes';
 import Button from '../../components/shared-ui/button';
 import {useStorage} from '../../hooks/useStorage';
 import Text from '../../components/shared-ui/text';
+import axios from 'axios';
+import {API_URL} from '@env';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,22 +43,38 @@ const styles = StyleSheet.create({
 
 const Otp = ({
   route,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Otp'>) => {
   const [otp, setOTP] = useState('');
   const [isPinReady, setIsPinReady] = useState(false);
   const maximumLength = 4;
 
-  const [user, setUser] = useStorage('email');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [user, setUser] = useStorage('user');
 
   const handleSubmit = (): void => {
-    const userToSave = {
-      email: route.params.email,
-    };
+    const params = new URLSearchParams({
+      totp: route.params.otp,
+      phone: route.params.phone,
+    }).toString();
 
-    setUser(userToSave);
-
-    console.log(user);
+    axios.post(`${API_URL}/verify-otp?${params}`).then(response => {
+      if (response.data.status === false) {
+        // theres a problem
+        console.log(response.data.status_messsage);
+      } else {
+        // create user object
+        const newUser = {
+          authKey: route.params.authKey,
+          phone: route.params.phone,
+          userId: route.params.userId,
+          clientId: route.params.clientId,
+        };
+        // save the new user
+        setUser(newUser);
+      }
+    });
   };
 
   return (
