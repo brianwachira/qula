@@ -1,10 +1,11 @@
 import React from 'react';
+import axios, {AxiosResponse} from 'axios';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import LoginForm from '../../components/loginForm';
 import * as RootNavigation from '../../navigation/rootNavigation';
-
+import {API_URL} from '@env';
 const styles = StyleSheet.create({
   formikContainer: {
     height:
@@ -27,12 +28,27 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   // onsubmit function
   const onSubmit = (values: any) => {
-    const user = {
-      email: values.email,
-      otp: 12345,
-    };
-    //console.log(values);
-    RootNavigation.navigate('Otp' as never, user as never);
+    const params = new URLSearchParams({
+      password: values.password,
+      phone: values.email,
+    }).toString();
+
+    axios.post(`${API_URL}/login?${params}`).then((response: AxiosResponse) => {
+      if (response.data.status === false) {
+        //that means something is wrong
+        console.log(response.data.status_messsage);
+      } else {
+        const user = {
+          phone: response.data.data.msisdn,
+          otp: response.data.otp,
+          authKey: response.data.auth_key,
+          userId: response.data.user_id,
+          clientId: response.data.client_id,
+        };
+        // move to otp screen
+        RootNavigation.navigate('Otp' as never, user as never);
+      }
+    });
   };
 
   return (
