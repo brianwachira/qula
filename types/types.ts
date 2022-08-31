@@ -50,3 +50,22 @@ export type RootStackParamList = {
   FoodDetails: {food: food};
   EditProfile: undefined;
 };
+
+// type categories
+export type Icategories = {
+  id: number;
+  category: string;
+};
+
+//type merchants
+export type Imerchants = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  api_key: string;
+  api_secret: string;
+  status: number;
+  updated_at: string;
+};
