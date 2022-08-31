@@ -12,7 +12,7 @@ import {
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import Button from '../components/shared-ui/button';
 import Text from '../components/shared-ui/text';
-import {RootStackParamList} from '../types';
+import {RootStackParamList} from '../types/types';
 
 const styles = StyleSheet.create({
   container: {

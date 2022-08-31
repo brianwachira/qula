@@ -3,7 +3,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions, Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from '../components/shared-ui/button';
 import {foods} from '../mockdata';
-import {RootStackParamList} from '../types';
+import {RootStackParamList} from '../types/types';
 import CartCard from '../components/cartCard';
 import {ScrollView} from 'react-native-gesture-handler';
 import Text from '../components/shared-ui/text';

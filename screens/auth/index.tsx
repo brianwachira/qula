@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {TabBar, TabView} from 'react-native-tab-view';
 import theme from '../../styles/themes';
-import {RootStackParamList} from '../../types';
+import {RootStackParamList} from '../../types/types';
 import Login from './login';
 import Signup from './signup';
 

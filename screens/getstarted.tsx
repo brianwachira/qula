@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Button from '../components/shared-ui/button';
 import theme from '../styles/themes';
-import {RootStackParamList} from '../types';
+import {RootStackParamList} from '../types/types';
 
 const styles = StyleSheet.create({
   sectionLogo: {
