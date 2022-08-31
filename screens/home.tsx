@@ -142,7 +142,15 @@ const Home = ({
             <RestuarantCard
               item={item}
               onPress={() =>
-                navigation.navigate('RestuarantDetails', {restuarant: item})
+                navigation.navigate('RestuarantDetails', {
+                  token: encodedCipher,
+                  id: item.id,
+                  name: item.name,
+                  phone: item.phone,
+                  email: item.email,
+                  address: item.address,
+                  image: item.image,
+                })
               }
             />
           )}
