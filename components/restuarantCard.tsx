@@ -3,6 +3,7 @@
 import React from 'react';
 import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
 import theme from '../styles/themes';
+import {Imerchants} from '../types/types';
 
 import Text from './shared-ui/text';
 
@@ -48,7 +49,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const RestuarantCard = ({onPress, item}: {onPress: () => void; item: any}) => {
+const RestuarantCard = ({
+  onPress,
+  item,
+}: {
+  onPress: () => void;
+  item: Imerchants;
+}) => {
   return (
     <TouchableOpacity
       style={styles.container}
@@ -57,17 +64,17 @@ const RestuarantCard = ({onPress, item}: {onPress: () => void; item: any}) => {
       <View style={styles.backdrop} />
       <Image
         source={{
-          uri: item.image_url,
+          uri: item.image,
         }}
         style={styles.image}
       />
       <View style={styles.cardContent}>
         <Text numberOfLines={1}>{item.name}</Text>
         <View style={styles.timeWrapper}>
-          <Text> 20-30 • min • {item.price}</Text>
+          <Text> 20-30 • min • {item.name}</Text>
         </View>
         <View style={styles.ratingWrapper}>
-          <Text color="primary">{item.rating}</Text>
+          <Text color="primary">4</Text>
         </View>
       </View>
     </TouchableOpacity>
