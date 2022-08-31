@@ -10,11 +10,15 @@ type LiteralUnion<T extends U, U = string> = T | (U & {});
 
 type defaultObject = {
   email?: string;
+  authKey: string;
+  phone: string;
+  userId: string;
+  clientId: string;
 };
 
 export const useStorage = (
   key: LiteralUnion<'user' | 'email' | 'password'>,
-  defaultValue?: defaultObject | null,
+  defaultValue?: defaultObject,
 ) => {
   const [value, setValue] = useMMKVStorage(key, MMKV, defaultValue);
   return [value, setValue] as const;
