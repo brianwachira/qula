@@ -54,7 +54,8 @@ const FoodDetails = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'FoodDetails'>) => {
-  const {id, title, description, price, image} = route.params.food;
+  const {id, name, image_path, description, in_stock, cost} =
+    route.params.product;
 
   return (
     <SafeAreaView key={id} style={styles.container}>
@@ -62,13 +63,13 @@ const FoodDetails = ({
         <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
       </TouchableOpacity>
       <View style={styles.imageContainer}>
-        <Image source={{uri: image}} style={styles.image} />
+        <Image source={{uri: image_path}} style={styles.image} />
       </View>
       <Text textType="empty" textAlign="center">
-        {title}
+        {name}
       </Text>
       <Text color="primary" textAlign="center" style={styles.textPrice}>
-        ${price}
+        KES {cost}
       </Text>
       <ScrollView
         style={styles.scrollContainer}
