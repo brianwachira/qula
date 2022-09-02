@@ -64,14 +64,14 @@ const RestuarantCard = ({
       <View style={styles.backdrop} />
       <Image
         source={{
-          uri: item.image,
+          uri: item.image_path,
         }}
         style={styles.image}
       />
       <View style={styles.cardContent}>
         <Text numberOfLines={1}>{item.name}</Text>
         <View style={styles.timeWrapper}>
-          <Text> 20-30 • min • {item.name}</Text>
+          <Text>20-30 • min</Text>
         </View>
         <View style={styles.ratingWrapper}>
           <Text color="primary">4</Text>
