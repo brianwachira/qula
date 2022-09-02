@@ -27,7 +27,7 @@ const CustomDrawerContent = (
   const currentRouteName = props.nav()?.getCurrentRoute()?.name;
   // import useStorage from '../hooks/useStorage';
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [user, setUser] = useStorage('email');
+  const [user, setUser] = useStorage('user');
 
   // function to logout user
   const logout = () => {
