@@ -9,17 +9,18 @@ import {
   View,
 } from 'react-native';
 import SearchIcon from '../assets/icons/searchIcon';
-import CategoriesCard from '../components/categoriesCard';
 import RestuarantCard from '../components/restuarantCard';
 import Text from '../components/shared-ui/text';
 import TextInput from '../components/shared-ui/textInput';
 import {useStorage} from '../hooks/useStorage';
 import theme from '../styles/themes';
-import {Icategories, Imerchants, RootStackParamList} from '../types/types';
+import {Imerchants, RootStackParamList} from '../types/types';
 import hmac256 from 'crypto-js/hmac-sha256';
 import {encode} from '../utils/encoder';
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import {API_URL} from '@env';
+import RefreshIcon from '../assets/icons/refreshIcon';
+import Button from '../components/shared-ui/button';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,6 +53,30 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     paddingVertical: 5,
   },
+  containerEmpty: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 70,
+    flex: 1,
+    marginHorizontal: 40,
+  },
+  contentContainerEmpty: {
+    flexGrow: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textOpacity: {
+    opacity: 0.57,
+    fontWeight: '400',
+    width: Dimensions.get('screen').width - 130,
+  },
+  marginBottomStyle: {
+    marginBottom: 30,
+  },
+  marginBottomStyle2: {
+    marginBottom: 20,
+  },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -61,13 +86,12 @@ const Home = ({
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
   // user
   const [user, setUser] = useStorage('user');
-  const [categories, setCategories] = useState<Icategories[]>([]);
   const [merchants, setMerchants] = useState<Imerchants[]>([]);
 
   // create a cipher text
   const ciphertext: string = hmac256(
-    user.userId.toString(),
-    user.authKey,
+    user.userId || 'fddd',
+    user.authKey || 'sdfdf',
   ).toString();
 
   // encoded cipher text
@@ -81,24 +105,55 @@ const Home = ({
   });
 
   /**
-   * useEffect to fetch merchants and categories
+   * useEffect to fetch merchants
    */
 
   useEffect(() => {
-    Promise.all([
-      axios.get(`${API_URL}/fetch-categories?${params}`),
-      axios.get(`${API_URL}/fetch-merchants?${params}`),
-    ]).then((responses: AxiosResponse[]) => {
-      responses[0].data.status === true &&
-        setCategories(responses[0].data?.data);
-      responses[0].data.status === true &&
-        setMerchants(responses[0].data?.data);
+    axios.get(`${API_URL}/fetch-merchants?${params}`).then(response => {
+      if (response.data.status === false) {
+        console.log(response.data.status);
+      } else {
+        setMerchants(response.data?.data);
+      }
     });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // function to navigate to search results screen
   const onPress = () => {
     navigation.navigate('SearchResults');
   };
+
+  // show this when merchant state is empty
+  if (merchants.length < 1) {
+    return (
+      <SafeAreaView style={styles.containerEmpty}>
+        <View style={styles.contentContainerEmpty}>
+          <RefreshIcon
+            style={styles.marginBottomStyle}
+            width={150}
+            height={150}
+            fill={theme.colors.icon}
+          />
+
+          <Text style={styles.marginBottomStyle2} textType="empty">
+            Nothing here yet
+          </Text>
+          <Text style={[styles.textOpacity]} textAlign="center">
+            Hit the orange button down below to view some orders
+          </Text>
+        </View>
+        <View>
+          <Button
+            title="Start Ordering"
+            buttonType="orange"
+            textType="labelButtonOrange"
+            accessibilityLabel="Start Ordering"
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -120,7 +175,7 @@ const Home = ({
           />
         </TouchableOpacity>
 
-        <FlatList
+        {/* <FlatList
           contentContainerStyle={styles.categoriesContainerStyle}
           data={categories}
           ItemSeparatorComponent={ItemSeparator2}
@@ -132,7 +187,7 @@ const Home = ({
           )}
           keyExtractor={(item, index) => `category-${index}`}
           horizontal
-        />
+        /> */}
         <View style={{marginVertical: 10}} />
         <FlatList
           contentContainerStyle={styles.categoriesContainerStyle}
@@ -144,12 +199,13 @@ const Home = ({
               onPress={() =>
                 navigation.navigate('RestuarantDetails', {
                   token: encodedCipher,
+                  clientId: user.clientId,
                   id: item.id,
                   name: item.name,
                   phone: item.phone,
                   email: item.email,
                   address: item.address,
-                  image: item.image,
+                  image_path: item.image_path,
                 })
               }
             />
