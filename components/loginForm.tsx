@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const LoginForm = ({onSubmit}: {onSubmit: any}) => {
+const LoginForm = ({onSubmit, loading}: {onSubmit: any; loading: boolean}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   //function to toggle password
@@ -84,6 +84,7 @@ const LoginForm = ({onSubmit}: {onSubmit: any}) => {
           buttonType="orange"
           textType="labelButtonOrange"
           accessibilityLabel="Login"
+          loading={loading}
         />
       </View>
     </>

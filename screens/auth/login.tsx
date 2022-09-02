@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -26,8 +26,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   // onsubmit function
   const onSubmit = (values: any) => {
+    //setLoading true
+    setLoading(true);
     const params = new URLSearchParams({
       password: values.password,
       phone: values.email,
@@ -35,19 +38,26 @@ const Login = () => {
 
     axios.post(`${API_URL}/login?${params}`).then((response: AxiosResponse) => {
       if (response.data.status === false) {
+        console.log(response.data);
+
         //that means something is wrong
-        console.log(response.data.status_messsage);
+        console.log(response.data.status_message);
       } else {
+        //console.log(response.data.data.client_id);
+
+        console.log(response.data.otp);
         const user = {
           phone: response.data.data.msisdn,
           otp: response.data.otp,
-          authKey: response.data.auth_key,
-          userId: response.data.user_id,
-          clientId: response.data.client_id,
+          authKey: response.data.data.auth_key,
+          userId: response.data.data.id,
+          clientId: response.data.data.client_id,
         };
         // move to otp screen
         RootNavigation.navigate('Otp' as never, user as never);
       }
+      //setLoading false
+      setLoading(false);
     });
   };
 
@@ -57,7 +67,9 @@ const Login = () => {
         initialValues={initialValues}
         onSubmit={onSubmit}
         validationSchema={validationSchema}>
-        {({handleSubmit}) => <LoginForm onSubmit={handleSubmit} />}
+        {({handleSubmit}) => (
+          <LoginForm loading={loading} onSubmit={handleSubmit} />
+        )}
       </Formik>
     </View>
   );

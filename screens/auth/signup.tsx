@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {StyleSheet, View} from 'react-native';
@@ -27,9 +27,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const Signup = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   // onsubmit function
   const onSubmit = (values: any) => {
+    //setLoading true
+    setLoading(true);
     console.log(values);
+    //setLoading false
+    setLoading(false);
   };
 
   return (
@@ -38,7 +43,7 @@ const Signup = () => {
         initialValues={initialValues}
         onSubmit={onSubmit}
         validationSchema={validationSchema}>
-        {({handleSubmit}) => <SignupForm onSubmit={handleSubmit} />}
+        {({handleSubmit}) => <SignupForm loading={loading} onSubmit={handleSubmit} />}
       </Formik>
     </View>
   );

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignupForm = ({onSubmit}: {onSubmit: any}) => {
+const SignupForm = ({onSubmit, loading}: {onSubmit: any; loading: boolean}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -123,6 +123,7 @@ const SignupForm = ({onSubmit}: {onSubmit: any}) => {
           buttonType="orange"
           textType="labelButtonOrange"
           accessibilityLabel="Sign Up"
+          loading={loading}
         />
       </View>
     </>

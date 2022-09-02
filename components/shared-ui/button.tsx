@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
+import {ActivityIndicator, Dimensions} from 'react-native';
 import {
   Platform,
   ButtonProps,
@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.button,
     ...theme.boxShadowAndroid,
   },
+  buttonStyleLoading: {
+    paddingVertical: 13,
+  },
 });
 
 // type for custom button
@@ -44,6 +47,7 @@ interface buttonProps extends ButtonProps {
   textAlign?: textProps['textAlign'];
   textColor?: textProps['color'];
   buttonType?: 'confirm' | 'orange' | 'cancel';
+  loading?: boolean;
 }
 
 const Button = ({
@@ -55,6 +59,7 @@ const Button = ({
   onPress,
   textColor,
   buttonType,
+  loading,
   ...props
 }: buttonProps) => {
   const ButtonStyle: StyleProp<ViewStyle> = [
@@ -62,18 +67,39 @@ const Button = ({
     Platform.OS === 'android' ? theme.boxShadowAndroid : theme.boxShadowIOS,
     buttonType === 'orange' && styles.buttonStyleOrange,
     buttonType === 'cancel' && styles.buttonStyleCancel,
+    loading === true && styles.buttonStyleLoading,
     style,
   ];
   return (
-    <TouchableOpacity onPress={onPress} {...props} activeOpacity={0.9}>
+    <TouchableOpacity
+      onPress={onPress}
+      {...props}
+      activeOpacity={0.9}
+      disabled={loading}>
       <View style={ButtonStyle}>
-        <Text
-          font={textFont || 'sfProDisplayMedium'}
-          textType={textType || 'labelButtonOrange'}
-          textAlign={textAlign || 'center'}
-          color={textColor}>
-          {title}
-        </Text>
+        {!loading ? (
+          <>
+            <Text
+              font={textFont || 'sfProDisplayMedium'}
+              textType={textType || 'labelButtonOrange'}
+              textAlign={textAlign || 'center'}
+              color={textColor}>
+              {title}
+            </Text>
+          </>
+        ) : (
+          <>
+            <ActivityIndicator
+              color={
+                buttonType === 'orange'
+                  ? theme.colors.white
+                  : theme.colors.primary
+              }
+              animating
+              size="large"
+            />
+          </>
+        )}
       </View>
     </TouchableOpacity>
   );
