@@ -1,24 +1,10 @@
-// type restuarant = {
-//   name: string;
-//   image_url: string;
-//   categories: string[];
-//   price: string;
-//   reviews: number;
-//   rating: number;
-//   time: string;
-//   coordinates: {
-//     latitude: number;
-//     longitude: number;
-//   };
-//   review_count: number;
-// };
-
-type food = {
+type product = {
   id: string;
-  title: string;
+  name: string;
   description: string;
-  price: number;
-  image: string;
+  in_stock: string;
+  cost: number;
+  image_path: string;
 };
 export type RootStackParamList = {
   GetStarted: undefined;
@@ -57,7 +43,7 @@ export type RootStackParamList = {
     address: string;
     image_path: string;
   };
-  FoodDetails: {food: food};
+  FoodDetails: {product: product};
   EditProfile: undefined;
   Checkout: undefined;
 };
