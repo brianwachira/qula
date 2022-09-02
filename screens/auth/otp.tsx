@@ -46,6 +46,7 @@ const Otp = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Otp'>) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [otp, setOTP] = useState('');
   const [isPinReady, setIsPinReady] = useState(false);
   const maximumLength = 4;
@@ -54,6 +55,8 @@ const Otp = ({
   const [user, setUser] = useStorage('user');
 
   const handleSubmit = (): void => {
+    //setLoading true
+    setLoading(true);
     const params = new URLSearchParams({
       totp: route.params.otp,
       phone: route.params.phone,
@@ -62,8 +65,9 @@ const Otp = ({
     axios.post(`${API_URL}/verify-otp?${params}`).then(response => {
       if (response.data.status === false) {
         // theres a problem
-        console.log(response.data.status_messsage);
+        console.log(response.data.status_message);
       } else {
+        console.log(response.data.status_message);
         // create user object
         const newUser = {
           authKey: route.params.authKey,
@@ -71,9 +75,12 @@ const Otp = ({
           userId: route.params.userId,
           clientId: route.params.clientId,
         };
+        console.log(newUser);
         // save the new user
         setUser(newUser);
       }
+      //setLoading false
+      setLoading(false);
     });
   };
 
@@ -95,6 +102,7 @@ const Otp = ({
         disabled={!isPinReady}
         title="Proceed"
         onPress={() => handleSubmit()}
+        loading={loading}
       />
     </Pressable>
   );

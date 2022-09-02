@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {StyleSheet, View} from 'react-native';
@@ -43,7 +43,9 @@ const Signup = () => {
         initialValues={initialValues}
         onSubmit={onSubmit}
         validationSchema={validationSchema}>
-        {({handleSubmit}) => <SignupForm loading={loading} onSubmit={handleSubmit} />}
+        {({handleSubmit}) => (
+          <SignupForm loading={loading} onSubmit={handleSubmit} />
+        )}
       </Formik>
     </View>
   );
