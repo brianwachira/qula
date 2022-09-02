@@ -1,21 +1,22 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
   Image,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
-import Text from '../components/shared-ui/text';
 import {Icategories, RootStackParamList} from '../types/types';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import theme from '../styles/themes';
-import {foods} from '../mockdata';
-import Map from '../components/map';
+import axios, {AxiosResponse} from 'axios';
+import {API_URL} from '@env';
+import Text from '../components/shared-ui/text';
 
 const styles = StyleSheet.create({
   container: {
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   infoItem: {
     flexDirection: 'row',
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.tab,
     borderRadius: 5,
     marginRight: 7,
+    marginBottom: 8,
   },
   infoText: {
     marginLeft: 4,
@@ -153,41 +156,52 @@ const styles = StyleSheet.create({
   },
   textCategory: {
     fontSize: 12,
+    color: theme.colors.black,
   },
   categoryContainer: {
     marginTop: 12,
+  },
+  categoryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 const RestuarantDetails = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'RestuarantDetails'>) => {
-  //const [mapActive, setMapActive] = useState(false);
-  const {
-    //categories,
-    //coordinates,
-    //image_url,
-    //name,
-    //price,
-    //rating,
-    //review_count,
-    id,
-    name,
-    phone,
-    email,
-    address,
-    image,
-  } = route.params;
+  const {id, name, phone, email, address, image_path, token, clientId} =
+    route.params;
 
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState<Icategories[]>([]);
 
+  // params
+  const params = new URLSearchParams({
+    token,
+    client_id: clientId,
+  });
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/fetch-products?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          console.log(response.data.status);
+        } else {
+          setProducts(response.data.data);
+          setCategories(response.data.categories);
+        }
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <View style={styles.container}>
-      {/* <StatusBar
+      <StatusBar
         translucent
         backgroundColor="transparent"
-        barStyle={!mapActive ? 'light-content' : 'dark-content'}
-      /> */}
+        barStyle={'dark-content'}
+      />
       {/* Back icon */}
       <TouchableOpacity
         style={styles.backIconContainer}
@@ -196,26 +210,31 @@ const RestuarantDetails = ({
         <ArrowLeftIcon width={35} height={35} />
       </TouchableOpacity>
       <View style={styles.mapImageWrpper}>
-        {/* image or map wrapper */}
-        {/* {mapActive ? (
-          <Map coordinates={coordinates} title={name} />
-        ) : (
-        )} */}
-        <Image source={{uri: image}} style={styles.restuarantImage} />
+        <Image source={{uri: image_path}} style={styles.restuarantImage} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={styles.title}>{name}</Text>
-            {/* toggle map icon */}
-            <TouchableOpacity
-            //onPress={() => setMapActive(!mapActive)}
-            >
-              <Entypo name="location" size={24} color={`${'#000'}`} />
-            </TouchableOpacity>
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.info}>
+              <View style={styles.infoItem}>
+                <Entypo
+                  name="location"
+                  size={14}
+                  color={theme.colors.primary}
+                />
+                <Text style={styles.infoText}> {address || 'Nairobi'}</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <Foundation
+                  name="telephone"
+                  size={16}
+                  color={theme.colors.primary}
+                />
+                <Text style={styles.infoText}> {phone || '0712345678'}</Text>
+              </View>
               <View style={styles.infoItem}>
                 <AntDesign name="star" size={12} color="#FFC238" />
                 <Text style={styles.infoText}>4.5 • (20)</Text>
@@ -226,32 +245,34 @@ const RestuarantDetails = ({
               </View>
               <View style={styles.infoItem}>
                 <Foundation
-                  name="dollar"
+                  name="mail"
                   size={16}
                   color={theme.colors.primary}
                 />
-                <Text style={styles.infoText}>• KES</Text>
+                <Text style={styles.infoText}> {email || '0712345678'}</Text>
               </View>
             </View>
           </View>
           <View style={styles.categoryContainer}>
             <Text style={styles.categoryText}>Categories</Text>
-            {categories.map((category, index) => (
-              <Text key={index} style={styles.textCategory}>
-                <Text style={{color: theme.colors.primary}}>•</Text> {category}
-              </Text>
+            {categories.map((item, index) => (
+              <View style={styles.categoryRow} key={index}>
+                <Text style={{color: theme.colors.primary}}>•</Text>
+                <Text style={styles.textCategory}>{item.category}</Text>
+              </View>
             ))}
           </View>
           {/* menu items */}
           <View style={styles.menuContainer}>
-            {foods?.map(
+            {products?.map(
               (
-                food: {
+                product: {
                   id: string;
-                  title: string;
-                  price: number;
+                  name: string;
+                  image_path: string;
                   description: string;
-                  image: string;
+                  in_stock: string;
+                  cost: number;
                 },
                 index: React.Key | null | undefined,
               ) => (
@@ -259,20 +280,20 @@ const RestuarantDetails = ({
                   key={index}
                   style={styles.menuContentWrapper}
                   onPress={() =>
-                    navigation.navigate('FoodDetails', {food: food})
+                    navigation.navigate('FoodDetails', {product: product})
                   }>
                   <View>
                     <Image
-                      source={{uri: food.image}}
+                      source={{uri: product.image_path}}
                       style={styles.menuImage}
                     />
                   </View>
                   <View style={styles.menuContent}>
                     <View style={styles.menuContentInfo}>
-                      <Text style={styles.foodName}>{food.title}</Text>
-                      <Text style={styles.foodPrice}>${food.price}</Text>
+                      <Text style={styles.foodName}>{product.name}</Text>
+                      <Text style={styles.foodPrice}>KES {product.cost}</Text>
                       <Text style={styles.foodDescription} numberOfLines={2}>
-                        {food.description}
+                        {product.description}
                       </Text>
                     </View>
                   </View>
