@@ -11,13 +11,13 @@ const AuthNavigation = React.lazy(() => import('./authNavigation'));
 
 const MainStackNavigator = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [user, setUser] = useStorage('email');
+  const [user, setUser] = useStorage('user');
 
   const nav: () => NavigationContainerRef<ReactNavigation.RootParamList> = () =>
     navigationRef.current as NavigationContainerRef<ReactNavigation.RootParamList>;
   return (
     <NavigationContainer ref={navigationRef}>
-      {!user.phone ? (
+      {!user ? (
         <Suspense fallback={<Loading />}>
           <AuthNavigation />
         </Suspense>
