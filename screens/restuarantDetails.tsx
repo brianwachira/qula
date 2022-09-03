@@ -68,12 +68,12 @@ const styles = StyleSheet.create({
   infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 6,
-    paddingVertical: 3,
+    paddingHorizontal: 7,
+    paddingVertical: 7,
     backgroundColor: theme.colors.tab,
     borderRadius: 5,
-    marginRight: 7,
-    marginBottom: 8,
+    marginRight: 15,
+    marginBottom: 15,
   },
   infoText: {
     marginLeft: 4,
@@ -83,12 +83,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-  },
-  categoryText: {
-    borderBottomColor: theme.colors.primary,
-    fontSize: 17,
-    fontWeight: 'bold',
-    marginBottom: 5,
   },
   menuContainer: {
     marginTop: 20, // mt-5
@@ -154,16 +148,40 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
   },
-  textCategory: {
-    fontSize: 12,
-    color: theme.colors.black,
-  },
   categoryContainer: {
     marginTop: 12,
   },
   categoryRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: theme.colors.tab,
+    marginRight: 15,
+    padding: 7,
+    paddingHorizontal: 10,
+    borderRadius: 15,
+    ...theme.boxShadowAndroid,
+  },
+  categoryRowSelected: {
+    backgroundColor: theme.colors.primary,
+  },
+  categoryText: {
+    borderBottomColor: theme.colors.primary,
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  textCategory: {
+    fontSize: 15,
+    color: theme.colors.black,
+  },
+  textCategorySelected: {
+    color: theme.colors.white,
+  },
+  categoryScrollViewContainer: {
+    margin: -12,
+  },
+  categoryScrollViewContentContainer: {
+    padding: 12,
   },
 });
 const RestuarantDetails = ({
@@ -175,6 +193,7 @@ const RestuarantDetails = ({
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState<Icategories[]>([]);
+  const [category, setCategory] = useState<Icategories>();
 
   // params
   const params = new URLSearchParams({
@@ -191,6 +210,7 @@ const RestuarantDetails = ({
         } else {
           setProducts(response.data.data);
           setCategories(response.data.categories);
+          setCategory(response.data.categories[0]);
         }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -200,7 +220,7 @@ const RestuarantDetails = ({
       <StatusBar
         translucent
         backgroundColor="transparent"
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
       />
       {/* Back icon */}
       <TouchableOpacity
@@ -255,12 +275,31 @@ const RestuarantDetails = ({
           </View>
           <View style={styles.categoryContainer}>
             <Text style={styles.categoryText}>Categories</Text>
-            {categories.map((item, index) => (
-              <View style={styles.categoryRow} key={index}>
-                <Text style={{color: theme.colors.primary}}>•</Text>
-                <Text style={styles.textCategory}>{item.category}</Text>
-              </View>
-            ))}
+            <ScrollView
+              style={styles.categoryScrollViewContainer}
+              contentContainerStyle={styles.categoryScrollViewContentContainer}
+              horizontal>
+              {categories.map((item, index) => (
+                <TouchableOpacity
+                  style={[
+                    styles.categoryRow,
+                    category?.category === item.category &&
+                      styles.categoryRowSelected,
+                  ]}
+                  onPress={() => setCategory(item)}
+                  key={index}
+                  activeOpacity={0.8}>
+                  <Text
+                    style={[
+                      styles.textCategory,
+                      category?.category === item.category &&
+                        styles.textCategorySelected,
+                    ]}>
+                    {item.category}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </View>
           {/* menu items */}
           <View style={styles.menuContainer}>
