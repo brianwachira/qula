@@ -65,7 +65,8 @@ const OrdersCard = (props: {onPress: () => void; order: any}) => {
     <TouchableOpacity
       onPress={onPress}
       key={order.id}
-      style={styles.orderItemContainer}>
+      style={styles.orderItemContainer}
+      activeOpacity={0.8}>
       <View style={styles.orderItemImageContainer}>
         <Image style={styles.orderItemImage} source={{uri: order.image}} />
       </View>
