@@ -1,5 +1,4 @@
 // resuarant card component
-
 import React from 'react';
 import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
 import theme from '../styles/themes';
@@ -14,9 +13,9 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   image: {
-    borderRadius: 100,
-    height: 200,
-    width: 200,
+    borderRadius: 85,
+    height: 170,
+    width: 170,
     resizeMode: 'cover',
     // Shadow for Android
     elevation: 5,
@@ -47,6 +46,9 @@ const styles = StyleSheet.create({
     // Shadow for Android
     elevation: 5,
   },
+  restuarantName: {
+    width: 120,
+  },
 });
 
 const RestuarantCard = ({
@@ -69,12 +71,11 @@ const RestuarantCard = ({
         style={styles.image}
       />
       <View style={styles.cardContent}>
-        <Text numberOfLines={1}>{item.name}</Text>
+        <Text style={styles.restuarantName} numberOfLines={1}>
+          {item.name}
+        </Text>
         <View style={styles.timeWrapper}>
           <Text>20-30 • min</Text>
-        </View>
-        <View style={styles.ratingWrapper}>
-          <Text color="primary">4</Text>
         </View>
       </View>
     </TouchableOpacity>
