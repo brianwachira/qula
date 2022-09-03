@@ -49,6 +49,10 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     marginVertical: 20,
     flex: 1,
+    margin: -12,
+  },
+  scrollViewContentContainer: {
+    padding: 12,
   },
 });
 
@@ -97,6 +101,7 @@ const Orders = ({
     <SafeAreaView style={styles.container}>
       <ScrollView
         style={styles.scrollViewContainer}
+        contentContainerStyle={styles.scrollViewContentContainer}
         showsVerticalScrollIndicator={false}>
         {/* orders card */}
         {orders.map((order: {id: string; title: string; image: string}) => (
