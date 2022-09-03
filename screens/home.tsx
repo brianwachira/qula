@@ -21,6 +21,8 @@ import axios from 'axios';
 import {API_URL} from '@env';
 import RefreshIcon from '../assets/icons/refreshIcon';
 import Button from '../components/shared-ui/button';
+import ShimmeringRestuarantCard from '../components/shimmeringRestuarantCard';
+import {list} from '../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,8 +52,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   categoriesContainerStyle: {
-    paddingLeft: 4,
-    paddingVertical: 5,
+    padding: 12,
   },
   containerEmpty: {
     display: 'flex',
@@ -77,16 +78,22 @@ const styles = StyleSheet.create({
   marginBottomStyle2: {
     marginBottom: 20,
   },
+  marginSeparator: {
+    marginVertical: 10,
+  },
+  flatlistContainer: {
+    margin: -12,
+  },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
-const ItemSeparator2 = () => <View style={styles.separator} />;
 const Home = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
   // user
-  const [user, setUser] = useStorage('user');
+  const [user] = useStorage('user');
   const [merchants, setMerchants] = useState<Imerchants[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // create a cipher text
   const ciphertext: string = hmac256(
@@ -109,6 +116,8 @@ const Home = ({
    */
 
   useEffect(() => {
+    //setLoading true
+    setLoading(true);
     axios.get(`${API_URL}/fetch-merchants?${params}`).then(response => {
       if (response.data.status === false) {
         console.log(response.data.status);
@@ -116,6 +125,8 @@ const Home = ({
         setMerchants(response.data?.data);
       }
     });
+    //setLoading false
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // function to navigate to search results screen
@@ -124,35 +135,35 @@ const Home = ({
   };
 
   // show this when merchant state is empty
-  if (merchants.length < 1) {
-    return (
-      <SafeAreaView style={styles.containerEmpty}>
-        <View style={styles.contentContainerEmpty}>
-          <RefreshIcon
-            style={styles.marginBottomStyle}
-            width={150}
-            height={150}
-            fill={theme.colors.icon}
-          />
+  // if (loading === false && merchants.length < 1) {
+  //   return (
+  //     <SafeAreaView style={styles.containerEmpty}>
+  //       <View style={styles.contentContainerEmpty}>
+  //         <RefreshIcon
+  //           style={styles.marginBottomStyle}
+  //           width={150}
+  //           height={150}
+  //           fill={theme.colors.icon}
+  //         />
 
-          <Text style={styles.marginBottomStyle2} textType="empty">
-            Nothing here yet
-          </Text>
-          <Text style={[styles.textOpacity]} textAlign="center">
-            Hit the orange button down below to view some orders
-          </Text>
-        </View>
-        <View>
-          <Button
-            title="Start Ordering"
-            buttonType="orange"
-            textType="labelButtonOrange"
-            accessibilityLabel="Start Ordering"
-          />
-        </View>
-      </SafeAreaView>
-    );
-  }
+  //         <Text style={styles.marginBottomStyle2} textType="empty">
+  //           Nothing here yet
+  //         </Text>
+  //         <Text style={[styles.textOpacity]} textAlign="center">
+  //           Hit the orange button down below to view some orders
+  //         </Text>
+  //       </View>
+  //       <View>
+  //         <Button
+  //           title="Start Ordering"
+  //           buttonType="orange"
+  //           textType="labelButtonOrange"
+  //           accessibilityLabel="Start Ordering"
+  //         />
+  //       </View>
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -174,46 +185,50 @@ const Home = ({
             editable={false}
           />
         </TouchableOpacity>
-
-        {/* <FlatList
-          contentContainerStyle={styles.categoriesContainerStyle}
-          data={categories}
-          ItemSeparatorComponent={ItemSeparator2}
-          renderItem={({item}) => (
-            <CategoriesCard
-              item={item}
-              onPress={() => console.log('pressed')}
+        <View style={styles.marginSeparator} />
+        {loading === true || merchants.length < 1 ? (
+          <>
+            <FlatList
+              style={styles.flatlistContainer}
+              contentContainerStyle={styles.categoriesContainerStyle}
+              data={list}
+              ItemSeparatorComponent={ItemSeparator}
+              renderItem={() => <ShimmeringRestuarantCard />}
+              keyExtractor={item => `shimmer-${item.id}`}
+              horizontal
+              numColumns={1}
             />
-          )}
-          keyExtractor={(item, index) => `category-${index}`}
-          horizontal
-        /> */}
-        <View style={{marginVertical: 10}} />
-        <FlatList
-          contentContainerStyle={styles.categoriesContainerStyle}
-          data={merchants}
-          ItemSeparatorComponent={ItemSeparator}
-          renderItem={({item}) => (
-            <RestuarantCard
-              item={item}
-              onPress={() =>
-                navigation.navigate('RestuarantDetails', {
-                  token: encodedCipher,
-                  clientId: user.clientId,
-                  id: item.id,
-                  name: item.name,
-                  phone: item.phone,
-                  email: item.email,
-                  address: item.address,
-                  image_path: item.image_path,
-                })
-              }
+          </>
+        ) : (
+          <>
+            <FlatList
+              style={styles.flatlistContainer}
+              contentContainerStyle={styles.categoriesContainerStyle}
+              data={merchants}
+              ItemSeparatorComponent={ItemSeparator}
+              renderItem={({item}) => (
+                <RestuarantCard
+                  item={item}
+                  onPress={() =>
+                    navigation.navigate('RestuarantDetails', {
+                      token: encodedCipher,
+                      clientId: user.clientId,
+                      id: item.id,
+                      name: item.name,
+                      phone: item.phone,
+                      email: item.email,
+                      address: item.address,
+                      image_path: item.image_path,
+                    })
+                  }
+                />
+              )}
+              keyExtractor={(item, index) => `restaurant-${index}`}
+              horizontal
+              numColumns={1}
             />
-          )}
-          keyExtractor={(item, index) => `restaurant-${index}`}
-          horizontal
-          numColumns={1}
-        />
+          </>
+        )}
       </View>
     </SafeAreaView>
   );
