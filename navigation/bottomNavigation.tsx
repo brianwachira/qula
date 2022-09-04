@@ -92,7 +92,15 @@ const tabOptions = (props: {
 
   return {
     tabBarIcon: (props2: {focused: any}) => item?.icon(props2.focused),
-    tabBarLabel: () => <Text textType="labelSmall">{item.title}</Text>,
+    tabBarLabel: (props3: {focused: any}) => (
+      <Text
+        textType="labelSmall"
+        style={{
+          color: props3.focused ? theme.colors.primary : theme.colors.grey,
+        }}>
+        {item.title}
+      </Text>
+    ),
     title: item?.title === 'Home' ? null : item?.title,
     headerTitleAlign: 'center',
     headerTitleStyle: {
