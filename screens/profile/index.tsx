@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 40,
+    margin: -12,
+  },
+  scrollViewContentContainer: {
+    padding: 12,
   },
   profileCard: {
     borderRadius: 20,
@@ -24,6 +28,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 15,
     paddingHorizontal: 10,
+    ...theme.boxShadowAndroid,
   },
   profileContent: {
     width: '65%',
@@ -56,6 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 27,
     alignItems: 'center',
+    ...theme.boxShadowAndroid,
   },
 });
 
@@ -64,7 +70,8 @@ const Profile = ({
 }: NativeStackScreenProps<RootStackParamList, 'ProfileStack'>) => {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContentContainer}>
         <Text style={styles.textProfileLabel}>Personal Details</Text>
         <TouchableOpacity
           style={styles.profileCard}
