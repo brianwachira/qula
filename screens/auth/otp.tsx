@@ -74,6 +74,7 @@ const Otp = ({
           phone: route.params.phone,
           userId: route.params.userId,
           clientId: route.params.clientId,
+          products: [],
         };
         console.log(newUser);
         // save the new user
