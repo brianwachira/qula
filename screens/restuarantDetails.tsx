@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  StatusBar,
   Dimensions,
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
@@ -252,15 +251,15 @@ const RestuarantDetails = ({
   }, [clientId]);
   return (
     <View style={styles.container}>
-      <StatusBar
+      {/* <StatusBar
         translucent
         backgroundColor="transparent"
         barStyle={'light-content'}
-      />
+      /> */}
       {/* Back icon */}
       <TouchableOpacity
         style={styles.backIconContainer}
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate('HomeTab', {screen: 'HomeStack'})}
         activeOpacity={0.9}>
         <ArrowLeftIcon width={35} height={35} />
       </TouchableOpacity>
