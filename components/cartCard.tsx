@@ -25,18 +25,22 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 interface CartCardProps
   extends Pick<PanGestureHandlerProps, 'simultaneousHandlers'> {
   item: {
-    id: string;
-    title: string;
+    id: number;
+    name: string;
     description: string;
-    price: number;
-    image: string;
+    cost: number;
+    in_stock: string;
+    image_path: string;
+    quantity: number;
   };
-  onDismiss?: (food: {
-    id: string;
-    title: string;
+  onDismiss?: (item: {
+    id: number;
+    name: string;
     description: string;
-    price: number;
-    image: string;
+    cost: number;
+    in_stock: string;
+    image_path: string;
+    quantity: number;
   }) => void;
 }
 
@@ -117,16 +121,16 @@ const CartCard = (props: CartCardProps) => {
           <View style={styles.cartItemImageContainer}>
             <Image
               style={styles.cartItemImage}
-              source={{uri: props.item.image}}
+              source={{uri: props.item.image_path}}
             />
           </View>
           <View style={styles.cartItemContentContainer}>
             <View style={styles.cartItemContentRow}>
               <View style={styles.cartContentColumn}>
                 <Text style={styles.cartItemTitle} numberOfLines={1}>
-                  {props.item.title}
+                  {props.item.name}-{props.item.id}
                 </Text>
-                <Text color="primary">${props.item.price}</Text>
+                <Text color="primary">${props.item.cost}</Text>
               </View>
               <View style={styles.cartItemQuantityButton}>
                 <TouchableOpacity style={styles.plusButton}>
