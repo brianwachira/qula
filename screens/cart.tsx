@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions, Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from '../components/shared-ui/button';
@@ -52,21 +52,29 @@ const Cart = ({
   const {products} = user;
   console.log(products);
 
-  const onDismiss = useCallback((cartItem: cartProduct) => {
-    //console.log(cartItem.id);
-    // remove it from cart
-    // let userWithoutProductOnCart = {
-    //   ...user,
-    //   products: products.filter(product => product.id !== cartItem.id),
-    // };
-    // console.log(userWithoutProductOnCart);
-    // save updated user
-    setUser({
-      ...user,
-      products: products.filter(product => product.id !== cartItem.id),
-    });
+  // products in cart state
+  const [productsInCart, setProductsInCart] = useState<cartProduct[]>();
+
+  // use effect to add products to cart
+  useEffect(() => {
+    setProductsInCart(products);
+  }, [products]);
+
+  const onDismiss = useCallback(
+    (cartItem: cartProduct) => {
+      // save to productsInCart state
+      setProductsInCart(productsInCartToFilter =>
+        productsInCartToFilter?.filter(product => product.id !== cartItem.id),
+      );
+      // save updated user
+      setUser({
+        ...user,
+        products: productsInCart,
+      });
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    [products],
+  );
 
   // this ref allows gesture handler to handle the scroll view and the swipe gesture to render properly
   const scrollRef = useRef(null);
@@ -83,7 +91,7 @@ const Cart = ({
         style={styles.scrollViewContainer}
         showsVerticalScrollIndicator={false}
         ref={scrollRef}>
-        {products.map(
+        {productsInCart?.map(
           (cartItem: {
             id: number;
             name: string;
