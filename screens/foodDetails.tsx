@@ -14,7 +14,11 @@ import Button from '../components/shared-ui/button';
 import Text from '../components/shared-ui/text';
 import {useStorage} from '../hooks/useStorage';
 import theme from '../styles/themes';
-import {cartItem, RootStackParamList} from '../types/types';
+import {
+  cartProduct,
+  defaultStorageObject,
+  RootStackParamList,
+} from '../types/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -97,13 +101,17 @@ const FoodDetails = ({
 
   const {email, authKey, phone, userId, clientId, products} = user;
 
-  const [productInCart, setProductInCart] = useState<cartItem>();
-
+  const [productInCart, setProductInCart] = useState<cartProduct>();
   // function to handle adding item to cart
   const handleCart = () => {
     // new product to save in cart
     let newProductInCart = {
-      productID: parseInt(id, 10),
+      id,
+      name,
+      image_path,
+      description,
+      in_stock,
+      cost,
       quantity: 1,
     };
     // user object containing product in cart
@@ -127,7 +135,7 @@ const FoodDetails = ({
   const addQuantity = () => {
     // updated product with quantity
     let updatedProductInCart = {
-      productID: parseInt(id, 10),
+      ...productInCart,
       quantity: productInCart!.quantity + 1,
     };
 
@@ -139,15 +147,17 @@ const FoodDetails = ({
       userId,
       clientId,
       products: products.map(product =>
-        product.productID === parseInt(id, 10) ? updatedProductInCart : product,
+        parseInt(product.id, 10) === parseInt(id, 10)
+          ? updatedProductInCart
+          : product,
       ),
     };
 
     // save updated user
-    setUser(userWithProductOnCart);
+    setUser(userWithProductOnCart as defaultStorageObject);
 
     // save updated product in cart to state
-    setProductInCart(updatedProductInCart);
+    setProductInCart(updatedProductInCart as cartProduct);
   };
 
   // function to deduct quantity
@@ -161,7 +171,7 @@ const FoodDetails = ({
         userId,
         clientId,
         products: products.filter(
-          product => product.productID !== parseInt(id, 10),
+          product => parseInt(product.id, 10) !== parseInt(id, 10),
         ),
       };
 
@@ -173,7 +183,7 @@ const FoodDetails = ({
     } else {
       // updated product with quantity
       let updatedProductInCart = {
-        productID: parseInt(id, 10),
+        ...productInCart,
         quantity: productInCart!.quantity - 1,
       };
 
@@ -185,30 +195,29 @@ const FoodDetails = ({
         userId,
         clientId,
         products: products.map(product =>
-          product.productID === parseInt(id, 10)
+          parseInt(product.id, 10) === parseInt(id, 10)
             ? updatedProductInCart
             : product,
         ),
       };
 
       // save updated user
-      setUser(userWithProductOnCart);
+      setUser(userWithProductOnCart as defaultStorageObject);
 
       // save updated product in cart to state
-      setProductInCart(updatedProductInCart);
+      setProductInCart(updatedProductInCart as cartProduct);
     }
   };
 
   // use effect to check whether product is in cart
   useEffect(() => {
     // look for the product
-    const isProductInCart = products.find(
-      product => product.productID === parseInt(id, 10),
+    const productIsInCart = products.find(
+      product => parseInt(product.id, 10) === parseInt(id, 10),
     );
-
-    if (typeof isProductInCart !== 'undefined') {
+    if (typeof productIsInCart !== undefined) {
       // save the product in cart to state
-      setProductInCart(isProductInCart);
+      setProductInCart(productIsInCart);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
