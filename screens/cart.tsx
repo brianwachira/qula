@@ -1,12 +1,12 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions, Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from '../components/shared-ui/button';
-import {foods} from '../mockdata';
-import {RootStackParamList} from '../types/types';
+import {cartProduct, RootStackParamList} from '../types/types';
 import CartCard from '../components/cartCard';
 import {ScrollView} from 'react-native-gesture-handler';
 import Text from '../components/shared-ui/text';
+import {useStorage} from '../hooks/useStorage';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,19 +46,26 @@ const Cart = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Cart'>) => {
-  type food = {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    image: string;
-  };
-  const [cartItems, setCartItems] = useState<food[]>(foods);
+  // user object from useStorage hook
+  const [user, setUser] = useStorage('user');
 
-  const onDismiss = useCallback((food: food) => {
-    setCartItems(cartItemsToFilter =>
-      cartItemsToFilter.filter(item => item.id !== food.id),
-    );
+  const {products} = user;
+  console.log(products);
+
+  const onDismiss = useCallback((cartItem: cartProduct) => {
+    //console.log(cartItem.id);
+    // remove it from cart
+    // let userWithoutProductOnCart = {
+    //   ...user,
+    //   products: products.filter(product => product.id !== cartItem.id),
+    // };
+    // console.log(userWithoutProductOnCart);
+    // save updated user
+    setUser({
+      ...user,
+      products: products.filter(product => product.id !== cartItem.id),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // this ref allows gesture handler to handle the scroll view and the swipe gesture to render properly
@@ -76,13 +83,15 @@ const Cart = ({
         style={styles.scrollViewContainer}
         showsVerticalScrollIndicator={false}
         ref={scrollRef}>
-        {cartItems.map(
+        {products.map(
           (cartItem: {
-            id: string;
-            title: string;
-            price: number;
+            id: number;
+            name: string;
             description: string;
-            image: string;
+            cost: number;
+            in_stock: string;
+            image_path: string;
+            quantity: number;
           }) => (
             <CartCard key={cartItem.id} item={cartItem} onDismiss={onDismiss} />
           ),
