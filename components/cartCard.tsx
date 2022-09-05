@@ -130,14 +130,16 @@ const CartCard = (props: CartCardProps) => {
                 <Text style={styles.cartItemTitle} numberOfLines={1}>
                   {props.item.name}-{props.item.id}
                 </Text>
-                <Text color="primary">${props.item.cost}</Text>
+                <Text color="primary">KES {props.item.cost}</Text>
               </View>
               <View style={styles.cartItemQuantityButton}>
                 <TouchableOpacity style={styles.plusButton}>
                   <Text style={{color: theme.colors.white}}>-</Text>
                 </TouchableOpacity>
                 <View style={styles.quantityLabel}>
-                  <Text style={{color: theme.colors.white}}>3</Text>
+                  <Text style={{color: theme.colors.white}}>
+                    {props.item.quantity}
+                  </Text>
                 </View>
                 <TouchableOpacity style={styles.minusButton}>
                   <Text style={{color: theme.colors.white}}>+</Text>
