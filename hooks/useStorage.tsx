@@ -3,15 +3,11 @@ import {
   MMKVLoader,
   useMMKVStorage,
 } from 'react-native-mmkv-storage';
+import {cartItem} from '../types/types';
 
 const MMKV: MMKVInstance = new MMKVLoader().initialize();
 
 type LiteralUnion<T extends U, U = string> = T | (U & {});
-
-type products = {
-  productID: number;
-  quantity: number;
-};
 
 type defaultObject = {
   email?: string;
@@ -19,7 +15,7 @@ type defaultObject = {
   phone: string;
   userId: string;
   clientId: string;
-  products: products[] | [];
+  products: cartItem[] | [];
 };
 
 export const useStorage = (
