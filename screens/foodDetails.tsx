@@ -215,6 +215,7 @@ const FoodDetails = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  // so the problem is you are manipulating the storage directly
   return (
     <SafeAreaView key={id} style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
