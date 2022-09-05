@@ -14,7 +14,7 @@ import Button from '../components/shared-ui/button';
 import Text from '../components/shared-ui/text';
 import {useStorage} from '../hooks/useStorage';
 import theme from '../styles/themes';
-import {RootStackParamList} from '../types/types';
+import {cartItem, RootStackParamList} from '../types/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -57,18 +57,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
     borderRadius: theme.borderRadius.button,
     padding: 4,
+    paddingVertical: 14,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    // Shadow for iOS
-    shadowOpacity: 0.08,
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowRadius: 10,
-    // Shadow for Android
-    elevation: 5,
+    ...theme.boxShadowAndroid,
   },
   plusButton: {
     alignItems: 'center',
@@ -88,6 +81,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
+  textButtonLabel: {
+    marginBottom: 10,
+  },
 });
 
 const FoodDetails = ({
@@ -101,42 +97,41 @@ const FoodDetails = ({
 
   const {email, authKey, phone, userId, clientId, products} = user;
 
-  const [quantity, setQuantity] = useState<number>(1);
-
-  const [productIsInCart, setProductIsInCart] = useState<boolean>(false);
+  const [productInCart, setProductInCart] = useState<cartItem>();
 
   // function to handle adding item to cart
   const handleCart = () => {
+    // new product to save in cart
+    let newProductInCart = {
+      productID: parseInt(id, 10),
+      quantity: 1,
+    };
+    // user object containing product in cart
     let userWithProductOnCart = {
       email,
       authKey,
       phone,
       userId,
       clientId,
-      products: [
-        ...products,
-        {
-          productID: parseInt(id, 10),
-          quantity: quantity,
-        },
-      ],
+      products: [...products, newProductInCart],
     };
+
+    // save updated user
     setUser(userWithProductOnCart);
+
+    // save product in cart to state
+    setProductInCart(newProductInCart);
   };
 
   // function to add quantity
   const addQuantity = () => {
-    setQuantity(quantity + 1);
-  };
+    // updated product with quantity
+    let updatedProductInCart = {
+      productID: parseInt(id, 10),
+      quantity: productInCart!.quantity + 1,
+    };
 
-  // function to deduct quantity
-  const deductQuantity = () => {
-    setQuantity(quantity - 1);
-  };
-
-  // I am hoping this useEffect will always update my storage
-  useEffect(() => {
-    console.log('running');
+    // user object containing updated product in cart
     let userWithProductOnCart = {
       email,
       authKey,
@@ -144,28 +139,76 @@ const FoodDetails = ({
       userId,
       clientId,
       products: products.map(product =>
-        product.productID === parseInt(id, 10)
-          ? {
-              productID: parseInt(id, 10),
-              quantity: quantity,
-            }
-          : product,
+        product.productID === parseInt(id, 10) ? updatedProductInCart : product,
       ),
     };
+
+    // save updated user
     setUser(userWithProductOnCart);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quantity]);
+
+    // save updated product in cart to state
+    setProductInCart(updatedProductInCart);
+  };
+
+  // function to deduct quantity
+  const deductQuantity = () => {
+    if (productInCart!.quantity - 1 === 0) {
+      // remove it from cart
+      let userWithoutProductOnCart = {
+        email,
+        authKey,
+        phone,
+        userId,
+        clientId,
+        products: products.filter(
+          product => product.productID !== parseInt(id, 10),
+        ),
+      };
+
+      // save updated user
+      setUser(userWithoutProductOnCart);
+
+      // remove cart product from state
+      setProductInCart(undefined);
+    } else {
+      // updated product with quantity
+      let updatedProductInCart = {
+        productID: parseInt(id, 10),
+        quantity: productInCart!.quantity - 1,
+      };
+
+      // user object containing updated product in cart
+      let userWithProductOnCart = {
+        email,
+        authKey,
+        phone,
+        userId,
+        clientId,
+        products: products.map(product =>
+          product.productID === parseInt(id, 10)
+            ? updatedProductInCart
+            : product,
+        ),
+      };
+
+      // save updated user
+      setUser(userWithProductOnCart);
+
+      // save updated product in cart to state
+      setProductInCart(updatedProductInCart);
+    }
+  };
 
   // use effect to check whether product is in cart
   useEffect(() => {
+    // look for the product
     const isProductInCart = products.find(
       product => product.productID === parseInt(id, 10),
     );
 
     if (typeof isProductInCart !== 'undefined') {
-      setProductIsInCart(true);
-    } else {
-      setProductIsInCart(false);
+      // save the product in cart to state
+      setProductInCart(isProductInCart);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -185,29 +228,54 @@ const FoodDetails = ({
         KES {cost}
       </Text>
       <Text color="primary" textAlign="center" style={styles.textPlate}>
-        {in_stock} {parseInt(in_stock, 10) > 1 ? 'plates' : 'plate'}
+        {productInCart ? (
+          <>{parseInt(in_stock, 10) - productInCart.quantity}</>
+        ) : (
+          <>{in_stock}</>
+        )}
+        {parseInt(in_stock, 10) > 1 ? (
+          ' plates remaining'
+        ) : (
+          <>
+            {parseInt(in_stock, 10) - productInCart?.quantity === 0
+              ? ' plates remaining'
+              : ' plate remaining'}
+          </>
+        )}
       </Text>
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
         <Text style={styles.textDescription}>{description}</Text>
       </ScrollView>
-      {productIsInCart === true ? (
+      {productInCart ? (
         <>
+          {/*  cart item button */}
           <View style={styles.cartButtonContainer}>
+            <Text textAlign="center" style={styles.textButtonLabel}>
+              Quantity
+            </Text>
             <View style={styles.cartItemQuantityButton}>
               <TouchableOpacity
                 style={styles.plusButton}
-                onPress={deductQuantity}>
-                <Text style={{color: theme.colors.white}}>-</Text>
+                onPress={deductQuantity}
+                disabled={productInCart?.quantity === 0}>
+                <Text style={{color: theme.colors.white}} textType="empty">
+                  -
+                </Text>
               </TouchableOpacity>
               <View style={styles.quantityLabel}>
-                <Text style={{color: theme.colors.white}}>{quantity}</Text>
+                <Text style={{color: theme.colors.white}} textType="empty">
+                  {productInCart?.quantity}
+                </Text>
               </View>
               <TouchableOpacity
                 style={styles.minusButton}
-                onPress={addQuantity}>
-                <Text style={{color: theme.colors.white}}>+</Text>
+                onPress={addQuantity}
+                disabled={productInCart?.quantity === parseInt(in_stock, 10)}>
+                <Text style={{color: theme.colors.white}} textType="empty">
+                  +
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
