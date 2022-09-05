@@ -1,4 +1,4 @@
-type product = {
+export type product = {
   id: string;
   name: string;
   description: string;
@@ -71,4 +71,17 @@ export type Imerchants = {
 export type cartItem = {
   productID: number;
   quantity: number;
+};
+
+export interface cartProduct extends product {
+  quantity: number;
+}
+
+export type defaultStorageObject = {
+  email?: string;
+  authKey: string;
+  phone: string;
+  userId: string;
+  clientId: string;
+  products: cartProduct[] | [];
 };
