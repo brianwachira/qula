@@ -104,6 +104,7 @@ const FoodDetails = ({
   const [productInCart, setProductInCart] = useState<cartProduct>();
   // function to handle adding item to cart
   const handleCart = () => {
+    console.log(id);
     // new product to save in cart
     let newProductInCart = {
       id,
@@ -147,9 +148,7 @@ const FoodDetails = ({
       userId,
       clientId,
       products: products.map(product =>
-        parseInt(product.id, 10) === parseInt(id, 10)
-          ? updatedProductInCart
-          : product,
+        product.id === id ? updatedProductInCart : product,
       ),
     };
 
@@ -170,9 +169,7 @@ const FoodDetails = ({
         phone,
         userId,
         clientId,
-        products: products.filter(
-          product => parseInt(product.id, 10) !== parseInt(id, 10),
-        ),
+        products: products.filter(product => product.id !== id),
       };
 
       // save updated user
@@ -195,9 +192,7 @@ const FoodDetails = ({
         userId,
         clientId,
         products: products.map(product =>
-          parseInt(product.id, 10) === parseInt(id, 10)
-            ? updatedProductInCart
-            : product,
+          product.id === id ? updatedProductInCart : product,
         ),
       };
 
@@ -212,9 +207,7 @@ const FoodDetails = ({
   // use effect to check whether product is in cart
   useEffect(() => {
     // look for the product
-    const productIsInCart = products.find(
-      product => parseInt(product.id, 10) === parseInt(id, 10),
-    );
+    const productIsInCart = products.find(product => product.id === id);
     if (typeof productIsInCart !== undefined) {
       // save the product in cart to state
       setProductInCart(productIsInCart);
