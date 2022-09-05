@@ -67,3 +67,8 @@ export type Imerchants = {
   updated_at: string;
   image_path: string;
 };
+
+export type cartItem = {
+  productID: number;
+  quantity: number;
+};
