@@ -240,7 +240,7 @@ const FoodDetails = ({
           ' plates remaining'
         ) : (
           <>
-            {parseInt(in_stock, 10) - productInCart?.quantity === 0
+            {parseInt(in_stock, 10) - (productInCart?.quantity as number) === 0
               ? ' plates remaining'
               : ' plate remaining'}
           </>
