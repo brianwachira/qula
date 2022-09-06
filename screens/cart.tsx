@@ -50,10 +50,12 @@ const Cart = ({
   const [user, setUser] = useStorage('user');
 
   const {products} = user;
-  console.log(products);
+  console.log('products', products);
 
   // products in cart state
-  const [productsInCart, setProductsInCart] = useState<cartProduct[]>();
+  const [productsInCart, setProductsInCart] = useState<cartProduct[]>(
+    products as cartProduct[],
+  );
 
   // use effect to add products to cart
   useEffect(() => {
@@ -67,10 +69,10 @@ const Cart = ({
         productsInCartToFilter?.filter(product => product.id !== cartItem.id),
       );
       // save updated user
-      setUser({
-        ...user,
-        products: productsInCart as cartProduct[],
-      });
+      // setUser({
+      //   ...user,
+      //   products: productsInCart,
+      // });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [products],
