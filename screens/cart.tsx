@@ -69,7 +69,7 @@ const Cart = ({
       // save updated user
       setUser({
         ...user,
-        products: productsInCart,
+        products: productsInCart as cartProduct[],
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
