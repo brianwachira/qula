@@ -354,7 +354,7 @@ const RestuarantDetails = ({
           </View>
           {/* menu items */}
           <View style={styles.menuContainer}>
-            {loading === true || products.length < 1 ? (
+            {loading === true || (products && products?.length < 1) ? (
               <>
                 {list.map(item => (
                   <View style={styles.menuContentWrapper} key={item.id + 20}>
@@ -384,7 +384,7 @@ const RestuarantDetails = ({
                 {products?.map(
                   (
                     product: {
-                      id: string;
+                      id: number;
                       name: string;
                       image_path: string;
                       description: string;
