@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
-import {RootStackParamList} from '../../types/types';
+import {cartProduct, RootStackParamList} from '../../types/types';
 import OTPInput from '../../components/shared-ui/otpInput';
 import theme from '../../styles/themes';
 import Button from '../../components/shared-ui/button';
@@ -74,7 +74,7 @@ const Otp = ({
           phone: route.params.phone,
           userId: route.params.userId,
           clientId: route.params.clientId,
-          products: [],
+          products: [] as unknown as cartProduct[],
         };
         console.log(newUser);
         // save the new user
