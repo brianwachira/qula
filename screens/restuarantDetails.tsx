@@ -248,6 +248,7 @@ const RestuarantDetails = ({
       });
     // set loading true
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientId]);
   return (
     <View style={styles.container}>
