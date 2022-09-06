@@ -20,76 +20,6 @@ import {
   RootStackParamList,
 } from '../types/types';
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flex: 1,
-    marginHorizontal: 40,
-    marginTop: StatusBar.currentHeight,
-  },
-  imageContainer: {
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  image: {
-    borderRadius: 100,
-    height: 200,
-    width: 200,
-    resizeMode: 'cover',
-  },
-  scrollContainer: {
-    flexGrow: 0.9,
-    marginVertical: 10,
-    marginHorizontal: 40,
-  },
-  backIcon: {
-    marginRight: 10,
-  },
-  cartButtonContainer: {
-    alignItems: 'center',
-  },
-  textPrice: {
-    marginVertical: 5,
-  },
-  textPlate: {
-    backgroundColor: theme.colors.tab,
-  },
-  textDescription: {
-    opacity: 0.57,
-  },
-  cartItemQuantityButton: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.button,
-    padding: 4,
-    paddingVertical: 14,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    ...theme.boxShadowAndroid,
-  },
-  plusButton: {
-    alignItems: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
-    flex: 1,
-  },
-  quantityLabel: {
-    alignItems: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
-    flex: 1,
-  },
-  minusButton: {
-    alignItems: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
-    flex: 1,
-  },
-  textButtonLabel: {
-    marginBottom: 10,
-  },
-});
-
 const FoodDetails = ({
   route,
   navigation,
@@ -102,6 +32,7 @@ const FoodDetails = ({
   const {email, authKey, phone, userId, clientId, products} = user;
 
   const [productInCart, setProductInCart] = useState<cartProduct>();
+
   // function to handle adding item to cart
   const handleCart = () => {
     console.log(id);
@@ -136,7 +67,7 @@ const FoodDetails = ({
   const addQuantity = () => {
     // updated product with quantity
     let updatedProductInCart = {
-      ...productInCart,
+      ...(productInCart as cartProduct),
       quantity: productInCart!.quantity + 1,
     };
 
@@ -153,10 +84,10 @@ const FoodDetails = ({
     };
 
     // save updated user
-    setUser(userWithProductOnCart as defaultStorageObject);
+    setUser(userWithProductOnCart);
 
     // save updated product in cart to state
-    setProductInCart(updatedProductInCart as cartProduct);
+    setProductInCart(updatedProductInCart);
   };
 
   // function to deduct quantity
@@ -207,7 +138,7 @@ const FoodDetails = ({
   // use effect to check whether product is in cart
   useEffect(() => {
     // look for the product
-    const productIsInCart = products.find(product => product.id === id);
+    const productIsInCart = products?.find(product => product.id === id);
     if (typeof productIsInCart !== undefined) {
       // save the product in cart to state
       setProductInCart(productIsInCart);
@@ -225,7 +156,7 @@ const FoodDetails = ({
         <Image source={{uri: image_path}} style={styles.image} />
       </View>
       <Text textType="empty" textAlign="center">
-        {name}
+        {name} {id}
       </Text>
       <Text color="primary" textAlign="center" style={styles.textPrice}>
         KES {cost}
@@ -300,4 +231,73 @@ const FoodDetails = ({
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    marginHorizontal: 40,
+    marginTop: StatusBar.currentHeight,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  image: {
+    borderRadius: 100,
+    height: 200,
+    width: 200,
+    resizeMode: 'cover',
+  },
+  scrollContainer: {
+    flexGrow: 0.9,
+    marginVertical: 10,
+    marginHorizontal: 40,
+  },
+  backIcon: {
+    marginRight: 10,
+  },
+  cartButtonContainer: {
+    alignItems: 'center',
+  },
+  textPrice: {
+    marginVertical: 5,
+  },
+  textPlate: {
+    backgroundColor: theme.colors.tab,
+  },
+  textDescription: {
+    opacity: 0.57,
+  },
+  cartItemQuantityButton: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.button,
+    padding: 4,
+    paddingVertical: 14,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    ...theme.boxShadowAndroid,
+  },
+  plusButton: {
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    flex: 1,
+  },
+  quantityLabel: {
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    flex: 1,
+  },
+  minusButton: {
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    flex: 1,
+  },
+  textButtonLabel: {
+    marginBottom: 10,
+  },
+});
 export default FoodDetails;
