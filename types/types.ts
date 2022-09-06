@@ -83,5 +83,5 @@ export type defaultStorageObject = {
   phone: string;
   userId: string;
   clientId: string;
-  products: cartProduct[] | [];
+  products: cartProduct[];
 };
