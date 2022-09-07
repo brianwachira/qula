@@ -42,6 +42,24 @@ interface CartCardProps
     image_path: string;
     quantity: number;
   }) => void;
+  onAddQuantity: (item: {
+    id: number;
+    name: string;
+    description: string;
+    cost: number;
+    in_stock: string;
+    image_path: string;
+    quantity: number;
+  }) => void;
+  onDeductQuantity: (item: {
+    id: number;
+    name: string;
+    description: string;
+    cost: number;
+    in_stock: string;
+    image_path: string;
+    quantity: number;
+  }) => void;
 }
 
 const LIST_ITEM_HEIGHT = 120;
@@ -133,7 +151,10 @@ const CartCard = (props: CartCardProps) => {
                 <Text color="primary">KES {props.item.cost}</Text>
               </View>
               <View style={styles.cartItemQuantityButton}>
-                <TouchableOpacity style={styles.plusButton}>
+                <TouchableOpacity
+                  style={styles.plusButton}
+                  onPress={() => props.onDeductQuantity(props.item)}
+                  disabled={props.item.quantity === 0}>
                   <Text style={{color: theme.colors.white}}>-</Text>
                 </TouchableOpacity>
                 <View style={styles.quantityLabel}>
@@ -141,7 +162,12 @@ const CartCard = (props: CartCardProps) => {
                     {props.item.quantity}
                   </Text>
                 </View>
-                <TouchableOpacity style={styles.minusButton}>
+                <TouchableOpacity
+                  style={styles.minusButton}
+                  onPress={() => props.onAddQuantity(props.item)}
+                  disabled={
+                    props.item.quantity === parseInt(props.item.in_stock, 10)
+                  }>
                   <Text style={{color: theme.colors.white}}>+</Text>
                 </TouchableOpacity>
               </View>
