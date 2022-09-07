@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions, Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from '../components/shared-ui/button';
@@ -50,7 +50,6 @@ const Cart = ({
   const [user, setUser] = useStorage('user');
 
   const {products} = user;
-  console.log('products', products);
 
   // products in cart state
   const [productsInCart, setProductsInCart] = useState<cartProduct[]>(
@@ -62,22 +61,79 @@ const Cart = ({
     setProductsInCart(products);
   }, [products]);
 
-  const onDismiss = useCallback(
-    (cartItem: cartProduct) => {
-      // save to productsInCart state
-      setProductsInCart(productsInCartToFilter =>
-        productsInCartToFilter?.filter(product => product.id !== cartItem.id),
-      );
-      // save updated user
-      // setUser({
-      //   ...user,
-      //   products: productsInCart,
-      // });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [products],
-  );
+  const onDismiss = (cartItem: cartProduct) => {
+    // save to productsInCart state
+    setProductsInCart(
+      productsInCart?.filter(productInCart => productInCart.id !== cartItem.id),
+    );
 
+    //
+    setUser({
+      ...user,
+      products: products.filter(product => product.id !== cartItem.id),
+    });
+  };
+
+  // function to add quantity
+  const addQuantity = (cartItem: cartProduct) => {
+    console.log('pressed');
+    // updated product with quantity
+    let updatedProductInCart = {
+      ...cartItem,
+      quantity: cartItem.quantity + 1,
+    };
+
+    // user object containing updated product in cart
+    let userWithProductOnCart = {
+      ...user,
+      products: products.map(product =>
+        product.id === cartItem.id ? updatedProductInCart : product,
+      ),
+    };
+
+    // save updated user
+    setUser(userWithProductOnCart);
+
+    // save updated product in cart to state
+    setProductsInCart(
+      productsInCart?.map(productInCart =>
+        productInCart.id === cartItem.id ? updatedProductInCart : productInCart,
+      ),
+    );
+  };
+
+  // function to deduct quantity
+  const deductQuantity = (cartItem: cartProduct) => {
+    if (cartItem.quantity - 1 === 0) {
+      onDismiss(cartItem);
+    } else {
+      // updated product with quantity
+      let updatedProductInCart = {
+        ...cartItem,
+        quantity: cartItem.quantity - 1,
+      };
+
+      // user object containing updated product in cart
+      let userWithProductOnCart = {
+        ...user,
+        products: products.map(product =>
+          product.id === cartItem.id ? updatedProductInCart : product,
+        ),
+      };
+
+      // save updated user
+      setUser(userWithProductOnCart);
+
+      // save updated product in cart to state
+      setProductsInCart(
+        productsInCart?.map(productInCart =>
+          productInCart.id === cartItem.id
+            ? updatedProductInCart
+            : productInCart,
+        ),
+      );
+    }
+  };
   // this ref allows gesture handler to handle the scroll view and the swipe gesture to render properly
   const scrollRef = useRef(null);
   return (
@@ -103,7 +159,13 @@ const Cart = ({
             image_path: string;
             quantity: number;
           }) => (
-            <CartCard key={cartItem.id} item={cartItem} onDismiss={onDismiss} />
+            <CartCard
+              key={cartItem.id}
+              item={cartItem}
+              onDismiss={onDismiss}
+              onAddQuantity={addQuantity}
+              onDeductQuantity={deductQuantity}
+            />
           ),
         )}
       </ScrollView>
