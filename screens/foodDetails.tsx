@@ -33,9 +33,18 @@ const FoodDetails = ({
 
   const [productInCart, setProductInCart] = useState<cartProduct>();
 
+  // use effect to check whether product is in cart
+  useEffect(() => {
+    // look for the product
+    const productIsInCart = products?.find(product => product.id === id);
+    if (typeof productIsInCart !== undefined) {
+      // save the product in cart to state
+      setProductInCart(productIsInCart);
+    }
+  }, [id, products]);
+
   // function to handle adding item to cart
   const handleCart = () => {
-    console.log(id);
     // new product to save in cart
     let newProductInCart = {
       id,
@@ -134,17 +143,6 @@ const FoodDetails = ({
       setProductInCart(updatedProductInCart as cartProduct);
     }
   };
-
-  // use effect to check whether product is in cart
-  useEffect(() => {
-    // look for the product
-    const productIsInCart = products?.find(product => product.id === id);
-    if (typeof productIsInCart !== undefined) {
-      // save the product in cart to state
-      setProductInCart(productIsInCart);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
 
   // so the problem is you are manipulating the storage directly
   return (
