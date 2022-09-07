@@ -62,21 +62,17 @@ const Cart = ({
     setProductsInCart(products);
   }, [products]);
 
-  const onDismiss = useCallback(
-    (cartItem: cartProduct) => {
-      // save to productsInCart state
-      setProductsInCart(productsInCartToFilter =>
-        productsInCartToFilter?.filter(product => product.id !== cartItem.id),
-      );
-      // save updated user
-      // setUser({
-      //   ...user,
-      //   products: productsInCart,
-      // });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [products],
-  );
+  const onDismiss = (cartItem: cartProduct) => {
+    // save to productsInCart state
+    setProductsInCart(productsInCartToFilter =>
+      productsInCartToFilter?.filter(product => product.id !== cartItem.id),
+    );
+    // save updated user
+    setUser({
+      ...user,
+      products: products.filter(product => product.id !== cartItem.id),
+    });
+  };
 
   // this ref allows gesture handler to handle the scroll view and the swipe gesture to render properly
   const scrollRef = useRef(null);
