@@ -20,6 +20,223 @@ import Text from '../components/shared-ui/text';
 import {list} from '../constants';
 import Shimmering from '../components/shared-ui/shimmering';
 
+const RestuarantDetails = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, 'RestuarantDetails'>) => {
+  const {name, phone, email, address, image_path, token, clientId} =
+    route.params;
+
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState<Icategories[]>([]);
+  const [category, setCategory] = useState<Icategories>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    // set loading true
+    setLoading(true);
+
+    // params
+    const params = new URLSearchParams({
+      token,
+      client_id: clientId,
+    });
+    axios
+      .get(`${API_URL}/fetch-products?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          console.log(response.data.status);
+        } else {
+          setProducts(response.data.data);
+          setCategories(response.data.categories);
+          setCategory(response.data.categories[0]);
+        }
+      });
+    // set loading true
+    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientId]);
+
+  return (
+    <View style={styles.container}>
+      {/* <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={'light-content'}
+      /> */}
+      {/* Back icon */}
+      <TouchableOpacity
+        style={styles.backIconContainer}
+        onPress={() => navigation.navigate('HomeTab', {screen: 'HomeStack'})}
+        activeOpacity={0.9}>
+        <ArrowLeftIcon width={35} height={35} />
+      </TouchableOpacity>
+      <View style={styles.mapImageWrpper}>
+        <Image source={{uri: image_path}} style={styles.restuarantImage} />
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Text style={styles.title}>{name}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <View style={styles.info}>
+              <View style={styles.infoItem}>
+                <Entypo
+                  name="location"
+                  size={14}
+                  color={theme.colors.primary}
+                />
+                <Text style={styles.infoText}> {address || 'Nairobi'}</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <Foundation
+                  name="telephone"
+                  size={16}
+                  color={theme.colors.primary}
+                />
+                <Text style={styles.infoText}> {phone || '0712345678'}</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <AntDesign name="star" size={12} color="#FFC238" />
+                <Text style={styles.infoText}>4.5 • (20)</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <AntDesign name="clockcircleo" size={10} color="#FFC238" />
+                <Text style={styles.infoText}>20-30 min</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <Foundation
+                  name="mail"
+                  size={16}
+                  color={theme.colors.primary}
+                />
+                <Text style={styles.infoText}> {email || '0712345678'}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.categoryContainer}>
+            <Text style={styles.categoryText}>Categories</Text>
+            <ScrollView
+              style={styles.categoryScrollViewContainer}
+              contentContainerStyle={styles.categoryScrollViewContentContainer}
+              horizontal>
+              {loading === true || categories.length < 1 ? (
+                <>
+                  {list.map(item => (
+                    <>
+                      <Shimmering
+                        key={item.id + 10}
+                        wrapperStyle={styles.categoryRowShimmering}
+                      />
+                      <View style={styles.categoryRowShimmeringMargin} />
+                    </>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {categories.map((item, index) => (
+                    <TouchableOpacity
+                      style={[
+                        styles.categoryRow,
+                        category?.category === item.category &&
+                          styles.categoryRowSelected,
+                      ]}
+                      onPress={() => setCategory(item)}
+                      key={index}
+                      activeOpacity={0.8}>
+                      <Text
+                        style={[
+                          styles.textCategory,
+                          category?.category === item.category &&
+                            styles.textCategorySelected,
+                        ]}>
+                        {item.category}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </>
+              )}
+            </ScrollView>
+          </View>
+          {/* menu items */}
+          <View style={styles.menuContainer}>
+            {loading === true || (products && products?.length < 1) ? (
+              <>
+                {list.map(item => (
+                  <View style={styles.menuContentWrapper} key={item.id + 20}>
+                    <View>
+                      <Shimmering wrapperStyle={styles.menuImage} />
+                    </View>
+                    <View style={styles.menuContent}>
+                      <View style={styles.menuContentInfo}>
+                        <Shimmering wrapperStyle={styles.foodNameShimmering} />
+                        <View style={styles.menuContentShimmeringMargin} />
+                        <Shimmering wrapperStyle={styles.foodPriceShimmering} />
+                        <View style={styles.menuContentShimmeringMargin} />
+                        <Shimmering
+                          wrapperStyle={styles.foodDescriptionShimmering}
+                        />
+                        <View style={styles.menuContentShimmeringMargin} />
+                        <Shimmering
+                          wrapperStyle={styles.foodDescriptionShimmering2}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </>
+            ) : (
+              <>
+                {products?.map(
+                  (
+                    product: {
+                      id: number;
+                      name: string;
+                      image_path: string;
+                      description: string;
+                      in_stock: string;
+                      cost: number;
+                    },
+                    index: React.Key | null | undefined,
+                  ) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.menuContentWrapper}
+                      onPress={() =>
+                        navigation.navigate('FoodDetails', {product: product})
+                      }>
+                      <View>
+                        <Image
+                          source={{uri: product.image_path}}
+                          style={styles.menuImage}
+                        />
+                      </View>
+                      <View style={styles.menuContent}>
+                        <View style={styles.menuContentInfo}>
+                          <Text style={styles.foodName}>{product.name}</Text>
+                          <Text style={styles.foodPrice}>
+                            KES {product.cost}
+                          </Text>
+                          <Text
+                            style={styles.foodDescription}
+                            numberOfLines={2}>
+                            {product.description}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ),
+                )}
+              </>
+            )}
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
@@ -214,220 +431,4 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
-const RestuarantDetails = ({
-  route,
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, 'RestuarantDetails'>) => {
-  const {name, phone, email, address, image_path, token, clientId} =
-    route.params;
-
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState<Icategories[]>([]);
-  const [category, setCategory] = useState<Icategories>();
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    // set loading true
-    setLoading(true);
-
-    // params
-    const params = new URLSearchParams({
-      token,
-      client_id: clientId,
-    });
-    axios
-      .get(`${API_URL}/fetch-products?${params}`)
-      .then((response: AxiosResponse) => {
-        if (response.data.status === false) {
-          console.log(response.data.status);
-        } else {
-          setProducts(response.data.data);
-          setCategories(response.data.categories);
-          setCategory(response.data.categories[0]);
-        }
-      });
-    // set loading true
-    setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clientId]);
-  return (
-    <View style={styles.container}>
-      {/* <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle={'light-content'}
-      /> */}
-      {/* Back icon */}
-      <TouchableOpacity
-        style={styles.backIconContainer}
-        onPress={() => navigation.navigate('HomeTab', {screen: 'HomeStack'})}
-        activeOpacity={0.9}>
-        <ArrowLeftIcon width={35} height={35} />
-      </TouchableOpacity>
-      <View style={styles.mapImageWrpper}>
-        <Image source={{uri: image_path}} style={styles.restuarantImage} />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          <View style={styles.header}>
-            <Text style={styles.title}>{name}</Text>
-          </View>
-          <View style={styles.infoContainer}>
-            <View style={styles.info}>
-              <View style={styles.infoItem}>
-                <Entypo
-                  name="location"
-                  size={14}
-                  color={theme.colors.primary}
-                />
-                <Text style={styles.infoText}> {address || 'Nairobi'}</Text>
-              </View>
-              <View style={styles.infoItem}>
-                <Foundation
-                  name="telephone"
-                  size={16}
-                  color={theme.colors.primary}
-                />
-                <Text style={styles.infoText}> {phone || '0712345678'}</Text>
-              </View>
-              <View style={styles.infoItem}>
-                <AntDesign name="star" size={12} color="#FFC238" />
-                <Text style={styles.infoText}>4.5 • (20)</Text>
-              </View>
-              <View style={styles.infoItem}>
-                <AntDesign name="clockcircleo" size={10} color="#FFC238" />
-                <Text style={styles.infoText}>20-30 min</Text>
-              </View>
-              <View style={styles.infoItem}>
-                <Foundation
-                  name="mail"
-                  size={16}
-                  color={theme.colors.primary}
-                />
-                <Text style={styles.infoText}> {email || '0712345678'}</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.categoryContainer}>
-            <Text style={styles.categoryText}>Categories</Text>
-            <ScrollView
-              style={styles.categoryScrollViewContainer}
-              contentContainerStyle={styles.categoryScrollViewContentContainer}
-              horizontal>
-              {loading === true || categories.length < 1 ? (
-                <>
-                  {list.map(item => (
-                    <>
-                      <Shimmering
-                        key={item.id + 10}
-                        wrapperStyle={styles.categoryRowShimmering}
-                      />
-                      <View style={styles.categoryRowShimmeringMargin} />
-                    </>
-                  ))}
-                </>
-              ) : (
-                <>
-                  {categories.map((item, index) => (
-                    <TouchableOpacity
-                      style={[
-                        styles.categoryRow,
-                        category?.category === item.category &&
-                          styles.categoryRowSelected,
-                      ]}
-                      onPress={() => setCategory(item)}
-                      key={index}
-                      activeOpacity={0.8}>
-                      <Text
-                        style={[
-                          styles.textCategory,
-                          category?.category === item.category &&
-                            styles.textCategorySelected,
-                        ]}>
-                        {item.category}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </>
-              )}
-            </ScrollView>
-          </View>
-          {/* menu items */}
-          <View style={styles.menuContainer}>
-            {loading === true || (products && products?.length < 1) ? (
-              <>
-                {list.map(item => (
-                  <View style={styles.menuContentWrapper} key={item.id + 20}>
-                    <View>
-                      <Shimmering wrapperStyle={styles.menuImage} />
-                    </View>
-                    <View style={styles.menuContent}>
-                      <View style={styles.menuContentInfo}>
-                        <Shimmering wrapperStyle={styles.foodNameShimmering} />
-                        <View style={styles.menuContentShimmeringMargin} />
-                        <Shimmering wrapperStyle={styles.foodPriceShimmering} />
-                        <View style={styles.menuContentShimmeringMargin} />
-                        <Shimmering
-                          wrapperStyle={styles.foodDescriptionShimmering}
-                        />
-                        <View style={styles.menuContentShimmeringMargin} />
-                        <Shimmering
-                          wrapperStyle={styles.foodDescriptionShimmering2}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                ))}
-              </>
-            ) : (
-              <>
-                {products?.map(
-                  (
-                    product: {
-                      id: number;
-                      name: string;
-                      image_path: string;
-                      description: string;
-                      in_stock: string;
-                      cost: number;
-                    },
-                    index: React.Key | null | undefined,
-                  ) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={styles.menuContentWrapper}
-                      onPress={() =>
-                        navigation.navigate('FoodDetails', {product: product})
-                      }>
-                      <View>
-                        <Image
-                          source={{uri: product.image_path}}
-                          style={styles.menuImage}
-                        />
-                      </View>
-                      <View style={styles.menuContent}>
-                        <View style={styles.menuContentInfo}>
-                          <Text style={styles.foodName}>{product.name}</Text>
-                          <Text style={styles.foodPrice}>
-                            KES {product.cost}
-                          </Text>
-                          <Text
-                            style={styles.foodDescription}
-                            numberOfLines={2}>
-                            {product.description}
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  ),
-                )}
-              </>
-            )}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
-};
-
 export default RestuarantDetails;
