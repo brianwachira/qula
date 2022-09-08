@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
     paddingVertical: 30,
     paddingHorizontal: 40,
+    flex: 1,
   },
   backIcon: {marginRight: 10},
 });
@@ -85,9 +86,13 @@ const SearchResults = ({
 
   // handle change function
   function onChangeText(text: string): void {
-    setSearchedMerchants(
-      merchants.filter(merchant => merchant.name.includes(text)),
-    );
+    if (text.length < 1) {
+      setSearchedMerchants([]);
+    } else {
+      setSearchedMerchants(
+        merchants.filter(merchant => merchant.name.includes(text)),
+      );
+    }
   }
 
   return (
@@ -109,13 +114,12 @@ const SearchResults = ({
         />
       </View>
       {!searchedMerchants ? (
-        <>
+        <View style={styles.cardsContainer}>
           <Text>Nothing here yet</Text>
-        </>
+        </View>
       ) : (
-        <>
+        <View style={styles.cardsContainer}>
           <FlatList
-            contentContainerStyle={styles.cardsContainer}
             ItemSeparatorComponent={ItemSeparator}
             data={searchedMerchants}
             renderItem={({item, index}) => (
@@ -139,7 +143,7 @@ const SearchResults = ({
             numColumns={2}
             showsVerticalScrollIndicator={false}
           />
-        </>
+        </View>
       )}
     </SafeAreaView>
   );
