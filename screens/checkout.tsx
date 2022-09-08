@@ -26,8 +26,7 @@ const Checkout = ({
     // get total price from cart when products property changes
     const totalPriceUpdated: number = products.reduce(
       (previousValue, currentValue) =>
-        previousValue * previousValue +
-        currentValue.quantity * currentValue.cost,
+        previousValue + currentValue.quantity * currentValue.cost,
       0,
     );
 
@@ -63,9 +62,9 @@ const Checkout = ({
 
     axios.post(`${API_URL}/make-order?${params}`).then(response => {
       if (response.data.status === false) {
-        console.log(response.data.status);
+        console.log('failed make order', response.data.status);
       } else {
-        console.log(response.data?.status_message);
+        console.log('success make order', response.data?.status_message);
         initializePayment(encodedCipher, response.data.order_id);
       }
     });
@@ -77,19 +76,21 @@ const Checkout = ({
       token,
       client_id: user.clientId,
       order_id: orderId.toString(),
-      msisdn: user.phone,
+      msisdn: '254707250844',
       amount: totalPrice?.toString() as string,
     });
 
-    axios.post(`${API_URL}/make-order?${params}`).then(response => {
+    axios.post(`${API_URL}/initiate-payment?${params}`).then(response => {
       if (response.data.status === false) {
-        console.log(response.data.status);
+        console.log('failed initiate payment', response.data.status);
       } else {
-        console.log(response.data?.status_message);
+        console.log('success initiate payment', response.data?.status_message);
       }
     });
   };
 
+  const [paymentOption, setPaymentOption] = useState<string>('mpesa');
+  const [deliveryOption, setDeliveryOption] = useState<string>('pickup');
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -102,23 +103,33 @@ const Checkout = ({
       <ScrollView style={styles.scrollView}>
         <Text style={styles.textProfileLabel}>Payment Details</Text>
         <View style={styles.card}>
-          {paymentOptions.map(items => (
+          {paymentOptions.map(item => (
             <TouchableOpacity
-              key={items.key}
-              style={styles.radioOptionContainer}>
-              <View style={styles.radioCircle} />
-              <Text style={styles.radioOptionText}>{items.text}</Text>
+              key={item.key}
+              style={[styles.radioOptionContainer]}
+              onPress={() => setPaymentOption(item.key)}>
+              <View style={[styles.radioCircle]}>
+                {paymentOption === item.key && (
+                  <View style={styles.radioCircleSelected} />
+                )}
+              </View>
+              <Text style={styles.radioOptionText}>{item.text}</Text>
             </TouchableOpacity>
           ))}
         </View>
         <Text style={styles.textProfileLabel}>Delivery Method</Text>
         <View style={styles.card}>
-          {deliveryOptions.map(items => (
+          {deliveryOptions.map(item => (
             <TouchableOpacity
-              key={items.key}
-              style={styles.radioOptionContainer}>
-              <View style={styles.radioCircle} />
-              <Text style={styles.radioOptionText}>{items.text}</Text>
+              key={item.key}
+              style={styles.radioOptionContainer}
+              onPress={() => setDeliveryOption(item.key)}>
+              <View style={styles.radioCircle}>
+                {deliveryOption === item.key && (
+                  <View style={styles.radioCircleSelected} />
+                )}
+              </View>
+              <Text style={styles.radioOptionText}>{item.text}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -133,6 +144,7 @@ const Checkout = ({
           buttonType="orange"
           textType="labelButtonOrange"
           accessibilityLabel="Complete Order"
+          onPress={() => makeOrder()}
         />
       </View>
     </SafeAreaView>
@@ -149,10 +161,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
   },
   title: {
-    marginBottom: 15,
+    marginVertical: 20,
   },
   scrollView: {
-    marginHorizontal: 40,
+    marginHorizontal: 0,
   },
   textProfileLabel: {
     fontWeight: '600',
@@ -164,29 +176,37 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: theme.colors.white,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     paddingVertical: 15,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
+    alignItems: 'flex-start',
+    marginBottom: 15,
+    ...theme.boxShadowAndroid,
   },
   radioOptionContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     borderBottomColor: theme.colors.grey,
+    alignItems: 'center',
+    marginBottom: 10,
   },
   radioCircle: {
-    height: 30,
-    width: 30,
+    height: 25,
+    width: 25,
     borderRadius: 100,
     borderWidth: 2,
     borderColor: theme.colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 5,
   },
   radioCircleSelected: {
-    width: 15,
-    height: 15,
+    width: 12.5,
+    height: 12.5,
     borderRadius: 50,
     backgroundColor: theme.colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   radioOptionText: {
     fontWeight: '400',
@@ -218,6 +238,10 @@ const styles = StyleSheet.create({
 
 const paymentOptions = [
   {
+    key: 'mpesa',
+    text: 'M-Pesa',
+  },
+  {
     key: 'card',
     text: 'Card',
   },
@@ -229,11 +253,11 @@ const paymentOptions = [
 
 const deliveryOptions = [
   {
-    key: 'card',
-    text: 'Card',
+    key: 'doordelivery',
+    text: 'Door Delivery',
   },
   {
-    key: 'bankaccount',
-    text: 'Bank Account',
+    key: 'pickup',
+    text: 'Pick Up',
   },
 ];
