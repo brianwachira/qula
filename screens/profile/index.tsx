@@ -70,7 +70,8 @@ const Profile = ({
 }: NativeStackScreenProps<RootStackParamList, 'ProfileStack'>) => {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}
+      <ScrollView
+        style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContentContainer}>
         <Text style={styles.textProfileLabel}>Personal Details</Text>
         <TouchableOpacity
