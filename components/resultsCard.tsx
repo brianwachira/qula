@@ -73,17 +73,14 @@ const ResultsCard = ({
         style={styles.image}
       />
       <View style={styles.cardContent}>
-        <Text textAlign="center" numberOfLines={1}>
+        <Text textAlign="center" textType="labelLink" numberOfLines={1}>
           {item.name}
         </Text>
         <View style={styles.timeWrapper}>
-          <Text textAlign="center" color="primary">
-            ${item.address}
+          <Text color="primary" textType="labelLink" numberOfLines={1}>
+            {item.address}
           </Text>
         </View>
-        {/* <View style={styles.ratingWrapper}>
-          <Text color="primary">{item.rating}</Text>
-        </View> */}
       </View>
     </TouchableOpacity>
   );
