@@ -134,6 +134,11 @@ const Cart = ({
       );
     }
   };
+
+  const goToCheckout = () => {
+    navigation.navigate('Checkout');
+  };
+
   // this ref allows gesture handler to handle the scroll view and the swipe gesture to render properly
   const scrollRef = useRef(null);
   return (
@@ -175,6 +180,7 @@ const Cart = ({
           buttonType="orange"
           textType="labelButtonOrange"
           accessibilityLabel="Complete Order"
+          onPress={goToCheckout}
         />
       </View>
     </SafeAreaView>
