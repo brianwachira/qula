@@ -6,6 +6,26 @@ export type product = {
   cost: number;
   image_path: string;
 };
+
+// type categories
+export type Icategories = {
+  id: number;
+  category: string;
+};
+
+//type merchants
+export type Imerchants = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  api_key: string;
+  api_secret: string;
+  status: number;
+  updated_at: string;
+  image_path: string;
+};
 export type RootStackParamList = {
   GetStarted: undefined;
   Auth: undefined;
@@ -32,7 +52,11 @@ export type RootStackParamList = {
       | 'FoodDetails'
       | 'EditProfile';
   };
-  SearchResults: undefined;
+  SearchResults: {
+    token: string;
+    clientId: string;
+    merchants: Imerchants[];
+  };
   RestuarantDetails: {
     token: string;
     clientId: string;
@@ -46,26 +70,6 @@ export type RootStackParamList = {
   FoodDetails: {product: product};
   EditProfile: undefined;
   Checkout: undefined;
-};
-
-// type categories
-export type Icategories = {
-  id: number;
-  category: string;
-};
-
-//type merchants
-export type Imerchants = {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  api_key: string;
-  api_secret: string;
-  status: number;
-  updated_at: string;
-  image_path: string;
 };
 
 export type cartItem = {
