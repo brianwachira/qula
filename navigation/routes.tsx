@@ -19,6 +19,7 @@ export const screens = {
   RestuarantDetails: 'RestuarantDetails',
   FoodDetails: 'FoodDetails',
   EditProfile: 'EditProfile',
+  Checkout: 'Checkout',
 };
 
 export const routes = [
