@@ -131,7 +131,11 @@ const Home = ({
   }, []);
   // function to navigate to search results screen
   const onPress = () => {
-    navigation.navigate('SearchResults');
+    navigation.navigate('SearchResults', {
+      token: encodedCipher,
+      clientId: user.clientId,
+      merchants: merchants,
+    });
   };
 
   // show this when merchant state is empty
