@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import ResultsCard from '../components/resultsCard';
+import Text from '../components/shared-ui/text';
 import TextInput from '../components/shared-ui/textInput';
 import {foods} from '../mockdata';
 import theme from '../styles/themes';
-import {RootStackParamList} from '../types/types';
+import {Imerchants, RootStackParamList} from '../types/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,8 +69,12 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const SearchResults = ({
+  route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'SearchResults'>) => {
+  const [searchedMerchants, setSearchedMerchants] = useState<Imerchants[]>();
+
+  const {token, clientId, merchants} = route.params;
   // create a ref for search bar
   const searchBarRef = useRef();
 
@@ -77,6 +82,13 @@ const SearchResults = ({
     // focus on search bar on screen enter
     searchBarRef?.current?.focus();
   }, []);
+
+  // handle change function
+  function onChangeText(text: string): void {
+    setSearchedMerchants(
+      merchants.filter(merchant => merchant.name.includes(text)),
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -93,26 +105,42 @@ const SearchResults = ({
           placeholder="Search"
           placeholderTextColor={theme.colors.black}
           ref={searchBarRef}
+          onChangeText={text => onChangeText(text)}
         />
       </View>
-      <FlatList
-        contentContainerStyle={styles.cardsContainer}
-        ItemSeparatorComponent={ItemSeparator}
-        data={foods}
-        renderItem={({item, index}) => (
-          <ResultsCard
-            item={item}
-            onPress={() => console.log('pressed')}
-            stylesCustom={
-              (index % 2 === 1 || index === foods.length - 1) &&
-              styles.marginRight0
-            }
+      {!searchedMerchants ? (
+        <>
+          <Text>Nothing here yet</Text>
+        </>
+      ) : (
+        <>
+          <FlatList
+            contentContainerStyle={styles.cardsContainer}
+            ItemSeparatorComponent={ItemSeparator}
+            data={searchedMerchants}
+            renderItem={({item, index}) => (
+              <ResultsCard
+                item={item}
+                onPress={() =>
+                  //navigate to restuarant details
+                  navigation.navigate('RestuarantDetails', {
+                    token,
+                    clientId,
+                    ...item,
+                  })
+                }
+                stylesCustom={
+                  (index % 2 === 1 || index === foods.length - 1) &&
+                  styles.marginRight0
+                }
+              />
+            )}
+            keyExtractor={(item, index) => `restaurant-${index}`}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
           />
-        )}
-        keyExtractor={(item, index) => `restaurant-${index}`}
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
-      />
+        </>
+      )}
     </SafeAreaView>
   );
 };
