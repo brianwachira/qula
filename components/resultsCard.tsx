@@ -9,6 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import theme from '../styles/themes';
+import {Imerchants} from '../types/types';
 
 import Text from './shared-ui/text';
 
@@ -57,7 +58,7 @@ const ResultsCard = ({
   stylesCustom,
 }: {
   onPress: () => void;
-  item: any;
+  item: Imerchants;
   stylesCustom?: StyleProp<ViewStyle>;
 }) => {
   return (
@@ -67,17 +68,17 @@ const ResultsCard = ({
       <View style={styles.backdrop} />
       <Image
         source={{
-          uri: item.image,
+          uri: item.image_path,
         }}
         style={styles.image}
       />
       <View style={styles.cardContent}>
         <Text textAlign="center" numberOfLines={1}>
-          {item.title}
+          {item.name}
         </Text>
         <View style={styles.timeWrapper}>
           <Text textAlign="center" color="primary">
-            ${item.price}
+            ${item.address}
           </Text>
         </View>
         {/* <View style={styles.ratingWrapper}>
