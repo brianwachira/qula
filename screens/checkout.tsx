@@ -92,7 +92,8 @@ const Checkout = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('HomeTab', {screen: 'CartStack'})}>
         <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
       </TouchableOpacity>
       <View style={styles.title}>
