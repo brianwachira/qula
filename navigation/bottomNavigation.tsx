@@ -69,6 +69,9 @@ const styles = StyleSheet.create({
   menuIconStyle: {
     marginLeft: 35,
     marginTop: 35,
+    width: 140,
+    height: 100,
+    justifyContent: 'center',
   },
 });
 
