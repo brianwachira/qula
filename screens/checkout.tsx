@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
   StyleSheet,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -77,6 +78,11 @@ const Checkout = ({
           console.log('failed make order', response.data.status);
         } else {
           console.log('success make order', response.data?.status_message);
+          ToastAndroid.showWithGravity(
+            response.data?.status_message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
           initializePayment(encodedCipher, response.data.order_id);
         }
         // setLoading to false
