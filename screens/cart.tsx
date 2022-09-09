@@ -7,40 +7,8 @@ import CartCard from '../components/cartCard';
 import {ScrollView} from 'react-native-gesture-handler';
 import Text from '../components/shared-ui/text';
 import {useStorage} from '../hooks/useStorage';
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    marginTop: 50,
-    flex: 0.97,
-    marginHorizontal: 40,
-  },
-  textOpacity: {
-    opacity: 0.57,
-    fontWeight: '400',
-    width: Dimensions.get('screen').width - 130,
-  },
-  marginBottomStyle: {
-    marginBottom: 30,
-  },
-  marginBottomStyle2: {
-    marginBottom: 20,
-  },
-  scrollViewContainer: {
-    marginVertical: 20,
-    flex: 1,
-  },
-  buttonRow: {justifyContent: 'center', alignItems: 'center'},
-  instructionsContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  swipeImage: {marginRight: 5},
-  instructionsText: {fontSize: 10, fontWeight: '400'},
-});
+import RefreshIcon from '../assets/icons/refreshIcon';
+import theme from '../styles/themes';
 
 const Cart = ({
   navigation,
@@ -140,6 +108,40 @@ const Cart = ({
 
   // this ref allows gesture handler to handle the scroll view and the swipe gesture to render properly
   const scrollRef = useRef(null);
+
+  // show this when merchant state is empty
+  if (productsInCart.length < 1) {
+    return (
+      <SafeAreaView style={styles.containerEmpty}>
+        <View style={styles.contentContainerEmpty}>
+          <RefreshIcon
+            style={styles.marginBottomStyle}
+            width={150}
+            height={150}
+            fill={theme.colors.icon}
+          />
+
+          <Text style={styles.marginBottomStyle2} textType="empty">
+            Nothing here yet
+          </Text>
+          <Text style={[styles.textOpacity]} textAlign="center">
+            Hit the orange button down below to view some orders
+          </Text>
+        </View>
+        <View>
+          <Button
+            title="Start Ordering"
+            buttonType="orange"
+            textType="labelButtonOrange"
+            accessibilityLabel="Start Ordering"
+            onPress={() =>
+              navigation.navigate('HomeTab', {screen: 'HomeStack'})
+            }
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.instructionsContainer}>
@@ -186,4 +188,50 @@ const Cart = ({
   );
 };
 
+const styles = StyleSheet.create({
+  containerEmpty: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 70,
+    flex: 1,
+    marginHorizontal: 40,
+  },
+  contentContainerEmpty: {
+    flexGrow: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    display: 'flex',
+    marginTop: 50,
+    flex: 0.97,
+    marginHorizontal: 40,
+  },
+  textOpacity: {
+    opacity: 0.57,
+    fontWeight: '400',
+    width: Dimensions.get('screen').width - 130,
+  },
+  marginBottomStyle: {
+    marginBottom: 30,
+  },
+  marginBottomStyle2: {
+    marginBottom: 20,
+  },
+  scrollViewContainer: {
+    marginVertical: 20,
+    flex: 1,
+  },
+  buttonRow: {justifyContent: 'center', alignItems: 'center'},
+  instructionsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  swipeImage: {marginRight: 5},
+  instructionsText: {fontSize: 10, fontWeight: '400'},
+});
 export default Cart;
