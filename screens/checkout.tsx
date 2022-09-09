@@ -100,7 +100,7 @@ const Checkout = ({
       token,
       client_id: user.clientId,
       order_id: orderId.toString(),
-      msisdn: '254707250844',
+      msisdn: user.phone,
       amount: totalPrice?.toString() as string,
     });
 
@@ -210,8 +210,11 @@ const Checkout = ({
             {products.map(product => (
               <View key={product.name} style={styles.modalMargin}>
                 <View style={styles.modalTextRow}>
-                  <Text>{product.name} :</Text>
-                  <Text>{product.cost * product.quantity}</Text>
+                  <Text textType="labelLink">{product.name}</Text>
+                  <Text textType="labelInput">{product.quantity} serving</Text>
+                  <Text textType="labelLink">
+                    {product.cost * product.quantity}
+                  </Text>
                 </View>
                 <View style={styles.horizontalRule} />
               </View>
