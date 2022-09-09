@@ -26,6 +26,16 @@ export type Imerchants = {
   updated_at: string;
   image_path: string;
 };
+export type IOrder = {
+  id: number;
+  name: string;
+  status: number;
+  order_id: number;
+  product_id: number;
+  quantity: number;
+  image_path: string;
+};
+
 export type RootStackParamList = {
   GetStarted: undefined;
   Auth: undefined;

@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -11,9 +11,13 @@ import RefreshIcon from '../assets/icons/refreshIcon';
 import OrdersCard from '../components/ordersCard';
 import Button from '../components/shared-ui/button';
 import Text from '../components/shared-ui/text';
-import {meals} from '../mockdata';
+import {useStorage} from '../hooks/useStorage';
 import theme from '../styles/themes';
-import {RootStackParamList} from '../types/types';
+import {IOrder, RootStackParamList} from '../types/types';
+import {encode} from '../utils/encoder';
+import hmac256 from 'crypto-js/hmac-sha256';
+import axios, {AxiosResponse} from 'axios';
+import {API_URL} from '@env';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -59,16 +63,45 @@ const styles = StyleSheet.create({
 const Orders = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Orders'>) => {
-  type order = {
-    id: string;
-    title: string;
-    image: string;
-  };
+  // user
+  const [user] = useStorage('user');
 
-  const [orders, setOrders] = useState<order[]>(meals);
+  const [orders, setOrders] = useState<IOrder[]>();
+  const [loading, setLoading] = useState<boolean>(false);
 
+  // create a cipher text
+  const ciphertext: string = hmac256(
+    user.userId || 'fddd',
+    user.authKey || 'sdfdf',
+  ).toString();
+
+  // encoded cipher text
+  const encodedCipher = encode(ciphertext);
+
+  // params
+  const params = new URLSearchParams({
+    token: encodedCipher,
+    client_id: user.clientId,
+  });
+
+  useEffect(() => {
+    // set loading true
+    setLoading(true);
+    axios
+      .get(`${API_URL}/get-order-status?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          console.log(response.data.status);
+        } else {
+          setOrders(response.data.data.items);
+        }
+      });
+    // set loading true
+    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.products]);
   // show this when order state is empty
-  if (orders.length < 1) {
+  if (loading === false && !orders) {
     return (
       <SafeAreaView style={styles.containerEmpty}>
         <View style={styles.contentContainerEmpty}>
@@ -104,13 +137,21 @@ const Orders = ({
         contentContainerStyle={styles.scrollViewContentContainer}
         showsVerticalScrollIndicator={false}>
         {/* orders card */}
-        {orders.map((order: {id: string; title: string; image: string}) => (
-          <OrdersCard
-            key={order.id}
-            order={order}
-            onPress={() => console.log('clicked')}
-          />
-        ))}
+        {orders?.map(
+          (orderItem: {
+            id: number;
+            name: string;
+            status: number;
+            image_path: string;
+            quantity: number;
+          }) => (
+            <OrdersCard
+              key={orderItem.id}
+              order={orderItem}
+              onPress={() => console.log('clicked')}
+            />
+          ),
+        )}
       </ScrollView>
     </SafeAreaView>
   );

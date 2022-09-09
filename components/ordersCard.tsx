@@ -68,13 +68,15 @@ const OrdersCard = (props: {onPress: () => void; order: any}) => {
       style={styles.orderItemContainer}
       activeOpacity={0.8}>
       <View style={styles.orderItemImageContainer}>
-        <Image style={styles.orderItemImage} source={{uri: order.image}} />
+        <Image style={styles.orderItemImage} source={{uri: order.image_path}} />
       </View>
       <View style={styles.orderItemContentContainer}>
-        <Text>{order.title}</Text>
+        <Text>{order.name}</Text>
         <View style={styles.orderItemContentRow}>
           <View style={styles.orderItemQuantityButton}>
-            <Text style={{color: theme.colors.white}}>3 servings</Text>
+            <Text style={{color: theme.colors.white}}>
+              {order.quantity} servings
+            </Text>
           </View>
         </View>
       </View>
