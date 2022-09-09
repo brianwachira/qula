@@ -13,7 +13,7 @@ import Button from '../components/shared-ui/button';
 import Text from '../components/shared-ui/text';
 import {useStorage} from '../hooks/useStorage';
 import theme from '../styles/themes';
-import {IOrder, RootStackParamList} from '../types/types';
+import {IOrderBulk, RootStackParamList} from '../types/types';
 import {encode} from '../utils/encoder';
 import hmac256 from 'crypto-js/hmac-sha256';
 import axios, {AxiosResponse} from 'axios';
@@ -66,7 +66,7 @@ const Orders = ({
   // user
   const [user] = useStorage('user');
 
-  const [orders, setOrders] = useState<IOrder[]>();
+  const [orders, setOrders] = useState<IOrderBulk[]>();
   const [loading, setLoading] = useState<boolean>(false);
 
   // create a cipher text
@@ -81,6 +81,7 @@ const Orders = ({
   // params
   const params = new URLSearchParams({
     token: encodedCipher,
+    user_id: user.userId,
     client_id: user.clientId,
   });
 
@@ -88,12 +89,12 @@ const Orders = ({
     // set loading true
     setLoading(true);
     axios
-      .get(`${API_URL}/get-order-status?${params}`)
+      .get(`${API_URL}/my-orders?${params}`)
       .then((response: AxiosResponse) => {
         if (response.data.status === false) {
           console.log(response.data.status);
         } else {
-          setOrders(response.data.data.items);
+          setOrders(response.data.data.orders);
         }
       });
     // set loading true
@@ -125,6 +126,9 @@ const Orders = ({
             buttonType="orange"
             textType="labelButtonOrange"
             accessibilityLabel="Start Ordering"
+            onPress={() =>
+              navigation.navigate('HomeTab', {screen: 'HomeStack'})
+            }
           />
         </View>
       </SafeAreaView>
@@ -139,11 +143,10 @@ const Orders = ({
         {/* orders card */}
         {orders?.map(
           (orderItem: {
-            id: number;
-            name: string;
+            id: string;
+            merchant: string;
+            to_deliver: string;
             status: number;
-            image_path: string;
-            quantity: number;
           }) => (
             <OrdersCard
               key={orderItem.id}
