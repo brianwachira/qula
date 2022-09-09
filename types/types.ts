@@ -1,6 +1,7 @@
 export type product = {
   id: number;
   name: string;
+  category_id: number;
   description: string;
   in_stock: string;
   cost: number;
@@ -34,6 +35,12 @@ export type IOrder = {
   product_id: number;
   quantity: number;
   image_path: string;
+};
+export type IOrderBulk = {
+  id: string;
+  merchant: string;
+  to_deliver: string;
+  status: number;
 };
 
 export type RootStackParamList = {
