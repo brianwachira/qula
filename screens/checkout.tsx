@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Button from '../components/shared-ui/button';
 import {RootStackParamList} from '../types/types';
 import hmac256 from 'crypto-js/hmac-sha256';
@@ -10,13 +16,15 @@ import theme from '../styles/themes';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import {useStorage} from '../hooks/useStorage';
 import {encode} from '../utils/encoder';
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import {API_URL} from '@env';
+import ModalPopup from '../components/shared-ui/modalPopup';
+import CloseIcon from '../assets/icons/closeIcon';
 
 const Checkout = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Checkout'>) => {
-  const [user] = useStorage('user');
+  const [user, setUser] = useStorage('user');
 
   const {userId, clientId, products} = user;
 
@@ -35,6 +43,8 @@ const Checkout = ({
   }, [products]);
 
   const makeOrder = () => {
+    // setLoading to true
+    setLoading(true);
     const orders = products.map(product => {
       return {
         productID: product.id,
@@ -60,17 +70,31 @@ const Checkout = ({
       cart: JSON.stringify(payload),
     });
 
-    axios.post(`${API_URL}/make-order?${params}`).then(response => {
-      if (response.data.status === false) {
-        console.log('failed make order', response.data.status);
-      } else {
-        console.log('success make order', response.data?.status_message);
-        initializePayment(encodedCipher, response.data.order_id);
-      }
-    });
+    axios
+      .post(`${API_URL}/make-order?${params}`)
+      .then(response => {
+        if (response.data.status === false) {
+          console.log('failed make order', response.data.status);
+        } else {
+          console.log('success make order', response.data?.status_message);
+          initializePayment(encodedCipher, response.data.order_id);
+        }
+        // setLoading to false
+        setLoading(false);
+      })
+      .catch((error: AxiosError) => {
+        console.log(error.message);
+        // setLoading to false
+        setLoading(false);
+      });
   };
 
   const initializePayment = (token: string, orderId: number) => {
+    //toggle visibility
+    toggleModal();
+
+    // setLoading to true
+    setLoading(true);
     // params
     const params = new URLSearchParams({
       token,
@@ -80,17 +104,43 @@ const Checkout = ({
       amount: totalPrice?.toString() as string,
     });
 
-    axios.post(`${API_URL}/initiate-payment?${params}`).then(response => {
-      if (response.data.status === false) {
-        console.log('failed initiate payment', response.data.status);
-      } else {
-        console.log('success initiate payment', response.data?.status_message);
-      }
-    });
+    axios
+      .get(`${API_URL}/initiate-payment?${params}`)
+      .then(response => {
+        if (response.data.responseCode === 0) {
+          //success
+          // setLoading to true
+          setLoading(true);
+        } else {
+          //it is a fail
+          // setLoading to false
+          setLoading(false);
+
+          // reset cart
+          resetCart();
+
+          // go to orders screen
+          navigation.navigate('HomeTab', {screen: 'OrdersStack'});
+        }
+      })
+      .catch((error: AxiosError) => {
+        console.log(error.message);
+      });
   };
 
+  // function to reset cart
+  const resetCart = () => {
+    setUser({
+      ...user,
+      products: [],
+    });
+  };
   const [paymentOption, setPaymentOption] = useState<string>('mpesa');
   const [deliveryOption, setDeliveryOption] = useState<string>('pickup');
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const toggleModal = () => setVisible(!visible);
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -134,7 +184,7 @@ const Checkout = ({
           ))}
         </View>
       </ScrollView>
-      <View style={styles.totalPriceRow}>
+      <View style={[styles.totalPriceRow, styles.modalMargin]}>
         <Text style={styles.totalPriceLabel}>Total</Text>
         <Text style={styles.totalPrice}>{totalPrice}</Text>
       </View>
@@ -144,9 +194,70 @@ const Checkout = ({
           buttonType="orange"
           textType="labelButtonOrange"
           accessibilityLabel="Complete Order"
-          onPress={() => makeOrder()}
+          onPress={() => toggleModal()}
         />
       </View>
+      {/* Modal Popup */}
+      <ModalPopup visible={visible}>
+        <View style={styles.modalContainerWrapper}>
+          <View style={styles.header}>
+            <Text>Please Note</Text>
+            <TouchableOpacity onPress={toggleModal} disabled={loading}>
+              <CloseIcon width={30} height={30} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalBodyWrapper}>
+            {products.map(product => (
+              <View key={product.name} style={styles.modalMargin}>
+                <View style={styles.modalTextRow}>
+                  <Text>{product.name} :</Text>
+                  <Text>{product.cost * product.quantity}</Text>
+                </View>
+                <View style={styles.horizontalRule} />
+              </View>
+            ))}
+            <View style={[styles.modalTextRow, styles.modalMargin]}>
+              <Text>Total :</Text>
+              <Text>{totalPrice}</Text>
+            </View>
+            <View style={styles.modalButtonRow}>
+              <TouchableOpacity disabled={loading} onPress={toggleModal}>
+                <View>
+                  <Text textType="labelInput" textAlign="center">
+                    Cancel
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                disabled={loading}
+                onPress={() => makeOrder()}>
+                <View style={styles.button}>
+                  {!loading ? (
+                    <>
+                      <Text
+                        textType="labelButtonOrange"
+                        textAlign="center"
+                        color="white">
+                        Proceed
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <ActivityIndicator
+                        color={theme.colors.white}
+                        animating
+                        size="large"
+                      />
+                    </>
+                  )}
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ModalPopup>
+      {/* End Modal Popup */}
     </SafeAreaView>
   );
 };
@@ -220,6 +331,7 @@ const styles = StyleSheet.create({
   totalPriceRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 15,
   },
   totalPriceLabel: {
     fontWeight: '400',
@@ -233,6 +345,51 @@ const styles = StyleSheet.create({
   },
   backIcon: {
     marginRight: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    width: '100%',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#EDEDED',
+    borderTopLeftRadius: theme.borderRadius.button,
+    borderTopRightRadius: theme.borderRadius.button,
+  },
+  modalContainerWrapper: {
+    alignItems: 'center',
+  },
+  modalButtonRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  button: {
+    paddingHorizontal: 40,
+    paddingVertical: 20,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.button,
+    ...theme.boxShadowAndroid,
+  },
+  horizontalRule: {
+    borderBottomColor: theme.colors.grey,
+    borderBottomWidth: 0.5,
+    opacity: 0.3,
+    marginVertical: 10,
+  },
+  modalBodyWrapper: {
+    width: '100%',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  modalTextRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalMargin: {
+    marginHorizontal: 20,
   },
 });
 
