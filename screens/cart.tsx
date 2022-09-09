@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 });
 
 const Cart = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Cart'>) => {
   // user object from useStorage hook
@@ -176,10 +175,10 @@ const Cart = ({
       </ScrollView>
       <View style={styles.buttonRow}>
         <Button
-          title="Complete Order"
+          title="Checkout"
           buttonType="orange"
           textType="labelButtonOrange"
-          accessibilityLabel="Complete Order"
+          accessibilityLabel="checkout"
           onPress={goToCheckout}
         />
       </View>
