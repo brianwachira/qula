@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
-import {Icategories, RootStackParamList} from '../types/types';
+import {Icategories, product, RootStackParamList} from '../types/types';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
@@ -27,7 +27,8 @@ const RestuarantDetails = ({
   const {name, phone, email, address, image_path, token, clientId} =
     route.params;
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<product[]>([]);
+  const [productsCopy, setProductsCopy] = useState<product[]>([]);
   const [categories, setCategories] = useState<Icategories[]>([]);
   const [category, setCategory] = useState<Icategories>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,6 +49,7 @@ const RestuarantDetails = ({
           console.log(response.data.status);
         } else {
           setProducts(response.data.data);
+          setProductsCopy(response.data.data);
           setCategories(response.data.categories);
           setCategory(response.data.categories[0]);
         }
@@ -57,6 +59,15 @@ const RestuarantDetails = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientId]);
 
+  useEffect(() => {
+    //filter products when category id changes
+    setProducts(
+      productsCopy.filter(
+        productCopy => productCopy.category_id === category?.id,
+      ),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category?.id]);
   return (
     <View style={styles.container}>
       {/* <StatusBar
@@ -161,7 +172,7 @@ const RestuarantDetails = ({
           </View>
           {/* menu items */}
           <View style={styles.menuContainer}>
-            {loading === true || (products && products?.length < 1) ? (
+            {loading === true && products && products?.length < 1 ? (
               <>
                 {list.map(item => (
                   <View style={styles.menuContentWrapper} key={item.id + 20}>
@@ -190,13 +201,14 @@ const RestuarantDetails = ({
               <>
                 {products?.map(
                   (
-                    product: {
+                    productItem: {
                       id: number;
                       name: string;
-                      image_path: string;
+                      category_id: number;
                       description: string;
                       in_stock: string;
                       cost: number;
+                      image_path: string;
                     },
                     index: React.Key | null | undefined,
                   ) => (
@@ -204,24 +216,28 @@ const RestuarantDetails = ({
                       key={index}
                       style={styles.menuContentWrapper}
                       onPress={() =>
-                        navigation.navigate('FoodDetails', {product: product})
+                        navigation.navigate('FoodDetails', {
+                          product: productItem,
+                        })
                       }>
                       <View>
                         <Image
-                          source={{uri: product.image_path}}
+                          source={{uri: productItem.image_path}}
                           style={styles.menuImage}
                         />
                       </View>
                       <View style={styles.menuContent}>
                         <View style={styles.menuContentInfo}>
-                          <Text style={styles.foodName}>{product.name}</Text>
+                          <Text style={styles.foodName}>
+                            {productItem.name}
+                          </Text>
                           <Text style={styles.foodPrice}>
-                            KES {product.cost}
+                            KES {productItem.cost}
                           </Text>
                           <Text
                             style={styles.foodDescription}
                             numberOfLines={2}>
-                            {product.description}
+                            {productItem.description}
                           </Text>
                         </View>
                       </View>
