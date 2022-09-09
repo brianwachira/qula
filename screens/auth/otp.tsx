@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
+import {
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  ToastAndroid,
+  View,
+} from 'react-native';
 import {cartProduct, RootStackParamList} from '../../types/types';
 import OTPInput from '../../components/shared-ui/otpInput';
 import theme from '../../styles/themes';
@@ -65,7 +71,12 @@ const Otp = ({
     axios.post(`${API_URL}/verify-otp?${params}`).then(response => {
       if (response.data.status === false) {
         // theres a problem
-        console.log(response.data.status_message);
+        //console.log(response.data.status_message);
+        ToastAndroid.showWithGravity(
+          response.data.status_message,
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER,
+        );
       } else {
         console.log(response.data.status_message);
         // create user object
