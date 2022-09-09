@@ -5,6 +5,7 @@ import {TouchableOpacity} from 'react-native';
 import ChevronLeftIcon from '../../assets/icons/chevronLeftIcon';
 import UserCircleIcon from '../../assets/icons/userCircleIcon';
 import Text from '../../components/shared-ui/text';
+import {useStorage} from '../../hooks/useStorage';
 import theme from '../../styles/themes';
 import {RootStackParamList} from '../../types/types';
 
@@ -68,6 +69,8 @@ const styles = StyleSheet.create({
 const Profile = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'ProfileStack'>) => {
+  const [user] = useStorage('user');
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -81,11 +84,13 @@ const Profile = ({
           {/* icon goes here */}
           <UserCircleIcon width={100} height={100} fill={theme.colors.icon} />
           <View style={styles.profileContent}>
-            <Text style={styles.textProfileName}>Makena Mbugua</Text>
-            <Text style={styles.textProfileDetails}>
-              makenambugua@gmail.com
+            <Text style={styles.textProfileName}>
+              {user.email || 'Usiri Ian'}
             </Text>
-            <Text style={styles.textProfileDetails}>+254712345678</Text>
+            <Text style={styles.textProfileDetails}>
+              {user.email || 'usiriian@gmail.com'}
+            </Text>
+            <Text style={styles.textProfileDetails}>{user.phone}</Text>
             <Text style={styles.textProfileDetails}>
               Muindi Mbingu Street, 716
             </Text>
