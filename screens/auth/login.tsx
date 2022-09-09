@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, ToastAndroid, View} from 'react-native';
 import LoginForm from '../../components/loginForm';
 import * as RootNavigation from '../../navigation/rootNavigation';
 import {API_URL} from '@env';
@@ -41,7 +41,12 @@ const Login = () => {
         console.log(response.data);
 
         //that means something is wrong
-        console.log(response.data.status_message);
+        //console.log(response.data.status_message);
+        ToastAndroid.showWithGravity(
+          response.data.status_message,
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER,
+        );
       } else {
         //console.log(response.data.data.client_id);
 
