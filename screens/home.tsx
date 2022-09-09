@@ -19,8 +19,6 @@ import hmac256 from 'crypto-js/hmac-sha256';
 import {encode} from '../utils/encoder';
 import axios from 'axios';
 import {API_URL} from '@env';
-import RefreshIcon from '../assets/icons/refreshIcon';
-import Button from '../components/shared-ui/button';
 import ShimmeringRestuarantCard from '../components/shimmeringRestuarantCard';
 import {list} from '../constants';
 
@@ -137,37 +135,6 @@ const Home = ({
       merchants: merchants,
     });
   };
-
-  // show this when merchant state is empty
-  // if (loading === false && merchants.length < 1) {
-  //   return (
-  //     <SafeAreaView style={styles.containerEmpty}>
-  //       <View style={styles.contentContainerEmpty}>
-  //         <RefreshIcon
-  //           style={styles.marginBottomStyle}
-  //           width={150}
-  //           height={150}
-  //           fill={theme.colors.icon}
-  //         />
-
-  //         <Text style={styles.marginBottomStyle2} textType="empty">
-  //           Nothing here yet
-  //         </Text>
-  //         <Text style={[styles.textOpacity]} textAlign="center">
-  //           Hit the orange button down below to view some orders
-  //         </Text>
-  //       </View>
-  //       <View>
-  //         <Button
-  //           title="Start Ordering"
-  //           buttonType="orange"
-  //           textType="labelButtonOrange"
-  //           accessibilityLabel="Start Ordering"
-  //         />
-  //       </View>
-  //     </SafeAreaView>
-  //   );
-  // }
 
   return (
     <SafeAreaView style={styles.container}>
