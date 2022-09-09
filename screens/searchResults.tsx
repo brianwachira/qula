@@ -113,9 +113,9 @@ const SearchResults = ({
           onChangeText={text => onChangeText(text)}
         />
       </View>
-      {!searchedMerchants ? (
+      {!searchedMerchants || searchedMerchants.length < 1 ? (
         <View style={styles.cardsContainer}>
-          <Text>Nothing here yet</Text>
+          <Text>Search for any Restuarant</Text>
         </View>
       ) : (
         <View style={styles.cardsContainer}>
