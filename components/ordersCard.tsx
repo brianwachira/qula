@@ -1,7 +1,8 @@
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import theme from '../styles/themes';
 import Text from './shared-ui/text';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const styles = StyleSheet.create({
   orderItemContainer: {
@@ -57,6 +58,10 @@ const styles = StyleSheet.create({
     // Shadow for Android
     elevation: 5,
   },
+  merchantName: {
+    marginBottom: 10,
+  },
+  shopIconEmpty: {opacity: 0.7},
 });
 
 const OrdersCard = (props: {onPress: () => void; order: any}) => {
@@ -68,14 +73,20 @@ const OrdersCard = (props: {onPress: () => void; order: any}) => {
       style={styles.orderItemContainer}
       activeOpacity={0.8}>
       <View style={styles.orderItemImageContainer}>
-        <Image style={styles.orderItemImage} source={{uri: order.image_path}} />
+        {/* <Image style={styles.orderItemImage} source={{uri: order.image_path}} /> */}
+        <Entypo
+          size={40}
+          name="shop"
+          color={theme.colors.grey}
+          style={styles.shopIconEmpty}
+        />
       </View>
       <View style={styles.orderItemContentContainer}>
-        <Text>{order.name}</Text>
+        <Text style={styles.merchantName}>{order.merchant}</Text>
         <View style={styles.orderItemContentRow}>
           <View style={styles.orderItemQuantityButton}>
             <Text style={{color: theme.colors.white}}>
-              {order.quantity} servings
+              {order.to_deliver === '1' ? 'Delivery' : 'Pickup'}
             </Text>
           </View>
         </View>
