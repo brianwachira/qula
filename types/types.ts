@@ -87,6 +87,10 @@ export type RootStackParamList = {
   FoodDetails: {product: product};
   EditProfile: undefined;
   Checkout: undefined;
+  OrderDetails: {
+    token: string;
+    orderId: string;
+  };
 };
 
 export type cartItem = {
