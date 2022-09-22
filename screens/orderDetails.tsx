@@ -10,6 +10,33 @@ import Text from "../components/shared-ui/text";
 import { list } from "../constants";
 import theme from "../styles/themes";
 import Shimmering from "../components/shared-ui/shimmering";
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+const RenderStatus = ({status}: { status : string}) => {
+    let statusToNumber : number = parseInt(status)
+    let message : string = ''
+    if(statusToNumber === 1) {
+        message = 'Order Received'
+    } else if(statusToNumber === 2) {
+        message = 'Order in Preparation'
+    } else if(statusToNumber === 3) {
+        message = 'Order Ready'
+    } else if(statusToNumber === 4) {
+        message = 'Order On Delivery'
+    } else if(statusToNumber === 5) {
+        message = 'Order Complete!'
+    } else {
+        message = 'Cancelled'
+    }
+
+    return (    
+     <View style={styles.infoItem}>
+        <AntDesign name="clockcircleo" size={20} color="#FFC238" />
+        <Text style={styles.infoText}>{message}</Text>
+      </View>
+
+    )
+}
 
 const OrderDetails = ({route, navigation}: NativeStackScreenProps<RootStackParamList, 'OrderDetails'>) => {
     // user
@@ -48,7 +75,7 @@ const OrderDetails = ({route, navigation}: NativeStackScreenProps<RootStackParam
         setLoading(false);
     },[orderId])
 
-    
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -59,6 +86,12 @@ const OrderDetails = ({route, navigation}: NativeStackScreenProps<RootStackParam
                     <Text>Order#{orderDetails?.order.id}</Text>
                 </View>
                 <View></View>
+            </View>
+            <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', marginBottom: 10,}}>
+                <RenderStatus status={orderDetails?.order.status}/>
+            <View style={[styles.infoItem]}>
+                <MaterialCommunityIcons name='motorbike' size={30} color="#FFC238" /><Text textType='labelLink' style={styles.infoText}>{orderDetails?.order.to_deliver ? 'To Be Delivered' : 'Seat In'}</Text>
+            </View>
             </View>
             <ScrollView
               style={styles.categoryScrollViewContainer}
@@ -119,7 +152,7 @@ const OrderDetails = ({route, navigation}: NativeStackScreenProps<RootStackParam
                                 {orderItem.name}
                               </Text>
                               <Text style={styles.foodPrice}>
-                                KES {orderItem.unit_cost}
+                                KES {orderItem.unit_cost} x {orderItem.quantity}
                               </Text>
                             </View>
                           </View>
@@ -217,6 +250,20 @@ const styles = StyleSheet.create({
     foodDescription: {
       fontSize: 12,
       lineHeight: 16,
+    },
+    infoItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 7,
+      paddingVertical: 7,
+      backgroundColor: theme.colors.white,
+      borderRadius: 5,
+      marginRight: 15,
+      marginBottom: 15,
+    },
+    infoText: {
+      marginLeft: 4,
+      fontSize: 12,
     },
 
 })
