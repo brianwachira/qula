@@ -68,32 +68,37 @@ const Otp = ({
       phone: route.params.phone,
     }).toString();
 
-    axios.post(`${API_URL}/verify-otp?${params}`).then(response => {
-      if (response.data.status === false) {
-        // theres a problem
-        //console.log(response.data.status_message);
-        ToastAndroid.showWithGravity(
-          response.data.status_message,
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER,
-        );
-      } else {
-        console.log(response.data.status_message);
-        // create user object
-        const newUser = {
-          authKey: route.params.authKey,
-          phone: route.params.phone,
-          userId: route.params.userId,
-          clientId: route.params.clientId,
-          products: [] as unknown as cartProduct[],
-        };
-        console.log(newUser);
-        // save the new user
-        setUser(newUser);
-      }
-      //setLoading false
-      setLoading(false);
-    });
+    axios
+      .post(`${API_URL}/verify-otp?${params}`)
+      .then(response => {
+        if (response.data.status === false) {
+          // theres a problem
+          //console.log(response.data.status_message);
+          ToastAndroid.showWithGravity(
+            response.data.status_message,
+            ToastAndroid.LONG,
+            ToastAndroid.CENTER,
+          );
+        } else {
+          console.log(response.data.status_message);
+          // create user object
+          const newUser = {
+            authKey: route.params.authKey,
+            phone: route.params.phone,
+            userId: route.params.userId,
+            clientId: route.params.clientId,
+            products: [] as unknown as cartProduct[],
+          };
+          console.log(newUser);
+          // save the new user
+          setUser(newUser);
+        }
+        //setLoading false
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (

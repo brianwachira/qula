@@ -116,13 +116,18 @@ const Home = ({
   useEffect(() => {
     //setLoading true
     setLoading(true);
-    axios.get(`${API_URL}/fetch-merchants?${params}`).then(response => {
-      if (response.data.status === false) {
-        console.log(response.data.status);
-      } else {
-        setMerchants(response.data?.data);
-      }
-    });
+    axios
+      .get(`${API_URL}/fetch-merchants?${params}`)
+      .then(response => {
+        if (response.data.status === false) {
+          console.log(response.data.status);
+        } else {
+          setMerchants(response.data?.data);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
     //setLoading false
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps

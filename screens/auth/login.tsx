@@ -36,34 +36,39 @@ const Login = () => {
       phone: values.email,
     }).toString();
 
-    axios.post(`${API_URL}/login?${params}`).then((response: AxiosResponse) => {
-      if (response.data.status === false) {
-        console.log(response.data);
+    axios
+      .post(`${API_URL}/login?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          console.log(response.data);
 
-        //that means something is wrong
-        //console.log(response.data.status_message);
-        ToastAndroid.showWithGravity(
-          response.data.status_message,
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER,
-        );
-      } else {
-        //console.log(response.data.data.client_id);
+          //that means something is wrong
+          //console.log(response.data.status_message);
+          ToastAndroid.showWithGravity(
+            response.data.status_message,
+            ToastAndroid.LONG,
+            ToastAndroid.CENTER,
+          );
+        } else {
+          //console.log(response.data.data.client_id);
 
-        console.log(response.data.otp);
-        const user = {
-          phone: response.data.data.msisdn,
-          otp: response.data.otp,
-          authKey: response.data.data.auth_key,
-          userId: response.data.data.id,
-          clientId: response.data.data.client_id,
-        };
-        // move to otp screen
-        RootNavigation.navigate('Otp' as never, user as never);
-      }
-      //setLoading false
-      setLoading(false);
-    });
+          console.log(response.data.otp);
+          const user = {
+            phone: response.data.data.msisdn,
+            otp: response.data.otp,
+            authKey: response.data.data.auth_key,
+            userId: response.data.data.id,
+            clientId: response.data.data.client_id,
+          };
+          // move to otp screen
+          RootNavigation.navigate('Otp' as never, user as never);
+        }
+        //setLoading false
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
