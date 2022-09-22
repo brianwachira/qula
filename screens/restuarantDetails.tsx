@@ -53,6 +53,9 @@ const RestuarantDetails = ({
           setCategories(response.data.categories);
           setCategory(response.data.categories[0]);
         }
+      })
+      .catch(error => {
+        console.log(error);
       });
     // set loading true
     setLoading(false);
