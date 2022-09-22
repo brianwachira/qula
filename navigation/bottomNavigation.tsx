@@ -20,6 +20,7 @@ import FoodDetails from '../screens/foodDetails';
 import EditProfile from '../screens/profile/editProfile';
 import Text from '../components/shared-ui/text';
 import Checkout from '../screens/checkout';
+import OrderDetails from '../screens/orderDetails';
 
 const styles = StyleSheet.create({
   tabNone: {
@@ -228,6 +229,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen name={screens.FoodDetails} component={FoodDetails} />
             <Tab.Screen name={screens.EditProfile} component={EditProfile} />
+            <Tab.Screen name={screens.OrderDetails} component={OrderDetails} />
             <Tab.Screen name={screens.Checkout} component={Checkout} />
           </Tab.Navigator>
         </Animated.View>
