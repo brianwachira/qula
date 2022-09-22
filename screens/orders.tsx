@@ -19,47 +19,6 @@ import hmac256 from 'crypto-js/hmac-sha256';
 import axios, {AxiosResponse} from 'axios';
 import {API_URL} from '@env';
 
-const styles = StyleSheet.create({
-  containerEmpty: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 70,
-    flex: 1,
-    marginHorizontal: 40,
-  },
-  contentContainerEmpty: {
-    flexGrow: 0.8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textOpacity: {
-    opacity: 0.57,
-    fontWeight: '400',
-    width: Dimensions.get('screen').width - 130,
-  },
-  marginBottomStyle: {
-    marginBottom: 30,
-  },
-  marginBottomStyle2: {
-    marginBottom: 20,
-  },
-  container: {
-    display: 'flex',
-    marginTop: 50,
-    flex: 1,
-    marginHorizontal: 40,
-  },
-  scrollViewContainer: {
-    marginVertical: 20,
-    flex: 1,
-    margin: -12,
-  },
-  scrollViewContentContainer: {
-    padding: 12,
-  },
-});
-
 const Orders = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Orders'>) => {
@@ -96,6 +55,9 @@ const Orders = ({
         } else {
           setOrders(response.data.data.orders);
         }
+      })
+      .catch(error => {
+        console.log(error);
       });
     // set loading true
     setLoading(false);
@@ -151,7 +113,12 @@ const Orders = ({
             <OrdersCard
               key={orderItem.id}
               order={orderItem}
-              onPress={() => console.log('clicked')}
+              onPress={() =>
+                navigation.navigate('OrderDetails', {
+                  token: encodedCipher,
+                  orderId: orderItem.id,
+                })
+              }
             />
           ),
         )}
@@ -160,4 +127,44 @@ const Orders = ({
   );
 };
 
+const styles = StyleSheet.create({
+  containerEmpty: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 70,
+    flex: 1,
+    marginHorizontal: 40,
+  },
+  contentContainerEmpty: {
+    flexGrow: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textOpacity: {
+    opacity: 0.57,
+    fontWeight: '400',
+    width: Dimensions.get('screen').width - 130,
+  },
+  marginBottomStyle: {
+    marginBottom: 30,
+  },
+  marginBottomStyle2: {
+    marginBottom: 20,
+  },
+  container: {
+    display: 'flex',
+    marginTop: 50,
+    flex: 1,
+    marginHorizontal: 40,
+  },
+  scrollViewContainer: {
+    marginVertical: 20,
+    flex: 1,
+    margin: -12,
+  },
+  scrollViewContentContainer: {
+    padding: 12,
+  },
+});
 export default Orders;
