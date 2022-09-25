@@ -13,45 +13,6 @@ import {Imerchants} from '../types/types';
 
 import Text from './shared-ui/text';
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    marginRight: 40,
-    marginTop: 20,
-  },
-  image: {
-    borderRadius: 60,
-    height: 120,
-    width: 120,
-    resizeMode: 'cover',
-  },
-  cardContent: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-  },
-  timeWrapper: {
-    marginTop: 10,
-  },
-  ratingWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#E7E6E2',
-    padding: 5,
-    borderRadius: 30,
-    marginTop: 10,
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: theme.colors.white,
-    borderRadius: 30,
-    top: '25%',
-  },
-});
-
 const ResultsCard = ({
   onPress,
   item,
@@ -73,17 +34,57 @@ const ResultsCard = ({
         style={styles.image}
       />
       <View style={styles.cardContent}>
-        <Text textAlign="center" textType="labelLink" numberOfLines={1}>
+        <Text
+          textAlign="center"
+          style={styles.restuarantName}
+          textType="labelLink"
+          numberOfLines={2}>
           {item.name}
         </Text>
-        <View style={styles.timeWrapper}>
-          <Text color="primary" textType="labelLink" numberOfLines={1}>
-            {item.address}
-          </Text>
-        </View>
       </View>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 40,
+    marginTop: 20,
+  },
+  image: {
+    borderRadius: 60,
+    height: 120,
+    width: 120,
+    resizeMode: 'cover',
+  },
+  cardContent: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingHorizontal: 17,
+    paddingVertical: 20,
+  },
+  ratingWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E7E6E2',
+    padding: 5,
+    borderRadius: 30,
+    marginTop: 10,
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.white,
+    borderRadius: 30,
+    top: '30%',
+  },
+  restuarantName: {
+    width: 120,
+    fontSize: 12,
+    textAlign: 'center',
+  },
+});
 
 export default ResultsCard;
