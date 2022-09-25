@@ -1,14 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Dimensions, Image, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import Button from '../components/shared-ui/button';
 import {cartProduct, RootStackParamList} from '../types/types';
 import CartCard from '../components/cartCard';
 import {ScrollView} from 'react-native-gesture-handler';
 import Text from '../components/shared-ui/text';
 import {useStorage} from '../hooks/useStorage';
-import RefreshIcon from '../assets/icons/refreshIcon';
-import theme from '../styles/themes';
+import EmptyState from '../components/shared-ui/emptyState';
 
 const Cart = ({
   navigation,
@@ -112,34 +111,10 @@ const Cart = ({
   // show this when merchant state is empty
   if (productsInCart.length < 1) {
     return (
-      <SafeAreaView style={styles.containerEmpty}>
-        <View style={styles.contentContainerEmpty}>
-          <RefreshIcon
-            style={styles.marginBottomStyle}
-            width={150}
-            height={150}
-            fill={theme.colors.icon}
-          />
-
-          <Text style={styles.marginBottomStyle2} textType="empty">
-            Nothing here yet
-          </Text>
-          <Text style={[styles.textOpacity]} textAlign="center">
-            Hit the orange button down below to view some orders
-          </Text>
-        </View>
-        <View>
-          <Button
-            title="Start Ordering"
-            buttonType="orange"
-            textType="labelButtonOrange"
-            accessibilityLabel="Start Ordering"
-            onPress={() =>
-              navigation.navigate('HomeTab', {screen: 'HomeStack'})
-            }
-          />
-        </View>
-      </SafeAreaView>
+      <EmptyState
+        label="buy food"
+        onPress={() => navigation.navigate('HomeTab', {screen: 'HomeStack'})}
+      />
     );
   }
   return (
@@ -190,35 +165,11 @@ const Cart = ({
 };
 
 const styles = StyleSheet.create({
-  containerEmpty: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 70,
-    flex: 1,
-    marginHorizontal: 40,
-  },
-  contentContainerEmpty: {
-    flexGrow: 0.8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   container: {
     display: 'flex',
     marginTop: 50,
     flex: 0.97,
     marginHorizontal: 40,
-  },
-  textOpacity: {
-    opacity: 0.57,
-    fontWeight: '400',
-    width: Dimensions.get('screen').width - 130,
-  },
-  marginBottomStyle: {
-    marginBottom: 30,
-  },
-  marginBottomStyle2: {
-    marginBottom: 20,
   },
   scrollViewContainer: {
     marginVertical: 20,
