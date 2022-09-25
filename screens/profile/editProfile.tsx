@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    marginHorizontal: 50,
+    marginHorizontal: 30,
     marginTop: StatusBar.currentHeight,
   },
   backIcon: {
