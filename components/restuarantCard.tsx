@@ -6,51 +6,6 @@ import {Imerchants} from '../types/types';
 
 import Text from './shared-ui/text';
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 20,
-  },
-  image: {
-    borderRadius: 85,
-    height: 170,
-    width: 170,
-    resizeMode: 'cover',
-    // Shadow for Android
-    elevation: 5,
-  },
-  cardContent: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingHorizontal: 50,
-    paddingVertical: 30,
-  },
-  timeWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ratingWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#E7E6E2',
-    padding: 5,
-    borderRadius: 30,
-    marginTop: 10,
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: theme.colors.white,
-    borderRadius: 30,
-    top: '20%',
-    // Shadow for Android
-    elevation: 5,
-  },
-  restuarantName: {
-    width: 120,
-  },
-});
-
 const RestuarantCard = ({
   onPress,
   item,
@@ -71,15 +26,60 @@ const RestuarantCard = ({
         style={styles.image}
       />
       <View style={styles.cardContent}>
-        <Text style={styles.restuarantName} numberOfLines={1}>
+        <Text
+          textAlign="center"
+          style={styles.restuarantName}
+          numberOfLines={2}>
           {item.name}
         </Text>
-        <View style={styles.timeWrapper}>
-          <Text>20-30 • min</Text>
-        </View>
       </View>
     </TouchableOpacity>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  image: {
+    borderRadius: 60,
+    height: 120,
+    width: 120,
+    resizeMode: 'cover',
+    // Shadow for Android
+    elevation: 5,
+  },
+  cardContent: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingHorizontal: 17,
+    paddingVertical: 20,
+  },
+  timeWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E7E6E2',
+    padding: 5,
+    borderRadius: 30,
+    marginTop: 10,
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.white,
+    borderRadius: 30,
+    top: '30%',
+    // Shadow for Android
+    elevation: 5,
+  },
+  restuarantName: {
+    width: 120,
+    fontSize: 12,
+  },
+});
 export default RestuarantCard;

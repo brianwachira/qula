@@ -4,6 +4,7 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -76,11 +77,12 @@ const styles = StyleSheet.create({
   marginBottomStyle2: {
     marginBottom: 20,
   },
-  marginSeparator: {
-    marginVertical: 10,
-  },
   flatlistContainer: {
     margin: -12,
+    paddingBottom: 20,
+  },
+  contentScrollView: {
+    flexGrow: 0.75,
   },
 });
 
@@ -161,50 +163,51 @@ const Home = ({
             editable={false}
           />
         </TouchableOpacity>
-        <View style={styles.marginSeparator} />
-        {loading === true || merchants.length < 1 ? (
-          <>
-            <FlatList
-              style={styles.flatlistContainer}
-              contentContainerStyle={styles.categoriesContainerStyle}
-              data={list}
-              ItemSeparatorComponent={ItemSeparator}
-              renderItem={() => <ShimmeringRestuarantCard />}
-              keyExtractor={item => `shimmer-${item.id}`}
-              horizontal
-              numColumns={1}
-            />
-          </>
-        ) : (
-          <>
-            <FlatList
-              style={styles.flatlistContainer}
-              contentContainerStyle={styles.categoriesContainerStyle}
-              data={merchants}
-              ItemSeparatorComponent={ItemSeparator}
-              renderItem={({item}) => (
-                <RestuarantCard
-                  item={item}
-                  onPress={() =>
-                    navigation.navigate('RestuarantDetails', {
-                      token: encodedCipher,
-                      clientId: user.clientId,
-                      id: item.id,
-                      name: item.name,
-                      phone: item.phone,
-                      email: item.email,
-                      address: item.address,
-                      image_path: item.image_path,
-                    })
-                  }
-                />
-              )}
-              keyExtractor={(item, index) => `restaurant-${index}`}
-              horizontal
-              numColumns={1}
-            />
-          </>
-        )}
+        <ScrollView style={styles.contentScrollView}>
+          {loading === true || merchants.length < 1 ? (
+            <>
+              <FlatList
+                key={'#'}
+                style={styles.flatlistContainer}
+                contentContainerStyle={styles.categoriesContainerStyle}
+                data={list}
+                ItemSeparatorComponent={ItemSeparator}
+                renderItem={() => <ShimmeringRestuarantCard />}
+                keyExtractor={item => `shimmer-${item.id}`}
+                numColumns={2}
+              />
+            </>
+          ) : (
+            <>
+              <FlatList
+                key={'#'}
+                style={styles.flatlistContainer}
+                contentContainerStyle={styles.categoriesContainerStyle}
+                data={merchants}
+                ItemSeparatorComponent={ItemSeparator}
+                renderItem={({item}) => (
+                  <RestuarantCard
+                    item={item}
+                    onPress={() =>
+                      navigation.navigate('RestuarantDetails', {
+                        token: encodedCipher,
+                        clientId: user.clientId,
+                        id: item.id,
+                        name: item.name,
+                        phone: item.phone,
+                        email: item.email,
+                        address: item.address,
+                        image_path: item.image_path,
+                      })
+                    }
+                  />
+                )}
+                keyExtractor={(item, index) => `restaurant-${index}`}
+                numColumns={2}
+              />
+            </>
+          )}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

@@ -19,33 +19,8 @@ import Text from '../components/shared-ui/text';
 import {list} from '../constants';
 import theme from '../styles/themes';
 import Shimmering from '../components/shared-ui/shimmering';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const RenderStatus = ({status}: {status: string}) => {
-  let statusToNumber: number = parseInt(status, 10);
-  let message: string = '';
-
-  if (statusToNumber === 1) {
-    message = 'Order Received';
-  } else if (statusToNumber === 2) {
-    message = 'Order in Preparation';
-  } else if (statusToNumber === 3) {
-    message = 'Order Ready';
-  } else if (statusToNumber === 4) {
-    message = 'Order On Delivery';
-  } else if (statusToNumber === 5) {
-    message = 'Order Complete!';
-  } else {
-    message = 'Cancelled';
-  }
-
-  return (
-    <View style={styles.infoItem}>
-      <AntDesign name="clockcircleo" size={20} color="#FFC238" />
-      <Text style={styles.infoText}>{message}</Text>
-    </View>
-  );
-};
+import RenderStatus from '../components/shared-ui/renderStatus';
 
 const OrderDetails = ({
   route,
@@ -77,6 +52,7 @@ const OrderDetails = ({
           console.log(response.data.status);
         } else {
           setOrderDetails(response.data.data);
+          console.log(response.data.data);
         }
       })
       .catch(error => {
@@ -105,16 +81,21 @@ const OrderDetails = ({
       <View style={styles.statusContainer}>
         <RenderStatus status={orderDetails?.order.status} />
         <View style={styles.infoItem}>
-          <MaterialCommunityIcons name="motorbike" size={20} color="#FFC238" />
+          <MaterialCommunityIcons
+            name="motorbike"
+            size={20}
+            color={theme.colors.primary}
+          />
           <Text style={styles.infoText}>
-            {orderDetails?.order.to_deliver ? 'To Be Delivered' : 'Seat In'}
+            {orderDetails?.order.to_deliver === 1
+              ? 'To Be Delivered'
+              : 'Seat In'}
           </Text>
         </View>
       </View>
       <ScrollView
         style={styles.categoryScrollViewContainer}
-        contentContainerStyle={styles.categoryScrollViewContentContainer}
-        horizontal>
+        contentContainerStyle={styles.categoryScrollViewContentContainer}>
         {/* menu items */}
         <View style={styles.menuContainer}>
           {loading === true &&

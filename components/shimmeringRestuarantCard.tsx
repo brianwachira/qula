@@ -24,19 +24,19 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgb(234, 234, 234)',
     borderRadius: 30,
-    top: '20%',
+    top: '30%',
     // Shadow for Android
     elevation: 5,
   },
   image: {
-    borderRadius: 75,
-    height: 150,
-    width: 150,
+    borderRadius: 60,
+    height: 120,
+    width: 120,
     // Shadow for Android
     elevation: 5,
   },
   cardContent: {
-    width: Dimensions.get('screen').width / 2.2,
+    width: Dimensions.get('screen').width / 2.65,
     height: Dimensions.get('screen').width / 4,
   },
 });
