@@ -21,6 +21,7 @@ import axios, {AxiosError} from 'axios';
 import {API_URL} from '@env';
 import ModalPopup from '../components/shared-ui/modalPopup';
 import CloseIcon from '../assets/icons/closeIcon';
+import TextInput from '../components/shared-ui/textInput';
 
 const Checkout = ({
   navigation,
@@ -147,6 +148,13 @@ const Checkout = ({
   const [loading, setLoading] = useState(false);
 
   const toggleModal = () => setVisible(!visible);
+
+  const [buyForFriend, setBuyForFriend] = useState('no');
+
+  //const toggleBuyForFriend = () => setBuyForFriend(!buyForFriend);
+
+  const [friendPhoneNo, setFriendPhoneNo] = useState('');
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -189,6 +197,32 @@ const Checkout = ({
             </TouchableOpacity>
           ))}
         </View>
+        <Text style={styles.textProfileLabel}>Buy for a friend</Text>
+        <View style={styles.card}>
+          <View style={styles.flexRow}>
+            {options.map(item => (
+              <TouchableOpacity
+                key={item.key}
+                style={[styles.radioOptionContainer, styles.marginRadioOption]}
+                onPress={() => setBuyForFriend(item.key)}>
+                <View style={styles.radioCircle}>
+                  {buyForFriend === item.key && (
+                    <View style={styles.radioCircleSelected} />
+                  )}
+                </View>
+                <Text style={styles.radioOptionText}>{item.text}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          {buyForFriend === 'yes' && (
+            <TextInput
+              //cursorColor={theme.colors.black}
+              value={friendPhoneNo}
+              style={styles.friendPhoneNoInput}
+              onChangeText={(text: string) => setFriendPhoneNo(text)}
+            />
+          )}
+        </View>
       </ScrollView>
       <View style={[styles.totalPriceRow, styles.modalMargin]}>
         <Text style={styles.totalPriceLabel}>Total</Text>
@@ -225,6 +259,15 @@ const Checkout = ({
                 <View style={styles.horizontalRule} />
               </View>
             ))}
+            {buyForFriend === 'yes' && (
+              <View style={styles.modalMargin}>
+                <View style={[styles.modalTextRow]}>
+                  <Text>Friend's Phone</Text>
+                  <Text>{friendPhoneNo}</Text>
+                </View>
+                <View style={styles.horizontalRule} />
+              </View>
+            )}
             <View style={[styles.modalTextRow, styles.modalMargin]}>
               <Text>Total :</Text>
               <Text>{totalPrice}</Text>
@@ -400,6 +443,19 @@ const styles = StyleSheet.create({
   modalMargin: {
     marginHorizontal: 20,
   },
+  friendPhoneNoInput: {
+    color: theme.colors.grey,
+    borderColor: theme.colors.grey,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 12,
+    width: 300,
+  },
+  flexRow: {
+    flexDirection: 'row',
+  },
+  marginRadioOption: {
+    marginRight: 10,
+  },
 });
 
 const paymentOptions = [
@@ -425,5 +481,16 @@ const deliveryOptions = [
   {
     key: 'pickup',
     text: 'Pick Up',
+  },
+];
+
+const options = [
+  {
+    key: 'yes',
+    text: 'Yes',
+  },
+  {
+    key: 'no',
+    text: 'No',
   },
 ];
