@@ -88,9 +88,7 @@ const Orders = ({
             buttonType="orange"
             textType="labelButtonOrange"
             accessibilityLabel="Start Ordering"
-            onPress={() =>
-              navigation.navigate('HomeTab', {screen: 'HomeStack'})
-            }
+            onPress={() => navigation.navigate('HomeTab', {screen: 'Home'})}
           />
         </View>
       </SafeAreaView>
@@ -154,12 +152,12 @@ const styles = StyleSheet.create({
   },
   container: {
     display: 'flex',
-    marginTop: 50,
+    marginTop: 10,
     flex: 1,
     marginHorizontal: 40,
   },
   scrollViewContainer: {
-    marginVertical: 20,
+    marginTop: 5,
     flex: 1,
     margin: -12,
   },
