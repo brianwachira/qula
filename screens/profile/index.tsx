@@ -69,8 +69,12 @@ const styles = StyleSheet.create({
 const Profile = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'ProfileStack'>) => {
-  const [user] = useStorage('user');
+  const [user, setUser] = useStorage('user');
 
+  // function to logout user
+  const logout = () => {
+    setUser(null);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -114,6 +118,14 @@ const Profile = ({
         </TouchableOpacity>
         <TouchableOpacity style={styles.listCard} activeOpacity={0.8}>
           <Text style={styles.textProfileName}>Help</Text>
+          {/* chevron icon here */}
+          <ChevronLeftIcon />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.listCard}
+          activeOpacity={0.8}
+          onPress={logout}>
+          <Text style={styles.textProfileName}>Logout</Text>
           {/* chevron icon here */}
           <ChevronLeftIcon />
         </TouchableOpacity>
