@@ -5,7 +5,6 @@ import {
   Keyboard,
   Pressable,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     marginHorizontal: 30,
-    marginTop: StatusBar.currentHeight,
+    marginTop: 10,
   },
   backIcon: {
     marginRight: 10,
@@ -63,9 +62,7 @@ const EditProfile = ({
         <Pressable onPress={Keyboard.dismiss} style={styles.presssableFlex}>
           <TouchableOpacity
             style={styles.backButtonContainer}
-            onPress={() =>
-              navigation.navigate('HomeTab', {screen: 'ProfileStack'})
-            }>
+            onPress={() => navigation.navigate('HomeTab', {screen: 'Profile'})}>
             <ArrowLeftIcon width={35} height={35} style={styles.backIcon} />
           </TouchableOpacity>
           <Text style={styles.screenTitle} textAlign="center">
