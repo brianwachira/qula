@@ -147,6 +147,11 @@ const FoodDetails = ({
   // so the problem is you are manipulating the storage directly
   return (
     <SafeAreaView key={id} style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor={theme.colors.tab}
+        barStyle={'dark-content'}
+      />
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
       </TouchableOpacity>
