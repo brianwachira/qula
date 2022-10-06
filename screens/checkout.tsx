@@ -3,6 +3,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   ActivityIndicator,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   ToastAndroid,
   TouchableOpacity,
@@ -127,7 +128,7 @@ const Checkout = ({
           resetCart();
 
           // go to orders screen
-          navigation.navigate('HomeTab', {screen: 'OrdersStack'});
+          navigation.navigate('HomeTab', {screen: 'Orders'});
         }
       })
       .catch((error: AxiosError) => {
@@ -157,8 +158,13 @@ const Checkout = ({
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor={theme.colors.tab}
+        barStyle={'dark-content'}
+      />
       <TouchableOpacity
-        onPress={() => navigation.navigate('HomeTab', {screen: 'CartStack'})}>
+        onPress={() => navigation.navigate('HomeTab', {screen: 'Cart'})}>
         <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
       </TouchableOpacity>
       <View style={styles.title}>
@@ -319,7 +325,7 @@ export default Checkout;
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    marginTop: 50,
+    marginTop: StatusBar.currentHeight,
     flex: 0.97,
     marginHorizontal: 40,
   },
