@@ -113,7 +113,7 @@ const Cart = ({
     return (
       <EmptyState
         label="buy food"
-        onPress={() => navigation.navigate('HomeTab', {screen: 'HomeStack'})}
+        onPress={() => navigation.navigate('HomeTab', {screen: 'Home'})}
       />
     );
   }
@@ -167,7 +167,7 @@ const Cart = ({
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    marginTop: 50,
+    marginTop: 0,
     flex: 0.97,
     marginHorizontal: 40,
   },
