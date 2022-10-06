@@ -5,8 +5,10 @@ import GetStarted from '../screens/getstarted';
 import Auth from '../screens/auth';
 import Otp from '../screens/auth/otp';
 
+// Create stack.
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
 const AuthNavigation = () => {
-  const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {/* get started screen */}
