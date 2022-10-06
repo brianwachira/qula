@@ -26,7 +26,7 @@ import {list} from '../constants';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 80,
+    marginTop: 10,
     marginLeft: 40,
   },
   separator: {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   contentScrollView: {
-    flexGrow: 0.75,
+    flexGrow: 0.79,
   },
 });
 
