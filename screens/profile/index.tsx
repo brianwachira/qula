@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    marginTop: 100,
+    marginTop: 20,
   },
   scrollView: {
     marginHorizontal: 30,
@@ -104,9 +104,7 @@ const Profile = ({
         <TouchableOpacity
           style={styles.listCard}
           activeOpacity={0.8}
-          onPress={() =>
-            navigation.navigate('HomeTab', {screen: 'OrdersStack'})
-          }>
+          onPress={() => navigation.navigate('HomeTab', {screen: 'Orders'})}>
           <Text style={styles.textProfileName}>Orders</Text>
           {/* chevron icon here */}
           <ChevronLeftIcon />
