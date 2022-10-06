@@ -60,10 +60,10 @@ export type RootStackParamList = {
   };
   HomeTab: {
     screen:
-      | 'HomeStack'
-      | 'OrdersStack'
-      | 'CartStack'
-      | 'ProfileStack'
+      | 'Home'
+      | 'Orders'
+      | 'Cart'
+      | 'Profile'
       | 'SearchResults'
       | 'RestuarantDetails'
       | 'FoodDetails'
