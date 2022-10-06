@@ -97,6 +97,11 @@ const SearchResults = ({
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor={theme.colors.tab}
+        barStyle={'dark-content'}
+      />
       <View style={styles.searchBar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
