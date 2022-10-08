@@ -67,9 +67,7 @@ const OrderDetails = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('HomeTab', {screen: 'OrdersStack'})
-          }>
+          onPress={() => navigation.navigate('HomeTab', {screen: 'Orders'})}>
           <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
         </TouchableOpacity>
         <View>
