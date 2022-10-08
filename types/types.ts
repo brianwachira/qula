@@ -98,7 +98,13 @@ export type cartItem = {
   quantity: number;
 };
 
-export interface cartProduct extends product {
+export interface cartProduct {
+  id: number;
+  name: string;
+  description: string;
+  in_stock: string;
+  cost: number;
+  image_path: string;
   quantity: number;
 }
 
