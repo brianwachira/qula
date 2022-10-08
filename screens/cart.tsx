@@ -135,7 +135,6 @@ const Cart = ({
             id: number;
             name: string;
             description: string;
-            category_id: number;
             cost: number;
             in_stock: string;
             image_path: string;
