@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import {
+  GestureHandlerRootView,
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
   PanGestureHandlerProps,
@@ -130,51 +131,53 @@ const CartCard = (props: CartCardProps) => {
       <Animated.View style={[styles.iconContainer, rIconContainerStyle]}>
         <IonIcons name="trash" size={LIST_ITEM_HEIGHT * 0.25} color={'white'} />
       </Animated.View>
-      <PanGestureHandler
-        failOffsetY={[-5, 5]}
-        activeOffsetX={[-5, 5]}
-        simultaneousHandlers={props.simultaneousHandlers}
-        onGestureEvent={panGesture}>
-        <Animated.View style={[styles.cartItem, rStyle]}>
-          <View style={styles.cartItemImageContainer}>
-            <Image
-              style={styles.cartItemImage}
-              source={{uri: props.item.image_path}}
-            />
-          </View>
-          <View style={styles.cartItemContentContainer}>
-            <View style={styles.cartItemContentRow}>
-              <View style={styles.cartContentColumn}>
-                <Text style={styles.cartItemTitle} numberOfLines={1}>
-                  {props.item.name}-{props.item.id}
-                </Text>
-                <Text color="primary">KES {props.item.cost}</Text>
-              </View>
-              <View style={styles.cartItemQuantityButton}>
-                <TouchableOpacity
-                  style={styles.plusButton}
-                  onPress={() => props.onDeductQuantity(props.item)}
-                  disabled={props.item.quantity === 0}>
-                  <Text style={{color: theme.colors.white}}>-</Text>
-                </TouchableOpacity>
-                <View style={styles.quantityLabel}>
-                  <Text style={{color: theme.colors.white}}>
-                    {props.item.quantity}
+      <GestureHandlerRootView>
+        <PanGestureHandler
+          failOffsetY={[-5, 5]}
+          activeOffsetX={[-5, 5]}
+          simultaneousHandlers={props.simultaneousHandlers}
+          onGestureEvent={panGesture}>
+          <Animated.View style={[styles.cartItem, rStyle]}>
+            <View style={styles.cartItemImageContainer}>
+              <Image
+                style={styles.cartItemImage}
+                source={{uri: props.item.image_path}}
+              />
+            </View>
+            <View style={styles.cartItemContentContainer}>
+              <View style={styles.cartItemContentRow}>
+                <View style={styles.cartContentColumn}>
+                  <Text style={styles.cartItemTitle} numberOfLines={1}>
+                    {props.item.name}-{props.item.id}
                   </Text>
+                  <Text color="primary">KES {props.item.cost}</Text>
                 </View>
-                <TouchableOpacity
-                  style={styles.minusButton}
-                  onPress={() => props.onAddQuantity(props.item)}
-                  disabled={
-                    props.item.quantity === parseInt(props.item.in_stock, 10)
-                  }>
-                  <Text style={{color: theme.colors.white}}>+</Text>
-                </TouchableOpacity>
+                <View style={styles.cartItemQuantityButton}>
+                  <TouchableOpacity
+                    style={styles.plusButton}
+                    onPress={() => props.onDeductQuantity(props.item)}
+                    disabled={props.item.quantity === 0}>
+                    <Text style={{color: theme.colors.white}}>-</Text>
+                  </TouchableOpacity>
+                  <View style={styles.quantityLabel}>
+                    <Text style={{color: theme.colors.white}}>
+                      {props.item.quantity}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.minusButton}
+                    onPress={() => props.onAddQuantity(props.item)}
+                    disabled={
+                      props.item.quantity === parseInt(props.item.in_stock, 10)
+                    }>
+                    <Text style={{color: theme.colors.white}}>+</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        </Animated.View>
-      </PanGestureHandler>
+          </Animated.View>
+        </PanGestureHandler>
+      </GestureHandlerRootView>
     </Animated.View>
   );
 };
