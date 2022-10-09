@@ -5,6 +5,7 @@ import {
   Keyboard,
   Pressable,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -13,6 +14,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types/types';
 import ArrowLeftIcon from '../../assets/icons/arrowLeftIcon';
 import Text from '../../components/shared-ui/text';
+import theme from '../../styles/themes';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,6 +60,10 @@ const EditProfile = ({
   return (
     <>
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={theme.colors.tab}
+        />
         {/* this wrapper dismisses keyboard on press */}
         <Pressable onPress={Keyboard.dismiss} style={styles.presssableFlex}>
           <TouchableOpacity

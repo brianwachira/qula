@@ -65,6 +65,7 @@ const OrderDetails = ({
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={theme.colors.tab} />
       <View style={styles.headerContainer}>
         <TouchableOpacity
           onPress={() => navigation.navigate('HomeTab', {screen: 'Orders'})}>
