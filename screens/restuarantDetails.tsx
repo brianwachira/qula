@@ -25,7 +25,7 @@ const RestuarantDetails = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'RestuarantDetails'>) => {
-  const {name, phone, email, address, image_path, token, clientId} =
+  const {name, phone, email, address, image_path, token, id, clientId} =
     route.params;
 
   const [products, setProducts] = useState<product[]>([]);
@@ -82,7 +82,7 @@ const RestuarantDetails = ({
       {/* Back icon */}
       <TouchableOpacity
         style={styles.backIconContainer}
-        onPress={() => navigation.navigate('HomeTab', {screen: 'Home'})}
+        onPress={() => navigation.goBack()}
         activeOpacity={0.9}>
         <ArrowLeftIcon width={35} height={35} />
       </TouchableOpacity>
@@ -221,7 +221,7 @@ const RestuarantDetails = ({
                       style={styles.menuContentWrapper}
                       onPress={() =>
                         navigation.navigate('FoodDetails', {
-                          product: productItem,
+                          product: {...productItem, restuarantId: id},
                         })
                       }>
                       <View>

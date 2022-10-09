@@ -24,7 +24,7 @@ const FoodDetails = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'FoodDetails'>) => {
-  const {id, name, image_path, description, in_stock, cost} =
+  const {restuarantId, id, name, image_path, description, in_stock, cost} =
     route.params.product;
 
   const [user, setUser] = useStorage('user');
@@ -36,12 +36,14 @@ const FoodDetails = ({
   // use effect to check whether product is in cart
   useEffect(() => {
     // look for the product
-    const productIsInCart = products?.find(product => product.id === id);
+    const productIsInCart = products?.productsInCart
+      ? products?.productsInCart.find(product => product.id === id)
+      : undefined;
     if (typeof productIsInCart !== undefined) {
       // save the product in cart to state
       setProductInCart(productIsInCart);
     }
-  }, [id, products]);
+  }, [id, products.productsInCart]);
 
   // function to handle adding item to cart
   const handleCart = () => {
@@ -62,7 +64,10 @@ const FoodDetails = ({
       phone,
       userId,
       clientId,
-      products: [...products, newProductInCart],
+      products: {
+        restuarantId: restuarantId,
+        productsInCart: [...products?.productsInCart, newProductInCart],
+      },
     };
 
     // save updated user
@@ -87,9 +92,12 @@ const FoodDetails = ({
       phone,
       userId,
       clientId,
-      products: products.map(product =>
-        product.id === id ? updatedProductInCart : product,
-      ),
+      products: {
+        restuarantId: products.restuarantId,
+        productsInCart: products.productsInCart.map(product =>
+          product.id === id ? updatedProductInCart : product,
+        ),
+      },
     };
 
     // save updated user
@@ -109,7 +117,12 @@ const FoodDetails = ({
         phone,
         userId,
         clientId,
-        products: products.filter(product => product.id !== id),
+        products: {
+          restuarantId: products.restuarantId,
+          productsInCart: products.productsInCart.filter(
+            product => product.id !== id,
+          ),
+        },
       };
 
       // save updated user
@@ -131,9 +144,12 @@ const FoodDetails = ({
         phone,
         userId,
         clientId,
-        products: products.map(product =>
-          product.id === id ? updatedProductInCart : product,
-        ),
+        products: {
+          restuarantId: products.restuarantId,
+          productsInCart: products.productsInCart.map(product =>
+            product.id === id ? updatedProductInCart : product,
+          ),
+        },
       };
 
       // save updated user
@@ -144,6 +160,9 @@ const FoodDetails = ({
     }
   };
 
+  console.log('restuarant id', restuarantId);
+  console.log('products restuarant id', products.restuarantId);
+  console.log(image_path);
   // so the problem is you are manipulating the storage directly
   return (
     <SafeAreaView key={id} style={styles.container}>
@@ -218,16 +237,35 @@ const FoodDetails = ({
           </View>
         </>
       ) : (
+        // {restuarantId !== products.restuarantId ?}
         <>
-          <View style={styles.cartButtonContainer}>
-            <Button
-              title="Add to cart"
-              buttonType="orange"
-              textType="labelButtonOrange"
-              accessibilityLabel="Start Ordering"
-              onPress={handleCart}
-            />
-          </View>
+          {restuarantId !== products.restuarantId ? (
+            <>
+              <View style={styles.cartButtonContainer}>
+                <Button
+                  title="Can't Order From Different Restuarant"
+                  buttonType="orange"
+                  textType="labelButtonOrange"
+                  accessibilityLabel="Start Ordering"
+                  //onPress={handleCart}
+                  //disabled={restuarantId !== products.restuarantId}
+                />
+              </View>
+            </>
+          ) : (
+            <>
+              <View style={styles.cartButtonContainer}>
+                <Button
+                  title="Add to cart"
+                  buttonType="orange"
+                  textType="labelButtonOrange"
+                  accessibilityLabel="Start Ordering"
+                  onPress={handleCart}
+                  disabled={restuarantId !== products.restuarantId}
+                />
+              </View>
+            </>
+          )}
         </>
       )}
     </SafeAreaView>

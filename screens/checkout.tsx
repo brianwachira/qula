@@ -35,7 +35,7 @@ const Checkout = ({
 
   useEffect(() => {
     // get total price from cart when products property changes
-    const totalPriceUpdated: number = products.reduce(
+    const totalPriceUpdated: number = products.productsInCart.reduce(
       (previousValue, currentValue) =>
         previousValue + currentValue.quantity * currentValue.cost,
       0,
@@ -48,7 +48,7 @@ const Checkout = ({
   const makeOrder = () => {
     // setLoading to true
     setLoading(true);
-    const orders = products.map(product => {
+    const orders = products.productsInCart.map(product => {
       return {
         productID: product.id,
         quantity: product.quantity,
@@ -140,7 +140,7 @@ const Checkout = ({
   const resetCart = () => {
     setUser({
       ...user,
-      products: [],
+      products: {restuarantId: 0, productsInCart: []},
     });
   };
   const [paymentOption, setPaymentOption] = useState<string>('mpesa');
@@ -253,7 +253,7 @@ const Checkout = ({
             </TouchableOpacity>
           </View>
           <View style={styles.modalBodyWrapper}>
-            {products.map(product => (
+            {products.productsInCart.map(product => (
               <View key={product.name} style={styles.modalMargin}>
                 <View style={styles.modalTextRow}>
                   <Text textType="labelLink">{product.name}</Text>

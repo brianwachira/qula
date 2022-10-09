@@ -19,13 +19,13 @@ const Cart = ({
 
   // products in cart state
   const [productsInCart, setProductsInCart] = useState<cartProduct[]>(
-    products as cartProduct[],
+    products.productsInCart as cartProduct[],
   );
 
   // use effect to add products to cart
   useEffect(() => {
-    setProductsInCart(products);
-  }, [products]);
+    setProductsInCart(products.productsInCart);
+  }, [products.productsInCart]);
 
   const onDismiss = (cartItem: cartProduct) => {
     // save to productsInCart state
@@ -33,11 +33,28 @@ const Cart = ({
       productsInCart?.filter(productInCart => productInCart.id !== cartItem.id),
     );
 
-    //
-    setUser({
-      ...user,
-      products: products.filter(product => product.id !== cartItem.id),
-    });
+    // If only one product has remained in cart, reset the products object.
+    if (products.productsInCart.length === 1) {
+      setUser({
+        ...user,
+        products: {
+          restuarantId: 0,
+          productsInCart: products.productsInCart.filter(
+            product => product.id !== cartItem.id,
+          ),
+        },
+      });
+    } else {
+      setUser({
+        ...user,
+        products: {
+          restuarantId: products.restuarantId,
+          productsInCart: products.productsInCart.filter(
+            product => product.id !== cartItem.id,
+          ),
+        },
+      });
+    }
   };
 
   // function to add quantity
@@ -52,9 +69,12 @@ const Cart = ({
     // user object containing updated product in cart
     let userWithProductOnCart = {
       ...user,
-      products: products.map(product =>
-        product.id === cartItem.id ? updatedProductInCart : product,
-      ),
+      products: {
+        restuarantId: products.restuarantId,
+        productsInCart: products.productsInCart.map(product =>
+          product.id === cartItem.id ? updatedProductInCart : product,
+        ),
+      },
     };
 
     // save updated user
@@ -82,9 +102,12 @@ const Cart = ({
       // user object containing updated product in cart
       let userWithProductOnCart = {
         ...user,
-        products: products.map(product =>
-          product.id === cartItem.id ? updatedProductInCart : product,
-        ),
+        products: {
+          restuarantId: products.restuarantId,
+          productsInCart: products.productsInCart.map(product =>
+            product.id === cartItem.id ? updatedProductInCart : product,
+          ),
+        },
       };
 
       // save updated user
@@ -109,7 +132,7 @@ const Cart = ({
   const scrollRef = useRef(null);
 
   // show this when merchant state is empty
-  if (productsInCart.length < 1) {
+  if (productsInCart?.length === undefined || productsInCart?.length < 1) {
     return (
       <EmptyState
         label="buy food"

@@ -7,6 +7,16 @@ export type product = {
   cost: number;
   image_path: string;
 };
+export type productWithRestuarantId = {
+  restuarantId: number;
+  id: number;
+  name: string;
+  category_id: number;
+  description: string;
+  in_stock: string;
+  cost: number;
+  image_path: string;
+};
 
 // type categories
 export type Icategories = {
@@ -84,7 +94,7 @@ export type RootStackParamList = {
     address: string;
     image_path: string;
   };
-  FoodDetails: {product: product};
+  FoodDetails: {product: productWithRestuarantId};
   EditProfile: undefined;
   Checkout: undefined;
   OrderDetails: {
@@ -114,5 +124,8 @@ export type defaultStorageObject = {
   phone: string;
   userId: string;
   clientId: string;
-  products: cartProduct[];
+  products: {
+    restuarantId: number;
+    productsInCart: cartProduct[];
+  };
 };
