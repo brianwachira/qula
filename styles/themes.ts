@@ -8,6 +8,9 @@ const theme = {
     grey: '#808080',
     icon: '#ADADAF',
   },
+  opacity: {
+    one: 1,
+  },
   borderRadius: {
     button: 30,
   },
