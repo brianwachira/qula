@@ -1,3 +1,4 @@
+import {IMAGE_BASE_URL} from '@env';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {Image, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
@@ -22,22 +23,21 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   profileImage: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderRadius: theme.borderRadius.button,
-    marginRight: 20,
+    marginRight: 10,
   },
   profileCard: {
     borderRadius: 20,
     backgroundColor: theme.colors.white,
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    padding: 15,
     ...theme.boxShadowAndroid,
   },
   profileContent: {
-    width: '65%',
+    width: '100%',
   },
   textProfileLabel: {
     fontWeight: '600',
@@ -47,14 +47,14 @@ const styles = StyleSheet.create({
   },
   textProfileName: {
     fontWeight: '600',
-    fontSize: 18,
-    lineHeight: 21,
+    fontSize: 16,
+    lineHeight: 19,
     marginBottom: 5,
   },
   textProfileDetails: {
     fontWeight: '400',
-    fontSize: 15,
-    lineHeight: 18,
+    fontSize: 12,
+    lineHeight: 14,
     opacity: 0.5,
     marginBottom: 5,
   },
@@ -91,9 +91,13 @@ const Profile = ({
           activeOpacity={0.8}
           onPress={() => navigation.navigate('EditProfile')}>
           {/* user image */}
-          <Image source={{uri: user.image}} style={styles.profileImage} />
+          <Image
+            source={{uri: `${IMAGE_BASE_URL}/${user.image}`}}
+            style={styles.profileImage}
+          />
           <View style={styles.profileContent}>
             <Text style={styles.textProfileName}>{user.names}</Text>
+            <Text style={styles.textProfileName}>{user.username}</Text>
             <Text style={styles.textProfileDetails}>{user.email}</Text>
             <Text style={styles.textProfileDetails}>{user.phone}</Text>
           </View>
@@ -103,17 +107,17 @@ const Profile = ({
           style={styles.listCard}
           activeOpacity={0.8}
           onPress={() => navigation.navigate('HomeTab', {screen: 'Orders'})}>
-          <Text style={styles.textProfileName}>Orders</Text>
+          <Text textType="labelLink">Orders</Text>
           {/* chevron icon here */}
           <ChevronLeftIcon />
         </TouchableOpacity>
         <TouchableOpacity style={styles.listCard} activeOpacity={0.8}>
-          <Text style={styles.textProfileName}>FAQ</Text>
+          <Text textType="labelLink">FAQ</Text>
           {/* chevron icon here */}
           <ChevronLeftIcon />
         </TouchableOpacity>
         <TouchableOpacity style={styles.listCard} activeOpacity={0.8}>
-          <Text style={styles.textProfileName}>Help</Text>
+          <Text textType="labelLink">Help</Text>
           {/* chevron icon here */}
           <ChevronLeftIcon />
         </TouchableOpacity>
@@ -121,7 +125,7 @@ const Profile = ({
           style={styles.listCard}
           activeOpacity={0.8}
           onPress={logout}>
-          <Text style={styles.textProfileName}>Logout</Text>
+          <Text textType="labelLink">Logout</Text>
           {/* chevron icon here */}
           <ChevronLeftIcon />
         </TouchableOpacity>
