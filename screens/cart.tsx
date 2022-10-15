@@ -59,7 +59,6 @@ const Cart = ({
 
   // function to add quantity
   const addQuantity = (cartItem: cartProduct) => {
-    console.log('pressed');
     // updated product with quantity
     let updatedProductInCart = {
       ...cartItem,
