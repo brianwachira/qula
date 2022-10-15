@@ -1,8 +1,9 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -94,6 +95,7 @@ const Home = ({
   const [user] = useStorage('user');
   const [merchants, setMerchants] = useState<Imerchants[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   // create a cipher text
   const ciphertext: string = hmac256(
@@ -143,6 +145,28 @@ const Home = ({
     });
   };
 
+  // onRefresh function.
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    axios
+      .get(`${API_URL}/fetch-merchants?${params}`)
+      .then(response => {
+        if (response.data.status === false) {
+          console.log(response.data.status);
+        } else {
+          console.log(response.data.status);
+          setMerchants(response.data?.data);
+        }
+        setRefreshing(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setRefreshing(false);
+      });
+    setRefreshing(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -163,7 +187,11 @@ const Home = ({
             editable={false}
           />
         </TouchableOpacity>
-        <ScrollView style={styles.contentScrollView}>
+        <ScrollView
+          style={styles.contentScrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {loading === true || merchants.length < 1 ? (
             <>
               <FlatList
