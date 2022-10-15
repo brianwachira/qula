@@ -29,7 +29,8 @@ const FoodDetails = ({
 
   const [user, setUser] = useStorage('user');
 
-  const {email, authKey, phone, userId, clientId, products} = user;
+  const {clientId, authKey, names, email, image, phone, userId, products} =
+    user;
 
   const [productInCart, setProductInCart] = useState<cartProduct>();
 
@@ -59,11 +60,13 @@ const FoodDetails = ({
     };
     // user object containing product in cart
     let userWithProductOnCart = {
-      email,
+      clientId,
       authKey,
+      names,
+      email,
+      image,
       phone,
       userId,
-      clientId,
       products: {
         restuarantId: restuarantId,
         productsInCart: [...products?.productsInCart, newProductInCart],
@@ -87,11 +90,13 @@ const FoodDetails = ({
 
     // user object containing updated product in cart
     let userWithProductOnCart = {
-      email,
+      clientId,
       authKey,
+      names,
+      email,
+      image,
       phone,
       userId,
-      clientId,
       products: {
         restuarantId: products.restuarantId,
         productsInCart: products.productsInCart.map(product =>
@@ -112,11 +117,13 @@ const FoodDetails = ({
     if (productInCart!.quantity - 1 === 0) {
       // remove it from cart
       let userWithoutProductOnCart = {
-        email,
+        clientId,
         authKey,
+        names,
+        email,
+        image,
         phone,
         userId,
-        clientId,
         products: {
           restuarantId: products.restuarantId,
           productsInCart: products.productsInCart.filter(
@@ -239,7 +246,8 @@ const FoodDetails = ({
       ) : (
         // {restuarantId !== products.restuarantId ?}
         <>
-          {restuarantId !== products.restuarantId ? (
+          {restuarantId !== products.restuarantId &&
+          products.restuarantId !== -1 ? (
             <>
               <View style={styles.cartButtonContainer}>
                 <Button
@@ -261,7 +269,6 @@ const FoodDetails = ({
                   textType="labelButtonOrange"
                   accessibilityLabel="Start Ordering"
                   onPress={handleCart}
-                  disabled={restuarantId !== products.restuarantId}
                 />
               </View>
             </>
