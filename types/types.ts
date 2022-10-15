@@ -62,11 +62,14 @@ export type RootStackParamList = {
   Cart: undefined;
   ProfileStack: undefined;
   Otp: {
+    authKey: string;
+    clientId: string;
+    names: string;
+    email: string;
+    image_path: string;
     phone: string;
     otp: string;
-    authKey: string;
     userId: string;
-    clientId: string;
   };
   HomeTab: {
     screen:
@@ -119,11 +122,13 @@ export interface cartProduct {
 }
 
 export type defaultStorageObject = {
-  email?: string;
+  clientId: string;
   authKey: string;
+  names: string;
+  email: string;
+  image: string;
   phone: string;
   userId: string;
-  clientId: string;
   products: {
     restuarantId: number;
     productsInCart: cartProduct[];
