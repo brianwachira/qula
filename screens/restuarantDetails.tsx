@@ -16,7 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import theme from '../styles/themes';
 import axios, {AxiosResponse} from 'axios';
-import {API_URL} from '@env';
+import {API_URL, IMAGE_BASE_URL} from '@env';
 import Text from '../components/shared-ui/text';
 import {list} from '../constants';
 import Shimmering from '../components/shared-ui/shimmering';
@@ -41,7 +41,7 @@ const RestuarantDetails = ({
     // params
     const params = new URLSearchParams({
       token,
-      client_id: clientId,
+      client_id: id.toString(),
     });
     axios
       .get(`${API_URL}/fetch-products?${params}`)
@@ -87,7 +87,12 @@ const RestuarantDetails = ({
         <ArrowLeftIcon width={35} height={35} />
       </TouchableOpacity>
       <View style={styles.mapImageWrpper}>
-        <Image source={{uri: image_path}} style={styles.restuarantImage} />
+        <Image
+          source={{
+            uri: `${IMAGE_BASE_URL}/${image_path}`,
+          }}
+          style={styles.restuarantImage}
+        />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
@@ -226,7 +231,9 @@ const RestuarantDetails = ({
                       }>
                       <View>
                         <Image
-                          source={{uri: productItem.image_path}}
+                          source={{
+                            uri: `${IMAGE_BASE_URL}/${productItem.image_path}`,
+                          }}
                           style={styles.menuImage}
                         />
                       </View>
