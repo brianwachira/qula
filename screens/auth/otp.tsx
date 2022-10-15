@@ -84,10 +84,16 @@ const Otp = ({
           // create user object
           const newUser = {
             authKey: route.params.authKey,
+            clientId: route.params.clientId,
+            names: route.params.names,
+            email: route.params.email,
+            image_path: route.params.image_path,
             phone: route.params.phone,
             userId: route.params.userId,
-            clientId: route.params.clientId,
-            products: [] as unknown as cartProduct[],
+            products: {
+              restuarantId: -1,
+              productsInCart: [] as unknown as cartProduct[],
+            },
           };
           console.log(newUser);
           // save the new user
