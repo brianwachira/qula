@@ -22,6 +22,7 @@ import Animated, {
 import theme from '../styles/themes';
 import Text from './shared-ui/text';
 import IonIcons from 'react-native-vector-icons/Ionicons';
+import {IMAGE_BASE_URL} from '@env';
 
 interface CartCardProps
   extends Pick<PanGestureHandlerProps, 'simultaneousHandlers'> {
@@ -141,7 +142,7 @@ const CartCard = (props: CartCardProps) => {
             <View style={styles.cartItemImageContainer}>
               <Image
                 style={styles.cartItemImage}
-                source={{uri: props.item.image_path}}
+                source={{uri: `${IMAGE_BASE_URL}/${props.item.image_path}`}}
               />
             </View>
             <View style={styles.cartItemContentContainer}>
@@ -167,9 +168,7 @@ const CartCard = (props: CartCardProps) => {
                   <TouchableOpacity
                     style={styles.minusButton}
                     onPress={() => props.onAddQuantity(props.item)}
-                    disabled={
-                      props.item.quantity === parseInt(props.item.in_stock, 10)
-                    }>
+                    disabled={props.item.in_stock === '0'}>
                     <Text style={{color: theme.colors.white}}>+</Text>
                   </TouchableOpacity>
                 </View>
