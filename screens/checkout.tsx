@@ -140,7 +140,7 @@ const Checkout = ({
   const resetCart = () => {
     setUser({
       ...user,
-      products: {restuarantId: 0, productsInCart: []},
+      products: {restuarantId: -1, productsInCart: []},
     });
   };
   const [paymentOption, setPaymentOption] = useState<string>('mpesa');
