@@ -65,8 +65,9 @@ export type RootStackParamList = {
     authKey: string;
     clientId: string;
     names: string;
+    username: string;
     email: string;
-    image_path: string;
+    image: string;
     phone: string;
     otp: string;
     userId: string;
@@ -122,13 +123,14 @@ export interface cartProduct {
 }
 
 export type defaultStorageObject = {
-  clientId: string;
-  authKey: string;
-  names: string;
-  email: string;
   image: string;
-  phone: string;
   userId: string;
+  phone: string;
+  username: string;
+  email: string;
+  names: string;
+  authKey: string;
+  clientId: string;
   products: {
     restuarantId: number;
     productsInCart: cartProduct[];
