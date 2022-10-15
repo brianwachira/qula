@@ -52,13 +52,16 @@ const Login = () => {
         } else {
           //console.log(response.data.data.client_id);
 
-          console.log(response.data.otp);
+          console.log(response.data);
           const user = {
+            authKey: response.data.data.auth_key,
+            clientId: response.data.data.client_id,
+            names: response.data.data.names,
+            email: response.data.data.email,
+            image_path: response.data.data.image_path,
             phone: response.data.data.msisdn,
             otp: response.data.otp,
-            authKey: response.data.data.auth_key,
             userId: response.data.data.id,
-            clientId: response.data.data.client_id,
           };
           // move to otp screen
           RootNavigation.navigate('Otp' as never, user as never);
