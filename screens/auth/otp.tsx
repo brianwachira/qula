@@ -86,8 +86,9 @@ const Otp = ({
             authKey: route.params.authKey,
             clientId: route.params.clientId,
             names: route.params.names,
+            username: route.params.username,
             email: route.params.email,
-            image_path: route.params.image_path,
+            image: route.params.image,
             phone: route.params.phone,
             userId: route.params.userId,
             products: {
