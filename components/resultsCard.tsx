@@ -1,4 +1,5 @@
 // results card
+import {IMAGE_BASE_URL} from '@env';
 import React from 'react';
 import {
   TouchableOpacity,
@@ -29,7 +30,7 @@ const ResultsCard = ({
       <View style={styles.backdrop} />
       <Image
         source={{
-          uri: item.image_path,
+          uri: `${IMAGE_BASE_URL}/${item.image_path}`,
         }}
         style={styles.image}
       />
