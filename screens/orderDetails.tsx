@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {RootStackParamList} from '../types/types';
 import {API_URL, IMAGE_BASE_URL} from '@env';
 import axios, {AxiosResponse} from 'axios';
@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  RefreshControl,
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import Text from '../components/shared-ui/text';
@@ -27,16 +28,19 @@ const OrderDetails = ({
 }: NativeStackScreenProps<RootStackParamList, 'OrderDetails'>) => {
   const [orderDetails, setOrderDetails] = useState();
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const {token, orderId} = route.params;
 
   // params
   const params = new URLSearchParams({
     token,
-    //user_id: user.userId,
-    //client_id: user.clientId,
     order_id: orderId,
   });
+
+  /**
+   * useEffect to fetch order details.
+   */
 
   useEffect(() => {
     // set loading true
@@ -45,7 +49,7 @@ const OrderDetails = ({
       .get(`${API_URL}/get-order-status?${params}`)
       .then((response: AxiosResponse) => {
         if (response.data.status === false) {
-          console.log(response.data.status);
+          console.log(response.data.status_message);
         } else {
           setOrderDetails(response.data.data);
           console.log(response.data.data);
@@ -58,6 +62,29 @@ const OrderDetails = ({
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
+
+  // onRefersh function.
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    axios
+      .get(`${API_URL}/get-order-status?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          console.log(response.data.status_message);
+        } else {
+          setOrderDetails(response.data.data);
+          console.log(response.data.data);
+        }
+        setRefreshing(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setRefreshing(false);
+      });
+
+    setRefreshing(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -90,7 +117,10 @@ const OrderDetails = ({
       </View>
       <ScrollView
         style={styles.categoryScrollViewContainer}
-        contentContainerStyle={styles.categoryScrollViewContentContainer}>
+        contentContainerStyle={styles.categoryScrollViewContentContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {/* menu items */}
         <View style={styles.menuContainer}>
           {loading === true &&
