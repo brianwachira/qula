@@ -38,7 +38,7 @@ const Cart = ({
       setUser({
         ...user,
         products: {
-          restuarantId: 0,
+          restuarantId: -1,
           productsInCart: products.productsInCart.filter(
             product => product.id !== cartItem.id,
           ),
