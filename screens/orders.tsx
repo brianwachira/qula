@@ -1,7 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Dimensions,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -27,6 +28,7 @@ const Orders = ({
 
   const [orders, setOrders] = useState<IOrderBulk[]>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   // create a cipher text
   const ciphertext: string = hmac256(
@@ -63,6 +65,32 @@ const Orders = ({
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.products]);
+
+  // onRefresh function.
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    axios
+      .get(`${API_URL}/my-orders?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          console.log(response.data.status);
+        } else {
+          setOrders(response.data.data.orders);
+        }
+        // Set loading false.
+        setRefreshing(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    // Set loading false.
+    setRefreshing(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // show this when order state is empty
   if (loading === false && !orders) {
     return (
@@ -94,12 +122,16 @@ const Orders = ({
       </SafeAreaView>
     );
   }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         style={styles.scrollViewContainer}
         contentContainerStyle={styles.scrollViewContentContainer}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {/* orders card */}
         {orders?.map(
           (orderItem: {
