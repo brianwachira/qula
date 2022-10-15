@@ -1,3 +1,4 @@
+import {IMAGE_BASE_URL} from '@env';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
@@ -29,8 +30,17 @@ const FoodDetails = ({
 
   const [user, setUser] = useStorage('user');
 
-  const {clientId, authKey, names, email, image, phone, userId, products} =
-    user;
+  const {
+    clientId,
+    authKey,
+    names,
+    username,
+    email,
+    image,
+    phone,
+    userId,
+    products,
+  } = user;
 
   const [productInCart, setProductInCart] = useState<cartProduct>();
 
@@ -63,6 +73,7 @@ const FoodDetails = ({
       clientId,
       authKey,
       names,
+      username,
       email,
       image,
       phone,
@@ -93,6 +104,7 @@ const FoodDetails = ({
       clientId,
       authKey,
       names,
+      username,
       email,
       image,
       phone,
@@ -120,6 +132,7 @@ const FoodDetails = ({
         clientId,
         authKey,
         names,
+        username,
         email,
         image,
         phone,
@@ -167,10 +180,6 @@ const FoodDetails = ({
     }
   };
 
-  console.log('restuarant id', restuarantId);
-  console.log('products restuarant id', products.restuarantId);
-  console.log(image_path);
-  // so the problem is you are manipulating the storage directly
   return (
     <SafeAreaView key={id} style={styles.container}>
       <StatusBar
@@ -182,7 +191,10 @@ const FoodDetails = ({
         <ArrowLeftIcon style={styles.backIcon} width={40} height={40} />
       </TouchableOpacity>
       <View style={styles.imageContainer}>
-        <Image source={{uri: image_path}} style={styles.image} />
+        <Image
+          source={{uri: `${IMAGE_BASE_URL}/${image_path}`}}
+          style={styles.image}
+        />
       </View>
       <Text textType="empty" textAlign="center">
         {name} {id}
@@ -191,20 +203,7 @@ const FoodDetails = ({
         KES {cost}
       </Text>
       <Text color="primary" textAlign="center" style={styles.textPlate}>
-        {productInCart ? (
-          <>{parseInt(in_stock, 10) - productInCart.quantity}</>
-        ) : (
-          <>{in_stock}</>
-        )}
-        {parseInt(in_stock, 10) > 1 ? (
-          ' plates remaining'
-        ) : (
-          <>
-            {parseInt(in_stock, 10) - (productInCart?.quantity as number) === 0
-              ? ' plates remaining'
-              : ' plate remaining'}
-          </>
-        )}
+        {parseInt(in_stock, 10) === 1 ? 'In stock' : 'Out of stock'}
       </Text>
       <ScrollView
         style={styles.scrollContainer}
@@ -235,7 +234,7 @@ const FoodDetails = ({
               <TouchableOpacity
                 style={styles.minusButton}
                 onPress={addQuantity}
-                disabled={productInCart?.quantity === parseInt(in_stock, 10)}>
+                disabled={in_stock === '0'}>
                 <Text style={{color: theme.colors.white}} textType="empty">
                   +
                 </Text>
