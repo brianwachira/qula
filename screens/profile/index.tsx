@@ -1,9 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import ChevronLeftIcon from '../../assets/icons/chevronLeftIcon';
-import UserCircleIcon from '../../assets/icons/userCircleIcon';
 import Text from '../../components/shared-ui/text';
 import {useStorage} from '../../hooks/useStorage';
 import theme from '../../styles/themes';
@@ -21,6 +20,12 @@ const styles = StyleSheet.create({
   },
   scrollViewContentContainer: {
     padding: 12,
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: theme.borderRadius.button,
+    marginRight: 20,
   },
   profileCard: {
     borderRadius: 20,
@@ -85,19 +90,12 @@ const Profile = ({
           style={styles.profileCard}
           activeOpacity={0.8}
           onPress={() => navigation.navigate('EditProfile')}>
-          {/* icon goes here */}
-          <UserCircleIcon width={100} height={100} fill={theme.colors.icon} />
+          {/* user image */}
+          <Image source={{uri: user.image}} style={styles.profileImage} />
           <View style={styles.profileContent}>
-            <Text style={styles.textProfileName}>
-              {user.email || 'Usiri Ian'}
-            </Text>
-            <Text style={styles.textProfileDetails}>
-              {user.email || 'usiriian@gmail.com'}
-            </Text>
+            <Text style={styles.textProfileName}>{user.names}</Text>
+            <Text style={styles.textProfileDetails}>{user.email}</Text>
             <Text style={styles.textProfileDetails}>{user.phone}</Text>
-            <Text style={styles.textProfileDetails}>
-              Muindi Mbingu Street, 716
-            </Text>
           </View>
         </TouchableOpacity>
         {/* the rest of the cards */}
