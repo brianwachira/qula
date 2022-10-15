@@ -154,7 +154,6 @@ const Home = ({
         if (response.data.status === false) {
           console.log(response.data.status);
         } else {
-          console.log(response.data.status);
           setMerchants(response.data?.data);
         }
         setRefreshing(false);

@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   Dimensions,
   StatusBar,
+  RefreshControl,
 } from 'react-native';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import {Icategories, product, RootStackParamList} from '../types/types';
@@ -33,16 +34,17 @@ const RestuarantDetails = ({
   const [categories, setCategories] = useState<Icategories[]>([]);
   const [category, setCategory] = useState<Icategories>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  // params
+  const params = new URLSearchParams({
+    token,
+    client_id: id.toString(),
+  });
 
   useEffect(() => {
     // set loading true
     setLoading(true);
-
-    // params
-    const params = new URLSearchParams({
-      token,
-      client_id: id.toString(),
-    });
     axios
       .get(`${API_URL}/fetch-products?${params}`)
       .then((response: AxiosResponse) => {
@@ -72,6 +74,34 @@ const RestuarantDetails = ({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category?.id]);
+
+  // onRefresh function.
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    axios
+      .get(`${API_URL}/fetch-products?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          console.log(response.data.status);
+        } else {
+          setProducts(response.data.data);
+          setProductsCopy(response.data.data);
+          setCategories(response.data.categories);
+          setCategory(response.data.categories[0]);
+        }
+        // Set loading false.
+        setRefreshing(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    // Set loading false.
+    setRefreshing(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -94,7 +124,11 @@ const RestuarantDetails = ({
           style={styles.restuarantImage}
         />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={styles.title}>{name}</Text>
