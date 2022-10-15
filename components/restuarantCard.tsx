@@ -1,4 +1,5 @@
 // resuarant card component
+import {IMAGE_BASE_URL} from '@env';
 import React from 'react';
 import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
 import theme from '../styles/themes';
@@ -21,7 +22,7 @@ const RestuarantCard = ({
       <View style={styles.backdrop} />
       <Image
         source={{
-          uri: item.image_path,
+          uri: `${IMAGE_BASE_URL}/${item.image_path}`,
         }}
         style={styles.image}
       />
