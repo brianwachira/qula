@@ -1,8 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {useStorage} from '../hooks/useStorage';
 import {RootStackParamList} from '../types/types';
-import {API_URL} from '@env';
+import {API_URL, IMAGE_BASE_URL} from '@env';
 import axios, {AxiosResponse} from 'axios';
 import {
   Dimensions,
@@ -26,9 +25,6 @@ const OrderDetails = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'OrderDetails'>) => {
-  // user
-  const [user] = useStorage('user');
-
   const [orderDetails, setOrderDetails] = useState();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -143,7 +139,9 @@ const OrderDetails = ({
                       style={styles.menuContentWrapper}>
                       <View>
                         <Image
-                          source={{uri: orderItem.image_path}}
+                          source={{
+                            uri: `${IMAGE_BASE_URL}/${orderItem.image_path}`,
+                          }}
                           style={styles.menuImage}
                         />
                       </View>
