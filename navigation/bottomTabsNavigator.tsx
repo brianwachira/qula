@@ -31,7 +31,6 @@ const BottomTabsNavigator = () => {
           tabBarActiveTintColor: theme.colors.primary,
           tabBarInactiveColor: theme.colors.tab,
           tabBarStyle: styles.tabStyleWithContent,
-          lazy: false,
           tabBarLabelStyle: {
             ...theme.fontSizes.label.small,
           },
