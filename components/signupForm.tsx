@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import EyeIcon from '../assets/icons/eyeIcon';
 import EyeIconClosed from '../assets/icons/eyeIconClosed';
 import theme from '../styles/themes';
-import Button from './shared-ui/button';
 import FormikTextInput from './shared-ui/formikTextInput';
 import Text from './shared-ui/text';
 
@@ -20,8 +19,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formContainer: {
-    height:
-      Dimensions.get('window').height - Dimensions.get('window').height / 2,
+    //height: Dimensions.get('window').height - Dimensions.get('window').height / 2,
     justifyContent: 'center',
     marginHorizontal: 50,
   },
@@ -40,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignupForm = ({onSubmit, loading}: {onSubmit: any; loading: boolean}) => {
+const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -56,11 +54,38 @@ const SignupForm = ({onSubmit, loading}: {onSubmit: any; loading: boolean}) => {
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
           {/* email */}
-          <Text textType="labelInput">Email Address</Text>
+          <FormikTextInput
+            name="name"
+            placeholder="Enter name"
+            textContentType="name"
+            autoComplete="name"
+            style={styles.onBoardingInput}
+            returnKeyType="next"
+            autoFocus
+            placeholderTextColor={theme.colors.grey}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          {/* email */}
           <FormikTextInput
             name="email"
+            placeholder="Enter email address."
             textContentType="emailAddress"
+            placeholderTextColor={theme.colors.grey}
             autoComplete="email"
+            style={styles.onBoardingInput}
+            returnKeyType="next"
+            autoFocus
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          {/* phone */}
+          <FormikTextInput
+            name="phone"
+            placeholder="Enter phone number."
+            textContentType="telephoneNumber"
+            placeholderTextColor={theme.colors.grey}
+            autoComplete="tel"
             style={styles.onBoardingInput}
             returnKeyType="next"
             autoFocus
@@ -68,10 +93,11 @@ const SignupForm = ({onSubmit, loading}: {onSubmit: any; loading: boolean}) => {
         </View>
         {/* password */}
         <View style={styles.inputContainer}>
-          <Text textType="labelInput">Password</Text>
           <FormikTextInput
             name="password"
+            placeholder="Enter password."
             textContentType="password"
+            placeholderTextColor={theme.colors.grey}
             autoComplete="password"
             style={styles.onBoardingInput}
             secureTextEntry={!showPassword}
@@ -85,10 +111,11 @@ const SignupForm = ({onSubmit, loading}: {onSubmit: any; loading: boolean}) => {
 
         {/* confirm password */}
         <View style={styles.inputContainer}>
-          <Text textType="labelInput">Confirm Password</Text>
           <FormikTextInput
             name="confirmPassword"
+            placeholder="Confirm your password."
             textContentType="password"
+            placeholderTextColor={theme.colors.grey}
             autoComplete="password"
             style={styles.onBoardingInput}
             secureTextEntry={!showConfirmPassword}
@@ -115,16 +142,6 @@ const SignupForm = ({onSubmit, loading}: {onSubmit: any; loading: boolean}) => {
         <Text color="primary" textType="labelLink">
           Got an account? Sign In{' '}
         </Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          onPress={onSubmit}
-          title="Sign Up"
-          buttonType="orange"
-          textType="labelButtonOrange"
-          accessibilityLabel="Sign Up"
-          loading={loading}
-        />
       </View>
     </>
   );
