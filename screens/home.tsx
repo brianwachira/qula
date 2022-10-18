@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 10,
-    marginLeft: 40,
+    marginHorizontal: 40,
   },
   separator: {
     height: 15,
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    marginRight: 40,
     borderRadius: 30,
     paddingHorizontal: 15,
     paddingVertical: 5,
@@ -126,6 +125,7 @@ const Home = ({
         if (response.data.status === false) {
           console.log(response.data.status);
         } else {
+          console.log(response.data.data[0]);
           setMerchants(response.data?.data);
         }
       })
@@ -207,7 +207,7 @@ const Home = ({
           ) : (
             <>
               <FlatList
-                key={'#'}
+                key={'#1'}
                 style={styles.flatlistContainer}
                 contentContainerStyle={styles.categoriesContainerStyle}
                 data={merchants}
@@ -230,7 +230,6 @@ const Home = ({
                   />
                 )}
                 keyExtractor={(item, index) => `restaurant-${index}`}
-                numColumns={2}
               />
             </>
           )}
