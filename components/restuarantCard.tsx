@@ -1,7 +1,13 @@
 // resuarant card component
 import {IMAGE_BASE_URL} from '@env';
 import React from 'react';
-import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import theme from '../styles/themes';
 import {Imerchants} from '../types/types';
 
@@ -19,19 +25,24 @@ const RestuarantCard = ({
       style={styles.container}
       onPress={onPress}
       activeOpacity={0.9}>
-      <View style={styles.backdrop} />
-      <Image
-        source={{
-          uri: `${IMAGE_BASE_URL}/${item.image_path}`,
-        }}
-        style={styles.image}
-      />
       <View style={styles.cardContent}>
+        <Image
+          source={{
+            uri: `${IMAGE_BASE_URL}/${item.image_path}`,
+          }}
+          style={styles.image}
+        />
         <Text
           textAlign="center"
           style={styles.restuarantName}
           numberOfLines={2}>
           {item.name}
+        </Text>
+        <Text
+          textAlign="center"
+          style={styles.restuarantName}
+          numberOfLines={2}>
+          {item.address}
         </Text>
       </View>
     </TouchableOpacity>
@@ -42,21 +53,24 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 20,
+    //marginRight: 20,
   },
   image: {
-    borderRadius: 60,
-    height: 120,
-    width: 120,
-    resizeMode: 'cover',
+    borderRadius: theme.borderRadius.button,
+    height: 150,
+    //width: Dimensions.get('screen').width - 115,
+    resizeMode: 'contain',
     // Shadow for Android
     elevation: 5,
+    marginBottom: 10,
   },
   cardContent: {
+    borderRadius: theme.borderRadius.button,
     flexDirection: 'column',
-    alignItems: 'center',
     paddingHorizontal: 17,
     paddingVertical: 20,
+    width: Dimensions.get('screen').width - 80,
+    backgroundColor: theme.colors.white,
   },
   timeWrapper: {
     flexDirection: 'row',
@@ -67,19 +81,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#E7E6E2',
     padding: 5,
-    borderRadius: 30,
+    borderRadius: theme.borderRadius.button,
     marginTop: 10,
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: theme.colors.white,
-    borderRadius: 30,
-    top: '30%',
+    borderRadius: theme.borderRadius.button,
+    top: '-10%',
     // Shadow for Android
     elevation: 5,
   },
   restuarantName: {
-    width: 120,
+    //width: 120,
     fontSize: 12,
   },
 });
