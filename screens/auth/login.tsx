@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {Dimensions, StyleSheet, ToastAndroid, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import LoginForm from '../../components/loginForm';
 import * as RootNavigation from '../../navigation/rootNavigation';
 import {API_URL} from '@env';
+import ModalPopupResponse from '../../components/shared-ui/modalPopupResponse';
 const styles = StyleSheet.create({
   formikContainer: {
     height:
@@ -27,6 +28,18 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const toggleModal = () => setModalVisible(!modalVisible);
+
+  // Function to toggle modal and navigate back upon successfull addition of users
+  const handleModalClose = () => {
+    toggleModal();
+
+    //navigation.goBack();
+  };
   // onsubmit function
   const onSubmit = (values: any) => {
     //setLoading true
@@ -43,12 +56,8 @@ const Login = () => {
           console.log(response.data);
 
           //that means something is wrong
-          //console.log(response.data.status_message);
-          ToastAndroid.showWithGravity(
-            response.data.status_message,
-            ToastAndroid.LONG,
-            ToastAndroid.CENTER,
-          );
+          setErrorMessage(response.data.status_message);
+          toggleModal();
         } else {
           //console.log(response.data.data.client_id);
 
@@ -85,6 +94,13 @@ const Login = () => {
           <LoginForm loading={loading} onSubmit={handleSubmit} />
         )}
       </Formik>
+      <ModalPopupResponse
+        errorMessage={errorMessage}
+        toggleModal={toggleModal}
+        handleModalClose={handleModalClose}
+        visible={modalVisible}
+        successMessage={successMessage}
+      />
     </View>
   );
 };
