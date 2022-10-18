@@ -1,25 +1,27 @@
 import React, {useState} from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import SignupForm from '../../components/signupForm';
-
-const styles = StyleSheet.create({
-  formikContainer: {
-    flex: 0.9,
-  },
-});
+import Button from '../../components/shared-ui/button';
+import axios, {AxiosResponse} from 'axios';
+import {API_URL} from '@env';
+import ModalPopupResponse from '../../components/shared-ui/modalPopupResponse';
 
 // formik initial values
 const initialValues = {
+  name: '',
   email: '',
+  phone: '',
   password: '',
   confirmPassword: '',
 };
 
 // formik validation schema
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required('Email is required'),
+  name: Yup.string().required('Name is required'),
+  email: Yup.string().email(),
+  phone: Yup.string().required('Phone number is required'),
   password: Yup.string().required('Password is required'),
   confirmPassword: Yup.string()
     .required('Confirm Password is required')
@@ -28,13 +30,47 @@ const validationSchema = Yup.object().shape({
 
 const Signup = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const toggleModal = () => setModalVisible(!modalVisible);
   // onsubmit function
   const onSubmit = (values: any) => {
     //setLoading true
     setLoading(true);
-    console.log(values);
-    //setLoading false
-    setLoading(false);
+    const params = new URLSearchParams({
+      name: values.name,
+      ...(values.email && {email: values.email}),
+      phone: values.phone,
+      password: values.password,
+    });
+    axios
+      .post(`${API_URL}/sign-up?${params}`)
+      .then((response: AxiosResponse) => {
+        if (response.data.status === false) {
+          setErrorMessage(response.data.status_message);
+          toggleModal();
+        } else {
+          setSuccessMessage(response.data.status_message);
+          toggleModal();
+        }
+        console.log(response.data);
+        //setLoading false
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+        //setLoading false
+        setLoading(false);
+      });
+  };
+
+  // Function to toggle modal and navigate back upon successfull addition of users
+  const handleModalClose = () => {
+    toggleModal();
+
+    //navigation.goBack();
   };
 
   return (
@@ -44,11 +80,50 @@ const Signup = () => {
         onSubmit={onSubmit}
         validationSchema={validationSchema}>
         {({handleSubmit}) => (
-          <SignupForm loading={loading} onSubmit={handleSubmit} />
+          <>
+            <ScrollView
+              style={styles.scrollViewContainer}
+              contentContainerStyle={styles.scrollViewContentContainer}>
+              <SignupForm />
+            </ScrollView>
+            <View style={styles.buttonContainer}>
+              <Button
+                onPress={() => handleSubmit()}
+                title="Sign Up"
+                buttonType="orange"
+                textType="labelButtonOrange"
+                accessibilityLabel="Sign Up"
+                loading={loading}
+              />
+            </View>
+          </>
         )}
       </Formik>
+      <ModalPopupResponse
+        errorMessage={errorMessage}
+        toggleModal={toggleModal}
+        handleModalClose={handleModalClose}
+        visible={modalVisible}
+        successMessage={successMessage}
+      />
     </View>
   );
 };
 
+const styles = StyleSheet.create({
+  formikContainer: {
+    flex: 0.84,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
+  },
+  scrollViewContentContainer: {
+    paddingVertical: 20,
+  },
+});
 export default Signup;
