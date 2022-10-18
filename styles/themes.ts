@@ -1,3 +1,5 @@
+import {StyleSheet} from 'react-native';
+
 const theme = {
   colors: {
     primary: '#FA4A0C',
@@ -106,6 +108,48 @@ const theme = {
 
     elevation: 10,
   },
+  globalStyle: StyleSheet.create({
+    flexRow: {
+      flexDirection: 'row',
+    },
+    flexColumn: {
+      flexDirection: 'column',
+    },
+    itemsCenter: {
+      alignItems: 'center',
+    },
+    justifyBetween: {
+      justifyContent: 'space-between',
+    },
+    justifyStart: {
+      justifyContent: 'flex-start',
+    },
+    kpiContainer: {
+      flex: 0.8,
+      padding: 20,
+      borderRadius: 10,
+    },
+    quickActionsContainer: {
+      width: 60,
+      height: 60,
+      borderRadius: 30,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modalBackGround: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalContainer: {
+      width: '70%',
+      backgroundColor: 'white',
+      borderRadius: 10,
+      elevation: 20,
+      alignItems: 'center',
+    },
+  }),
 };
 
 export default theme;
