@@ -53,7 +53,7 @@ const SignupForm = () => {
     <>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
-          {/* email */}
+          {/* name */}
           <FormikTextInput
             name="name"
             placeholder="Enter name"
