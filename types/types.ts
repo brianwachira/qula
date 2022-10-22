@@ -31,6 +31,7 @@ export type Imerchants = {
   email: string;
   phone: string;
   address: string;
+  location: string;
   api_key: string;
   api_secret: string;
   status: number;
