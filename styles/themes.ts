@@ -145,7 +145,7 @@ const theme = {
     modalContainer: {
       width: '70%',
       backgroundColor: 'white',
-      borderRadius: 10,
+      borderRadius: 30,
       elevation: 20,
       alignItems: 'center',
     },
