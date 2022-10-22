@@ -32,6 +32,19 @@ const Checkout = ({
   const {userId, clientId, products} = user;
 
   const [totalPrice, setTotalPrice] = useState<number>();
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [buyForFriend, setBuyForFriend] = useState<string>('no');
+
+  const [friendPhoneNo, setFriendPhoneNo] = useState('');
+  const [paymentOption, setPaymentOption] = useState<string>('mpesa');
+  const [deliveryOption, setDeliveryOption] = useState<
+    typeof deliveryOptions[0]
+  >({
+    key: '0',
+    text: 'Seat In',
+  });
 
   useEffect(() => {
     // get total price from cart when products property changes
@@ -70,6 +83,7 @@ const Checkout = ({
     const params = new URLSearchParams({
       token: encodedCipher,
       client_id: user.clientId,
+      to_deliver: deliveryOption.key,
       cart: JSON.stringify(payload),
     });
 
@@ -108,12 +122,28 @@ const Checkout = ({
       token,
       client_id: user.clientId,
       order_id: orderId.toString(),
-      msisdn: user.phone,
+      msisdn:
+        buyForFriend === 'yes' && friendPhoneNo.length > 0
+          ? friendPhoneNo
+          : user.phone,
       amount: totalPrice?.toString() as string,
     });
 
+    const buyForFriendParams = new URLSearchParams({
+      client_id: user.clientId,
+      order_id: orderId.toString(),
+      user_id: user.userId,
+      phone: friendPhoneNo,
+      amount: totalPrice?.toString() as string,
+    });
+
+    const url =
+      buyForFriend === 'yes' && friendPhoneNo.length > 0
+        ? `${API_URL}/buy-for-friend?${buyForFriendParams}`
+        : `${API_URL}/initiate-payment?${params}`;
+
     axios
-      .get(`${API_URL}/initiate-payment?${params}`)
+      .get(url)
       .then(response => {
         if (response.data.responseCode === 0) {
           //success
@@ -132,7 +162,7 @@ const Checkout = ({
         }
       })
       .catch((error: AxiosError) => {
-        console.log(error.message);
+        console.log(error.response);
       });
   };
 
@@ -143,18 +173,10 @@ const Checkout = ({
       products: {restuarantId: -1, productsInCart: []},
     });
   };
-  const [paymentOption, setPaymentOption] = useState<string>('mpesa');
-  const [deliveryOption, setDeliveryOption] = useState<string>('pickup');
-  const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const toggleModal = () => setVisible(!visible);
 
-  const [buyForFriend, setBuyForFriend] = useState('no');
-
   //const toggleBuyForFriend = () => setBuyForFriend(!buyForFriend);
-
-  const [friendPhoneNo, setFriendPhoneNo] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -177,7 +199,8 @@ const Checkout = ({
             <TouchableOpacity
               key={item.key}
               style={[styles.radioOptionContainer]}
-              onPress={() => setPaymentOption(item.key)}>
+              onPress={() => setPaymentOption(item.key)}
+              disabled={paymentOption !== item.key}>
               <View style={[styles.radioCircle]}>
                 {paymentOption === item.key && (
                   <View style={styles.radioCircleSelected} />
@@ -191,11 +214,11 @@ const Checkout = ({
         <View style={styles.card}>
           {deliveryOptions.map(item => (
             <TouchableOpacity
-              key={item.key}
+              key={item.key + item.text}
               style={styles.radioOptionContainer}
-              onPress={() => setDeliveryOption(item.key)}>
+              onPress={() => setDeliveryOption(item)}>
               <View style={styles.radioCircle}>
-                {deliveryOption === item.key && (
+                {deliveryOption.key === item.key && (
                   <View style={styles.radioCircleSelected} />
                 )}
               </View>
@@ -208,7 +231,7 @@ const Checkout = ({
           <View style={styles.flexRow}>
             {options.map(item => (
               <TouchableOpacity
-                key={item.key}
+                key={item.key + item.text}
                 style={[styles.radioOptionContainer, styles.marginRadioOption]}
                 onPress={() => setBuyForFriend(item.key)}>
                 <View style={styles.radioCircle}>
@@ -221,12 +244,15 @@ const Checkout = ({
             ))}
           </View>
           {buyForFriend === 'yes' && (
-            <TextInput
-              //cursorColor={theme.colors.black}
-              value={friendPhoneNo}
-              style={styles.friendPhoneNoInput}
-              onChangeText={(text: string) => setFriendPhoneNo(text)}
-            />
+            <>
+              <Text style={styles.title}>Enter your friend's phone no.</Text>
+              <TextInput
+                //cursorColor={theme.colors.black}
+                value={friendPhoneNo}
+                style={styles.friendPhoneNoInput}
+                onChangeText={(text: string) => setFriendPhoneNo(text)}
+              />
+            </>
           )}
         </View>
       </ScrollView>
@@ -254,7 +280,7 @@ const Checkout = ({
           </View>
           <View style={styles.modalBodyWrapper}>
             {products.productsInCart.map(product => (
-              <View key={product.name} style={styles.modalMargin}>
+              <View key={product.name + product.id} style={styles.modalMargin}>
                 <View style={styles.modalTextRow}>
                   <Text textType="labelLink">{product.name}</Text>
                   <Text textType="labelInput">{product.quantity} serving</Text>
@@ -267,9 +293,13 @@ const Checkout = ({
             ))}
             {buyForFriend === 'yes' && (
               <View style={styles.modalMargin}>
-                <View style={[styles.modalTextRow]}>
-                  <Text>Friend's Phone</Text>
-                  <Text>{friendPhoneNo}</Text>
+                <View
+                  style={[styles.modalTextRow, theme.globalStyle.itemsCenter]}>
+                  <View>
+                    <Text textType="labelLink">Friend's</Text>
+                    <Text textType="labelLink">phone No.</Text>
+                  </View>
+                  <Text textType="labelInput">{friendPhoneNo}</Text>
                 </View>
                 <View style={styles.horizontalRule} />
               </View>
@@ -481,12 +511,12 @@ const paymentOptions = [
 
 const deliveryOptions = [
   {
-    key: 'doordelivery',
-    text: 'Door Delivery',
+    key: '0',
+    text: 'Seat In',
   },
   {
-    key: 'pickup',
-    text: 'Pick Up',
+    key: '1',
+    text: 'Take Out',
   },
 ];
 
