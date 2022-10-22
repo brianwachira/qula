@@ -26,7 +26,7 @@ import {list} from '../constants';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.72,
     marginTop: 10,
     marginHorizontal: 40,
   },
@@ -82,11 +82,36 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   contentScrollView: {
-    flexGrow: 0.79,
+    flexGrow: 1,
+    paddingTop: 10,
   },
+  categorySelected: {
+    borderBottomColor: theme.colors.primary,
+    borderBottomWidth: 3,
+  },
+  categoryScrollView: {
+    height: 60,
+  },
+  categoryContainer: {padding: 10, marginRight: 40},
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
+
+const categoriesMock = [
+  {
+    id: '1',
+    category: 'Restuarants',
+  },
+  {
+    id: '2',
+    category: 'Pubs',
+  },
+  {
+    id: '3',
+    category: 'Butcheries',
+  },
+];
+
 const Home = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
@@ -95,7 +120,11 @@ const Home = ({
   const [merchants, setMerchants] = useState<Imerchants[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-
+  const [categories, setCategories] =
+    useState<typeof categoriesMock>(categoriesMock);
+  const [category, setCategory] = useState<typeof categoriesMock[0]>(
+    categoriesMock[0],
+  );
   // create a cipher text
   const ciphertext: string = hmac256(
     user.userId || 'fddd',
@@ -188,50 +217,56 @@ const Home = ({
           />
         </TouchableOpacity>
         <ScrollView
+          horizontal
+          contentContainerStyle={styles.categoryScrollView}>
+          {categories.map(item => (
+            <TouchableOpacity
+              key={item.id + item.category}
+              style={styles.categoryContainer}
+              onPress={() => setCategory(item)}>
+              <Text>{item.category}</Text>
+              <View
+                style={category.id === item.id && styles.categorySelected}
+              />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        <ScrollView
           style={styles.contentScrollView}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
           {loading === true || merchants.length < 1 ? (
             <>
-              <FlatList
-                key={'#'}
-                style={styles.flatlistContainer}
-                contentContainerStyle={styles.categoriesContainerStyle}
-                data={list}
-                ItemSeparatorComponent={ItemSeparator}
-                renderItem={() => <ShimmeringRestuarantCard />}
-                keyExtractor={item => `shimmer-${item.id}`}
-                numColumns={2}
-              />
+              {list.map(listItem => (
+                <>
+                  <ShimmeringRestuarantCard key={listItem.id + listItem.name} />
+                  <View style={styles.marginBottomStyle} />
+                </>
+              ))}
             </>
           ) : (
             <>
-              <FlatList
-                key={'#1'}
-                style={styles.flatlistContainer}
-                contentContainerStyle={styles.categoriesContainerStyle}
-                data={merchants}
-                ItemSeparatorComponent={ItemSeparator}
-                renderItem={({item}) => (
+              {merchants.map(merchant => (
+                <>
                   <RestuarantCard
-                    item={item}
+                    item={merchant}
                     onPress={() =>
                       navigation.navigate('RestuarantDetails', {
                         token: encodedCipher,
                         clientId: user.clientId,
-                        id: item.id,
-                        name: item.name,
-                        phone: item.phone,
-                        email: item.email,
-                        address: item.address,
-                        image_path: item.image_path,
+                        id: merchant.id,
+                        name: merchant.name,
+                        phone: merchant.phone,
+                        email: merchant.email,
+                        address: merchant.address,
+                        image_path: merchant.image_path,
                       })
                     }
                   />
-                )}
-                keyExtractor={(item, index) => `restaurant-${index}`}
-              />
+                  <View style={styles.marginBottomStyle} />
+                </>
+              ))}
             </>
           )}
         </ScrollView>
