@@ -245,15 +245,14 @@ const FoodDetails = ({
       ) : (
         // {restuarantId !== products.restuarantId ?}
         <>
-          {restuarantId !== products.restuarantId &&
-          products.restuarantId !== -1 ? (
+          {parseInt(in_stock, 10) === 0 ? (
             <>
               <View style={styles.cartButtonContainer}>
                 <Button
-                  title="Can't Order From Different Restuarant"
+                  title="Out Of Stock!"
                   buttonType="orange"
                   textType="labelButtonOrange"
-                  accessibilityLabel="Start Ordering"
+                  accessibilityLabel="Out of stock"
                   //onPress={handleCart}
                   //disabled={restuarantId !== products.restuarantId}
                 />
@@ -261,15 +260,33 @@ const FoodDetails = ({
             </>
           ) : (
             <>
-              <View style={styles.cartButtonContainer}>
-                <Button
-                  title="Add to cart"
-                  buttonType="orange"
-                  textType="labelButtonOrange"
-                  accessibilityLabel="Start Ordering"
-                  onPress={handleCart}
-                />
-              </View>
+              {restuarantId !== products.restuarantId &&
+              products.restuarantId !== -1 ? (
+                <>
+                  <View style={styles.cartButtonContainer}>
+                    <Button
+                      title="Can't Order From Different Restuarant"
+                      buttonType="orange"
+                      textType="labelButtonOrange"
+                      accessibilityLabel="Start Ordering"
+                      //onPress={handleCart}
+                      //disabled={restuarantId !== products.restuarantId}
+                    />
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View style={styles.cartButtonContainer}>
+                    <Button
+                      title="Add to cart"
+                      buttonType="orange"
+                      textType="labelButtonOrange"
+                      accessibilityLabel="Start Ordering"
+                      onPress={handleCart}
+                    />
+                  </View>
+                </>
+              )}
             </>
           )}
         </>
