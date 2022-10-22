@@ -39,6 +39,7 @@ const BottomTabsNavigator = () => {
           name={screens.Home}
           component={Home}
           options={{
+            unmountOnBlur: true,
             tabBarIcon: (props: {
               focused: boolean;
               color: string;
@@ -54,6 +55,7 @@ const BottomTabsNavigator = () => {
           name={screens.Orders}
           component={Orders}
           options={{
+            unmountOnBlur: true,
             tabBarIcon: (props: {
               focused: boolean;
               color: string;
@@ -84,6 +86,7 @@ const BottomTabsNavigator = () => {
           name={screens.Profile}
           component={Profile}
           options={{
+            unmountOnBlur: true,
             tabBarIcon: (props: {
               focused: boolean;
               color: string;
