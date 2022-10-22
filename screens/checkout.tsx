@@ -275,7 +275,7 @@ const Checkout = ({
           <View style={styles.header}>
             <Text>Please Note</Text>
             <TouchableOpacity onPress={toggleModal} disabled={loading}>
-              <CloseIcon width={30} height={30} />
+              <CloseIcon width={30} height={30} fill={theme.colors.black} />
             </TouchableOpacity>
           </View>
           <View style={styles.modalBodyWrapper}>
