@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import EditProfileForm from '../../components/editProfileForm';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../types/types';
+import {defaultStorageObject, RootStackParamList} from '../../types/types';
 import ArrowLeftIcon from '../../assets/icons/arrowLeftIcon';
 import Text from '../../components/shared-ui/text';
 import theme from '../../styles/themes';
@@ -20,6 +20,7 @@ import {useStorage} from '../../hooks/useStorage';
 import {API_URL, IMAGE_BASE_URL} from '@env';
 import axios from 'axios';
 import Button from '../../components/shared-ui/button';
+import ModalPopupResponse from '../../components/shared-ui/modalPopupResponse';
 
 // validation schema
 const validationSchema = Yup.object().shape({
@@ -33,8 +34,11 @@ const validationSchema = Yup.object().shape({
 const EditProfile = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'EditProfile'>) => {
-  const [user] = useStorage('user');
+  const [user, setUser] = useStorage('user');
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   // initial values for profile form
   const initialValues = {
     names: user.names,
@@ -46,6 +50,8 @@ const EditProfile = ({
 
   // on submit function
   const onSubmit = (values: any) => {
+    // set loading to true
+    setLoading(true);
     const formData = new FormData();
     values.image.uri &&
       formData.append('photo', {
@@ -68,17 +74,22 @@ const EditProfile = ({
       })
       .then(response => {
         if (response.data.status === false) {
-          ToastAndroid.showWithGravity(
-            response.data.status_message,
-            ToastAndroid.LONG,
-            ToastAndroid.CENTER,
-          );
+          setErrorMessage(response.data.status_message);
+          toggleModal();
         } else {
-          ToastAndroid.showWithGravity(
-            response.data.status_message,
-            ToastAndroid.LONG,
-            ToastAndroid.CENTER,
-          );
+          const updatedUser: defaultStorageObject = {
+            ...user,
+            names: response.data.profile.names as string,
+            username: response.data.profile.username as string,
+            phone: response.data.profile.msisdn as string,
+            email: response.data.profile.email as string,
+            image: response.data.profile.image_path as string,
+          };
+
+          //update user
+          setUser(updatedUser);
+          setSuccessMessage(response.data.status_message);
+          toggleModal();
         }
         // set loading to false
         setLoading(false);
@@ -92,8 +103,15 @@ const EditProfile = ({
         // set loading to false
         setLoading(false);
       });
-    // set loading to false
-    setLoading(false);
+  };
+
+  const toggleModal = () => setModalVisible(!modalVisible);
+
+  // Function to toggle modal and navigate back upon successfull addition of product
+  const handleModalClose = () => {
+    toggleModal();
+
+    navigation.goBack();
   };
 
   return (
@@ -118,7 +136,7 @@ const EditProfile = ({
                   />
                 </TouchableOpacity>
                 <Text textType="labelLink">Update Profile</Text>
-                <TouchableOpacity onPress={handleSubmit}>
+                <TouchableOpacity onPress={() => handleSubmit()}>
                   <Text textType="labelLink">Save</Text>
                 </TouchableOpacity>
               </View>
@@ -131,7 +149,7 @@ const EditProfile = ({
               <View style={styles.formButtonContainer}>
                 <Button
                   title="Edit Profile"
-                  onPress={handleSubmit}
+                  onPress={() => handleSubmit()}
                   buttonType="orange"
                   textType="labelButtonOrange"
                   accessibilityLabel="EditProfile"
@@ -141,6 +159,13 @@ const EditProfile = ({
             </>
           )}
         </Formik>
+        <ModalPopupResponse
+          errorMessage={errorMessage}
+          toggleModal={toggleModal}
+          handleModalClose={handleModalClose}
+          visible={modalVisible}
+          successMessage={successMessage}
+        />
       </SafeAreaView>
     </>
   );
