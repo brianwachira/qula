@@ -110,6 +110,7 @@ const Home = ({
     token: encodedCipher,
     client_id: user.clientId,
     msisdn: user.phone,
+    category: '1',
   });
 
   /**
