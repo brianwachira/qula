@@ -31,6 +31,8 @@ import CloseIcon from '../assets/icons/closeIcon';
 import CustomBackdrop from '../components/customBackDrop';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Button from '../components/shared-ui/button';
+import useCart from '../hooks/useCart';
+import ModalPopup from '../components/shared-ui/modalPopup';
 
 const RestuarantDetails = ({
   route,
@@ -46,6 +48,17 @@ const RestuarantDetails = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [chosenFood, setChosenFood] = useState<product>();
+  const [visible, setVisible] = useState(false);
+
+  const [
+    currentRestuarantId,
+    productInCart,
+    handleCart,
+    handleRestuarantFromCart,
+    addQuantity,
+    deductQuantity,
+    setProduct,
+  ] = useCart(id);
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -129,6 +142,16 @@ const RestuarantDetails = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleCartCheck = () => {
+    if (currentRestuarantId !== -1 && currentRestuarantId !== id) {
+      toggleModal();
+    } else {
+      handleCart();
+    }
+  };
+
+  const toggleModal = () => setVisible(!visible);
   return (
     <GestureHandlerRootView style={styles.gestureHandlerContainer}>
       <BottomSheetModalProvider>
@@ -300,12 +323,11 @@ const RestuarantDetails = ({
                           key={index}
                           style={styles.menuContentWrapper}
                           onPress={() => {
-                            // navigation.navigate('FoodDetails', {
-                            //   product: {...productItem, restuarantId: id},
-                            // })
                             setChosenFood(productItem);
+                            setProduct(productItem);
                             handlePresentModalPress();
-                          }}>
+                          }}
+                          disabled={parseInt(productItem.in_stock, 10) === 0}>
                           <View>
                             <Image
                               source={{
@@ -317,8 +339,20 @@ const RestuarantDetails = ({
                           <View style={styles.menuContent}>
                             <View style={styles.menuContentInfo}>
                               <Text style={styles.foodName}>
-                                {productItem.name}
+                                {productItem.name}{' '}
                               </Text>
+                              {parseInt(productItem.in_stock, 10) === 0 && (
+                                <>
+                                  <Text
+                                    style={[
+                                      styles.categoryRow,
+                                      styles.categoryRowSelected,
+                                    ]}
+                                    textType="labelButtonOrange">
+                                    Out Of Stock
+                                  </Text>
+                                </>
+                              )}
                               <Text style={styles.foodPrice}>
                                 KES {productItem.cost}
                               </Text>
@@ -345,14 +379,76 @@ const RestuarantDetails = ({
             style={styles.bottomSheetContainer}
             backdropComponent={CustomBackdrop}
             footerComponent={() => (
-              <View style={styles.bottomSheetCartButtonContainer}>
-                <Button
-                  title={'Add to cart  • KES ' + chosenFood?.cost}
-                  buttonType="orange"
-                  textType="labelButtonOrange"
-                  accessibilityLabel="Start Ordering"
-                />
-              </View>
+              <>
+                {productInCart ? (
+                  <>
+                    <View
+                      style={[
+                        styles.quantityButtonsContainer,
+                        theme.globalStyle.flexRow,
+                        theme.globalStyle.itemsCenter,
+                        theme.globalStyle.justifyBetween,
+                      ]}>
+                      <View
+                        style={[
+                          theme.globalStyle.flexColumn,
+                          theme.globalStyle.itemsCenter,
+                        ]}>
+                        <Text>quantity</Text>
+                        <View
+                          style={[
+                            theme.globalStyle.flexRow,
+                            theme.globalStyle.itemsCenter,
+                          ]}>
+                          <TouchableOpacity
+                            style={styles.quantityButton}
+                            onPress={deductQuantity}>
+                            <Text
+                              textType="calendarNumber"
+                              style={{color: theme.colors.primary}}>
+                              -
+                            </Text>
+                          </TouchableOpacity>
+                          <Text style={styles.textQuantity}>
+                            {productInCart?.quantity}
+                          </Text>
+                          <TouchableOpacity
+                            style={styles.quantityButton}
+                            onPress={addQuantity}>
+                            <Text
+                              textType="calendarNumber"
+                              style={{color: theme.colors.primary}}>
+                              +
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                      <View>
+                        <TouchableOpacity
+                          style={[
+                            styles.goToCartButton,
+                            theme.globalStyle.itemsCenter,
+                          ]}
+                          onPress={() => navigation.navigate('Cart')}>
+                          <Text textType="labelButtonOrange">Go To Cart</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <View style={styles.bottomSheetCartButtonContainer}>
+                      <Button
+                        title={'Add to cart  • KES ' + chosenFood?.cost}
+                        buttonType="orange"
+                        textType="labelButtonOrange"
+                        accessibilityLabel="Start Ordering"
+                        onPress={() => handleCartCheck()}
+                      />
+                    </View>
+                  </>
+                )}
+              </>
             )}>
             <View style={styles.bottomSheetContentContainer}>
               <View>
@@ -388,6 +484,53 @@ const RestuarantDetails = ({
           </BottomSheetModal>
         </View>
       </BottomSheetModalProvider>
+      {/* Modal Popup */}
+      <ModalPopup visible={visible}>
+        <View style={styles.modalContainerWrapper}>
+          <View style={styles.modalHeader}>
+            <Text>Please Note</Text>
+            <TouchableOpacity onPress={toggleModal} disabled={loading}>
+              <CloseIcon width={30} height={30} fill={theme.colors.black} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalBodyWrapper}>
+            <View style={[styles.modalTextRow, styles.modalMargin]}>
+              <Text>
+                You have items from another food entity in your cart. If you add
+                this item to cart, they will be removed and the item from {name}{' '}
+                will be added
+              </Text>
+            </View>
+            <View style={styles.modalButtonRow}>
+              <TouchableOpacity disabled={loading} onPress={toggleModal}>
+                <View>
+                  <Text textType="labelInput" textAlign="center">
+                    Cancel
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                disabled={loading}
+                onPress={() => {
+                  handleRestuarantFromCart();
+                  toggleModal();
+                }}>
+                <View style={styles.button}>
+                  <>
+                    <Text
+                      textType="labelButtonOrange"
+                      textAlign="center"
+                      color="white">
+                      Proceed
+                    </Text>
+                  </>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ModalPopup>
     </GestureHandlerRootView>
   );
 };
@@ -617,5 +760,70 @@ const styles = StyleSheet.create({
   },
   bottomSheetProductName: {marginVertical: 5},
   bottomSheetProductDescription: {opacity: 0.57, marginVertical: 5},
+  quantityButtonsContainer: {marginVertical: 20, marginHorizontal: 20},
+  quantityButton: {
+    borderColor: theme.colors.primary,
+    borderWidth: 3,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    //elevation: theme.boxShadowAndroid.elevation,
+    shadowColor: theme.boxShadowAndroid.shadowColor,
+  },
+  textQuantity: {marginHorizontal: 20, fontSize: 20},
+  goToCartButton: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.button,
+    flex: 0.7,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    width: '100%',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#EDEDED',
+    borderTopLeftRadius: theme.borderRadius.button,
+    borderTopRightRadius: theme.borderRadius.button,
+  },
+  modalContainerWrapper: {
+    alignItems: 'center',
+  },
+  modalButtonRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  button: {
+    paddingHorizontal: 40,
+    paddingVertical: 20,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.button,
+    ...theme.boxShadowAndroid,
+  },
+  horizontalRule: {
+    borderBottomColor: theme.colors.grey,
+    borderBottomWidth: 0.5,
+    opacity: 0.3,
+    marginVertical: 10,
+  },
+  modalBodyWrapper: {
+    width: '100%',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  modalTextRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalMargin: {
+    marginHorizontal: 20,
+  },
 });
 export default RestuarantDetails;
