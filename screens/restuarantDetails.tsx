@@ -95,7 +95,7 @@ const RestuarantDetails = ({
           setProducts(response.data.data);
           setProductsCopy(response.data.data);
           setCategories(response.data.categories);
-          setCategory(response.data.categories[0]);
+          setCategory(response.data.categories[1]);
         }
       })
       .catch(error => {
@@ -363,6 +363,11 @@ const RestuarantDetails = ({
                               </Text>
                             </View>
                           </View>
+                          {products.length < 1 && (
+                            <>
+                              <Text>No {category?.category} at the moment</Text>
+                            </>
+                          )}
                         </TouchableOpacity>
                       ),
                     )}
