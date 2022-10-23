@@ -137,3 +137,24 @@ export type defaultStorageObject = {
     productsInCart: cartProduct[];
   };
 };
+export type orderStatusItem = {
+  product_id: string;
+  name: string;
+  image_path: string;
+  quantity: string;
+  unit_cost: string;
+  inserted_at: string;
+};
+
+export interface IOrderDetails {
+  order: {
+    id: string;
+    status: string;
+    user_id: string;
+    client_id: string;
+    to_deliver: string;
+    inserted_at: string;
+    updated_at: string;
+  };
+  items: orderStatusItem[];
+}
