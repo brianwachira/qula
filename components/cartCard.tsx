@@ -149,7 +149,7 @@ const CartCard = (props: CartCardProps) => {
               <View style={styles.cartItemContentRow}>
                 <View style={styles.cartContentColumn}>
                   <Text style={styles.cartItemTitle} numberOfLines={1}>
-                    {props.item.name}-{props.item.id}
+                    {props.item.name}
                   </Text>
                   <Text color="primary">KES {props.item.cost}</Text>
                 </View>
