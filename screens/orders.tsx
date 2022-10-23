@@ -19,6 +19,8 @@ import {encode} from '../utils/encoder';
 import hmac256 from 'crypto-js/hmac-sha256';
 import axios, {AxiosResponse} from 'axios';
 import {API_URL} from '@env';
+import {list} from '../constants';
+import Shimmering from '../components/shared-ui/shimmering';
 
 const Orders = ({
   navigation,
@@ -54,15 +56,19 @@ const Orders = ({
       .then((response: AxiosResponse) => {
         if (response.data.status === false) {
           console.log(response.data.status);
+          // set loading false
+          setLoading(false);
         } else {
           setOrders(response.data.data.orders);
+          // set loading false
+          setLoading(false);
         }
       })
       .catch(error => {
         console.log(error);
+        // set loading false
+        setLoading(false);
       });
-    // set loading true
-    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.products]);
 
@@ -85,14 +91,11 @@ const Orders = ({
         console.log(error);
       });
 
-    // Set loading false.
-    setRefreshing(false);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // show this when order state is empty
-  if (loading === false && !orders) {
+  if (loading === false && orders?.length < 1) {
     return (
       <SafeAreaView style={styles.containerEmpty}>
         <View style={styles.contentContainerEmpty}>
@@ -132,7 +135,43 @@ const Orders = ({
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        {/* orders card */}
+        {loading === true || orders?.length < 1 ? (
+          <>
+            {list.map(listItem => (
+              <>
+                <Shimmering
+                  key={listItem.name}
+                  wrapperStyle={styles.shimmeringOrders}
+                />
+                <View style={styles.shimmeringMarginBottom} />
+              </>
+            ))}
+          </>
+        ) : (
+          <>
+            {orders
+              ?.reverse()
+              .map(
+                (orderItem: {
+                  id: string;
+                  merchant: string;
+                  to_deliver: string;
+                  status: number;
+                }) => (
+                  <OrdersCard
+                    key={orderItem.id}
+                    order={orderItem}
+                    onPress={() =>
+                      navigation.navigate('OrderDetails', {
+                        token: encodedCipher,
+                        orderId: orderItem.id,
+                      })
+                    }
+                  />
+                ),
+              )}
+          </>
+        )}
         {orders
           ?.reverse()
           .map(
@@ -198,5 +237,11 @@ const styles = StyleSheet.create({
   scrollViewContentContainer: {
     padding: 12,
   },
+  shimmeringOrders: {
+    width: Dimensions.get('screen').width - 80,
+    height: 100,
+    borderRadius: 15,
+  },
+  shimmeringMarginBottom: {marginBottom: 30},
 });
 export default Orders;
