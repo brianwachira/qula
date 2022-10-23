@@ -5,9 +5,11 @@ import Shimmering from './shared-ui/shimmering';
 const ShimmeringRestuarantCard = () => {
   return (
     <View style={styles.shimmerContainer}>
-      <View style={styles.backdrop} />
       <Shimmering wrapperStyle={styles.image} />
+      <View style={styles.marginSeparator} />
       <Shimmering wrapperStyle={styles.cardContent} />
+      <View style={styles.marginSeparator} />
+      <Shimmering wrapperStyle={styles.cardContent2} />
     </View>
   );
 };
@@ -16,9 +18,7 @@ export default ShimmeringRestuarantCard;
 
 const styles = StyleSheet.create({
   shimmerContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 20,
+    //marginRight: 20,
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
@@ -29,14 +29,20 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   image: {
-    borderRadius: 60,
-    height: 120,
-    width: 120,
-    // Shadow for Android
-    elevation: 5,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    width: Dimensions.get('screen').width - 80,
+    height: 150,
   },
   cardContent: {
-    width: Dimensions.get('screen').width / 2.65,
-    height: Dimensions.get('screen').width / 4,
+    width: 200,
+    height: 20,
+  },
+  cardContent2: {
+    width: 150,
+    height: 20,
+  },
+  marginSeparator: {
+    marginVertical: 10,
   },
 });

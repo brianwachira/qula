@@ -25,23 +25,15 @@ const RestuarantCard = ({
       style={styles.container}
       onPress={onPress}
       activeOpacity={0.9}>
+      <Image
+        source={{
+          uri: `${IMAGE_BASE_URL}/${item.image_path}`,
+        }}
+        style={styles.image}
+      />
       <View style={styles.cardContent}>
-        <Image
-          source={{
-            uri: `${IMAGE_BASE_URL}/${item.image_path}`,
-          }}
-          style={styles.image}
-        />
-        <Text
-          textAlign="center"
-          style={styles.restuarantName}
-          numberOfLines={2}>
-          {item.name}
-        </Text>
-        <Text
-          textAlign="center"
-          style={styles.restuarantName}
-          numberOfLines={2}>
+        <Text numberOfLines={2}>{item.name}</Text>
+        <Text style={styles.restuarantName} numberOfLines={2}>
           {item.address}
         </Text>
       </View>
@@ -53,24 +45,25 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    //marginRight: 20,
+    elevation: theme.boxShadowAndroid.elevation,
+    shadowColor: theme.boxShadowAndroid.shadowColor,
   },
   image: {
-    borderRadius: theme.borderRadius.button,
+    width: '100%',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     height: 150,
-    //width: Dimensions.get('screen').width - 115,
     resizeMode: 'contain',
     // Shadow for Android
     elevation: 5,
-    marginBottom: 10,
   },
   cardContent: {
-    borderRadius: theme.borderRadius.button,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     flexDirection: 'column',
-    paddingHorizontal: 17,
-    paddingVertical: 20,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
     width: Dimensions.get('screen').width - 80,
-    backgroundColor: theme.colors.white,
   },
   timeWrapper: {
     flexDirection: 'row',
@@ -95,6 +88,7 @@ const styles = StyleSheet.create({
   restuarantName: {
     //width: 120,
     fontSize: 12,
+    opacity: 0.47,
   },
 });
 export default RestuarantCard;
