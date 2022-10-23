@@ -2,13 +2,13 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   Dimensions,
-  FlatList,
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import SearchIcon from '../assets/icons/searchIcon';
 import RestuarantCard from '../components/restuarantCard';
@@ -26,7 +26,7 @@ import {list} from '../constants';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.72,
+    flex: 0.66,
     marginTop: 10,
     marginHorizontal: 40,
   },
@@ -86,29 +86,37 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   categorySelected: {
-    borderBottomColor: theme.colors.primary,
-    borderBottomWidth: 3,
+    backgroundColor: 'rgba(250, 74, 12, 0.7)',
   },
   categoryScrollView: {
-    height: 60,
+    height: 150,
+    //paddingBottom: 200,
   },
-  categoryContainer: {padding: 10, marginRight: 40},
+  categoryContainer: {
+    padding: 10,
+    marginRight: 15,
+    alignItems: 'center',
+    backgroundColor: 'rgba(250, 74, 12, 0.35)',
+    borderRadius: 15,
+  },
+  categoryImageDimensions: {width: 50, height: 50},
 });
-
-const ItemSeparator = () => <View style={styles.separator} />;
 
 const categoriesMock = [
   {
     id: '1',
     category: 'Restuarants',
+    image_path: require('../assets/fast-food.png'),
   },
   {
     id: '2',
     category: 'Pubs',
+    image_path: require('../assets/pub.png'),
   },
   {
     id: '3',
     category: 'Butcheries',
+    image_path: require('../assets/butchery.png'),
   },
 ];
 
@@ -139,13 +147,10 @@ const Home = ({
     token: encodedCipher,
     client_id: user.clientId,
     msisdn: user.phone,
-    category: '1',
+    category: category.id,
   });
 
-  /**
-   * useEffect to fetch merchants
-   */
-
+  // useEffect to change merchants on category change
   useEffect(() => {
     //setLoading true
     setLoading(true);
@@ -153,19 +158,21 @@ const Home = ({
       .get(`${API_URL}/fetch-merchants?${params}`)
       .then(response => {
         if (response.data.status === false) {
-          console.log(response.data.status);
+          console.log(response.data.status_message);
         } else {
-          console.log(response.data.data[0]);
           setMerchants(response.data?.data);
         }
+        //setLoading false
+        setLoading(false);
       })
       .catch(error => {
         console.log(error);
+        //setLoading false
+        setLoading(false);
       });
-    //setLoading false
-    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [category]);
+
   // function to navigate to search results screen
   const onPress = () => {
     navigation.navigate('SearchResults', {
@@ -216,26 +223,34 @@ const Home = ({
             editable={false}
           />
         </TouchableOpacity>
-        <ScrollView
-          horizontal
-          contentContainerStyle={styles.categoryScrollView}>
+        <View style={theme.globalStyle.flexRow}>
           {categories.map(item => (
             <TouchableOpacity
               key={item.id + item.category}
-              style={styles.categoryContainer}
+              style={[
+                styles.categoryContainer,
+                category.id === item.id && styles.categorySelected,
+              ]}
               onPress={() => setCategory(item)}>
+              <Image
+                source={item.image_path}
+                style={styles.categoryImageDimensions}
+                resizeMode="contain"
+              />
               <Text>{item.category}</Text>
               <View
                 style={category.id === item.id && styles.categorySelected}
               />
             </TouchableOpacity>
           ))}
-        </ScrollView>
+        </View>
         <ScrollView
           style={styles.contentScrollView}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
+          }
+          stickyHeaderIndices={[1, 0]}
+          stickyHeaderHiddenOnScroll>
           {loading === true || merchants.length < 1 ? (
             <>
               {list.map(listItem => (
