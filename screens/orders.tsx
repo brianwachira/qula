@@ -133,25 +133,27 @@ const Orders = ({
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         {/* orders card */}
-        {orders?.map(
-          (orderItem: {
-            id: string;
-            merchant: string;
-            to_deliver: string;
-            status: number;
-          }) => (
-            <OrdersCard
-              key={orderItem.id}
-              order={orderItem}
-              onPress={() =>
-                navigation.navigate('OrderDetails', {
-                  token: encodedCipher,
-                  orderId: orderItem.id,
-                })
-              }
-            />
-          ),
-        )}
+        {orders
+          ?.reverse()
+          .map(
+            (orderItem: {
+              id: string;
+              merchant: string;
+              to_deliver: string;
+              status: number;
+            }) => (
+              <OrdersCard
+                key={orderItem.id}
+                order={orderItem}
+                onPress={() =>
+                  navigation.navigate('OrderDetails', {
+                    token: encodedCipher,
+                    orderId: orderItem.id,
+                  })
+                }
+              />
+            ),
+          )}
       </ScrollView>
     </SafeAreaView>
   );

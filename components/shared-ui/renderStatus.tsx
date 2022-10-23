@@ -22,8 +22,15 @@ const RenderStatus = ({status}: {status: string}) => {
   }
 
   return (
-    <View style={styles.infoItem}>
-      <AntDesign name="clockcircleo" size={20} color={theme.colors.primary} />
+    <View style={[styles.infoItem, theme.globalStyle.justifyBetween]}>
+      <View style={[theme.globalStyle.flexRow, theme.globalStyle.itemsCenter]}>
+        <AntDesign
+          name="clockcircleo"
+          size={20}
+          color={'rgba(250, 74, 12, 0.7)'}
+        />
+        <Text style={styles.statusText}>Order Status</Text>
+      </View>
       <Text style={styles.infoText}>{message}</Text>
     </View>
   );
@@ -33,16 +40,17 @@ const styles = StyleSheet.create({
   infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 7,
-    paddingVertical: 7,
     backgroundColor: theme.colors.white,
     borderRadius: 5,
-    marginRight: 15,
-    marginBottom: 15,
   },
   infoText: {
     marginLeft: 4,
     fontSize: 12,
+    opacity: 0.47,
+  },
+  statusText: {
+    fontSize: 14,
+    marginLeft: 4,
   },
 });
 export default RenderStatus;

@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useState} from 'react';
-import {RootStackParamList} from '../types/types';
+import {IOrderDetails, RootStackParamList} from '../types/types';
 import {API_URL, IMAGE_BASE_URL} from '@env';
 import axios, {AxiosResponse} from 'axios';
 import {
@@ -19,14 +19,12 @@ import Text from '../components/shared-ui/text';
 import {list} from '../constants';
 import theme from '../styles/themes';
 import Shimmering from '../components/shared-ui/shimmering';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import RenderStatus from '../components/shared-ui/renderStatus';
 
 const OrderDetails = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'OrderDetails'>) => {
-  const [orderDetails, setOrderDetails] = useState();
+  const [orderDetails, setOrderDetails] = useState<IOrderDetails>();
   const [loading, setLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -49,10 +47,8 @@ const OrderDetails = ({
       .get(`${API_URL}/get-order-status?${params}`)
       .then((response: AxiosResponse) => {
         if (response.data.status === false) {
-          console.log(response.data.status_message);
         } else {
           setOrderDetails(response.data.data);
-          console.log(response.data.data);
         }
       })
       .catch(error => {
@@ -86,6 +82,26 @@ const OrderDetails = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  let message: string = '';
+  let statusToNumber: number = parseInt(
+    orderDetails?.order.status as string,
+    10,
+  );
+
+  if (statusToNumber === 1) {
+    message = 'Order Received';
+  } else if (statusToNumber === 2) {
+    message = 'Order in Preparation';
+  } else if (statusToNumber === 3) {
+    message = 'Order Ready';
+  } else if (statusToNumber === 4) {
+    message = 'Order On Delivery';
+  } else if (statusToNumber === 5) {
+    message = 'Order Complete!';
+  } else {
+    message = 'Cancelled';
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'dark-content'} backgroundColor={theme.colors.tab} />
@@ -100,21 +116,30 @@ const OrderDetails = ({
         <View />
         <View />
       </View>
-      <View style={styles.statusContainer}>
-        <RenderStatus status={orderDetails?.order.status} />
-        <View style={styles.infoItem}>
-          <MaterialCommunityIcons
-            name="motorbike"
-            size={20}
-            color={theme.colors.primary}
-          />
-          <Text style={styles.infoText}>
-            {orderDetails?.order.to_deliver === 1
-              ? 'To Be Delivered'
-              : 'Seat In'}
-          </Text>
-        </View>
+      <View
+        style={[theme.globalStyle.flexRow, theme.globalStyle.justifyBetween]}>
+        <Text>Order Date</Text>
+        <Text>{orderDetails?.order.inserted_at}</Text>
       </View>
+      <View style={styles.horizontalRule} />
+      <View
+        style={[theme.globalStyle.flexRow, theme.globalStyle.justifyBetween]}>
+        <Text>Order Status</Text>
+        <Text>{message}</Text>
+      </View>
+      <View style={styles.horizontalRule} />
+      <View
+        style={[theme.globalStyle.flexRow, theme.globalStyle.justifyBetween]}>
+        <Text>Order Type</Text>
+        <Text>
+          {orderDetails?.order.to_deliver === '1'
+            ? 'To Be Delivered'
+            : 'Seat In'}
+        </Text>
+      </View>
+      <View style={styles.horizontalRule} />
+      <Text>Items on Cart</Text>
+      <View style={styles.marginBottomCustom} />
       <ScrollView
         style={styles.categoryScrollViewContainer}
         contentContainerStyle={styles.categoryScrollViewContentContainer}
@@ -128,26 +153,29 @@ const OrderDetails = ({
           orderDetails.items?.length < 1 ? (
             <>
               {list.map(item => (
-                <View style={styles.menuContentWrapper} key={item.id + 20}>
-                  <View>
-                    <Shimmering wrapperStyle={styles.menuImage} />
-                  </View>
-                  <View style={styles.menuContent}>
-                    <View style={styles.menuContentInfo}>
-                      <Shimmering wrapperStyle={styles.foodNameShimmering} />
-                      <View style={styles.menuContentShimmeringMargin} />
-                      <Shimmering wrapperStyle={styles.foodPriceShimmering} />
-                      <View style={styles.menuContentShimmeringMargin} />
-                      <Shimmering
-                        wrapperStyle={styles.foodDescriptionShimmering}
-                      />
-                      <View style={styles.menuContentShimmeringMargin} />
-                      <Shimmering
-                        wrapperStyle={styles.foodDescriptionShimmering2}
-                      />
+                <>
+                  <View style={styles.menuContentWrapper} key={item.id + 20}>
+                    <View>
+                      <Shimmering wrapperStyle={styles.menuImage} />
+                    </View>
+                    <View style={styles.menuContent}>
+                      <View style={styles.menuContentInfo}>
+                        <Shimmering wrapperStyle={styles.foodNameShimmering} />
+                        <View style={styles.menuContentShimmeringMargin} />
+                        <Shimmering wrapperStyle={styles.foodPriceShimmering} />
+                        <View style={styles.menuContentShimmeringMargin} />
+                        <Shimmering
+                          wrapperStyle={styles.foodDescriptionShimmering}
+                        />
+                        <View style={styles.menuContentShimmeringMargin} />
+                        <Shimmering
+                          wrapperStyle={styles.foodDescriptionShimmering2}
+                        />
+                      </View>
                     </View>
                   </View>
-                </View>
+                  <View style={styles.horizontalRule} />
+                </>
               ))}
             </>
           ) : (
@@ -212,7 +240,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 12, // pr-3
     flexDirection: 'row',
-    alignItems: 'center',
   },
   menuContentInfo: {
     flex: 1,
@@ -295,12 +322,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: StatusBar.currentHeight,
   },
   statusContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  horizontalRule: {
+    borderBottomColor: theme.colors.grey,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 24,
+  },
+  marginBottomCustom: {
+    marginBottom: 12,
   },
 });
 export default OrderDetails;
