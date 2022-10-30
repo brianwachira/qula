@@ -33,6 +33,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Button from '../components/shared-ui/button';
 import useCart from '../hooks/useCart';
 import ModalPopup from '../components/shared-ui/modalPopup';
+import * as Sentry from '@sentry/react-native';
 
 const RestuarantDetails = ({
   route,
@@ -100,6 +101,11 @@ const RestuarantDetails = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException('Fetch Restuarant Details Error: ' + error);
+        Sentry.captureException(
+          'Fetch Restuarant Details Description: ' +
+            error.response.data.message,
+        );
       });
     // set loading true
     setLoading(false);
@@ -135,6 +141,13 @@ const RestuarantDetails = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException(
+          'Refresh Fetch Restuarant Details Error: ' + error,
+        );
+        Sentry.captureException(
+          'Refresh Fetch Restuarant Details Description: ' +
+            error.response.data.message,
+        );
       });
 
     // Set loading false.
