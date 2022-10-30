@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import SearchIcon from '../assets/icons/searchIcon';
 import RestuarantCard from '../components/restuarantCard';
@@ -29,7 +30,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 0.66,
     marginTop: 10,
-    marginHorizontal: 40,
+    marginLeft: 40,
+  },
+  marginRight40: {
+    marginRight: 40,
   },
   separator: {
     height: 15,
@@ -108,16 +112,22 @@ const categoriesMock = [
     id: '1',
     category: 'Restuarants',
     image_path: require('../assets/fast-food.png'),
+    color1: '#F9AC8A',
+    color2: '#FBC6AE',
   },
   {
     id: '2',
     category: 'Pubs',
     image_path: require('../assets/pub.png'),
+    color1: '#FEB829',
+    color2: '#ddd09d',
   },
   {
     id: '3',
     category: 'Butcheries',
     image_path: require('../assets/butchery.png'),
+    color1: '#4DD2A5',
+    color2: '#E8B3B9',
   },
 ];
 
@@ -129,11 +139,8 @@ const Home = ({
   const [merchants, setMerchants] = useState<Imerchants[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [categories, setCategories] =
-    useState<typeof categoriesMock>(categoriesMock);
-  const [category, setCategory] = useState<typeof categoriesMock[0]>(
-    categoriesMock[0],
-  );
+  const [categories] = useState<typeof categoriesMock>(categoriesMock);
+  const [category, setCategory] = useState<typeof categoriesMock[0]>();
   // create a cipher text
   const ciphertext: string = hmac256(
     user.userId || 'fddd',
@@ -143,18 +150,20 @@ const Home = ({
   // encoded cipher text
   const encodedCipher = encode(ciphertext);
 
-  // params
-  const params = new URLSearchParams({
-    token: encodedCipher,
-    client_id: user.clientId,
-    msisdn: user.phone,
-    category: category.id,
-  });
+  const handleCategoriesChange = (item: typeof categoriesMock[0]) => {
+    // set Category
+    setCategory(item);
 
-  // useEffect to change merchants on category change
-  useEffect(() => {
     //setLoading true
     setLoading(true);
+
+    // params
+    const params = new URLSearchParams({
+      token: encodedCipher,
+      client_id: user.clientId,
+      msisdn: user.phone,
+      category: item.id as string,
+    });
     axios
       .get(`${API_URL}/fetch-merchants?${params}`)
       .then(response => {
@@ -175,8 +184,7 @@ const Home = ({
         //setLoading false
         setLoading(false);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category]);
+  };
 
   // function to navigate to search results screen
   const onPress = () => {
@@ -189,6 +197,13 @@ const Home = ({
 
   // onRefresh function.
   const onRefresh = useCallback(() => {
+    // params
+    const params = new URLSearchParams({
+      token: encodedCipher,
+      client_id: user.clientId,
+      msisdn: user.phone,
+      category: category?.id as string,
+    });
     setRefreshing(true);
     axios
       .get(`${API_URL}/fetch-merchants?${params}`)
@@ -220,7 +235,9 @@ const Home = ({
           <Text textType="empty">food for you</Text>
         </View>
         {/* SEARCH BAR */}
-        <TouchableOpacity style={styles.searchBar} onPress={onPress}>
+        <TouchableOpacity
+          style={[styles.searchBar, styles.marginRight40]}
+          onPress={onPress}>
           <SearchIcon />
           <TextInput
             style={{
@@ -232,68 +249,143 @@ const Home = ({
             editable={false}
           />
         </TouchableOpacity>
-        <View style={theme.globalStyle.flexRow}>
-          {categories.map(item => (
-            <TouchableOpacity
-              key={item.id + item.category}
-              style={[
-                styles.categoryContainer,
-                category.id === item.id && styles.categorySelected,
-              ]}
-              onPress={() => setCategory(item)}>
-              <Image
-                source={item.image_path}
-                style={styles.categoryImageDimensions}
-                resizeMode="contain"
-              />
-              <Text>{item.category}</Text>
-              <View
-                style={category.id === item.id && styles.categorySelected}
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
-        <ScrollView
-          style={styles.contentScrollView}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          stickyHeaderIndices={[1, 0]}
-          stickyHeaderHiddenOnScroll>
-          {loading === true || merchants.length < 1 ? (
-            <>
-              {list.map(listItem => (
-                <>
-                  <ShimmeringRestuarantCard key={listItem.id + listItem.name} />
-                  <View style={styles.marginBottomStyle} />
-                </>
-              ))}
-            </>
-          ) : (
-            <>
-              {merchants.map(merchant => (
-                <>
-                  <RestuarantCard
-                    item={merchant}
-                    onPress={() =>
-                      navigation.navigate('RestuarantDetails', {
-                        token: encodedCipher,
-                        clientId: user.clientId,
-                        id: merchant.id,
-                        name: merchant.name,
-                        phone: merchant.phone,
-                        email: merchant.email,
-                        address: merchant.address,
-                        image_path: merchant.image_path,
-                      })
-                    }
+        {merchants.length < 1 && loading === false ? (
+          <>
+            <Text>Pick a category</Text>
+            <View
+              style={{
+                marginTop: 35,
+                height: '92.5%',
+                alignItems: 'center',
+              }}>
+              <ScrollView
+                horizontal
+                contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+                {categories.map(item => (
+                  <TouchableOpacity
+                    style={{
+                      width: Dimensions.get('screen').width - 80,
+                      height: '80%',
+                      marginRight: 20,
+                    }}
+                    onPress={() => handleCategoriesChange(item)}>
+                    <View
+                      style={{
+                        flex: 1,
+                        borderRadius: 16,
+                        backgroundColor: item.color2,
+                        padding: 16,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <View>
+                        <Image
+                          source={item.image_path}
+                          style={[{width: 250, height: 250, marginBottom: 10}]}
+                          resizeMode="contain"
+                        />
+                        <Text textAlign="center" textType="appBarTitle">
+                          {item.category}
+                        </Text>
+                      </View>
+                      <TouchableWithoutFeedback>
+                        <View
+                          style={{
+                            backgroundColor: 'grey',
+                            padding: 16,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                            borderRadius: 27,
+                            height: 54,
+                            width: (Dimensions.get('screen').width - 72) / 2,
+                          }}>
+                          <Text
+                            style={{
+                              color: 'white',
+                              fontSize: 16,
+                              fontFamily: 'GothamRounded-Bold',
+                              alignSelf: 'center',
+                            }}>
+                            Check them out
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={[theme.globalStyle.flexRow, styles.marginRight40]}>
+              {categories.map(item => (
+                <TouchableOpacity
+                  key={item.id + item.category}
+                  style={[
+                    styles.categoryContainer,
+                    category?.id === item.id && styles.categorySelected,
+                  ]}
+                  onPress={() => handleCategoriesChange(item)}
+                  disabled={loading === true}>
+                  <Image
+                    source={item.image_path}
+                    style={styles.categoryImageDimensions}
+                    resizeMode="contain"
                   />
-                  <View style={styles.marginBottomStyle} />
-                </>
+                  <Text>{item.category}</Text>
+                  <View
+                    style={category?.id === item.id && styles.categorySelected}
+                  />
+                </TouchableOpacity>
               ))}
-            </>
-          )}
-        </ScrollView>
+            </View>
+            <ScrollView
+              style={[styles.contentScrollView, styles.marginRight40]}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              stickyHeaderIndices={[1, 0]}
+              stickyHeaderHiddenOnScroll>
+              {loading === true || merchants.length < 1 ? (
+                <>
+                  {list.map(listItem => (
+                    <>
+                      <ShimmeringRestuarantCard
+                        key={listItem.id + listItem.name}
+                      />
+                      <View style={styles.marginBottomStyle} />
+                    </>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {merchants.map(merchant => (
+                    <>
+                      <RestuarantCard
+                        item={merchant}
+                        onPress={() =>
+                          navigation.navigate('RestuarantDetails', {
+                            token: encodedCipher,
+                            clientId: user.clientId,
+                            id: merchant.id,
+                            name: merchant.name,
+                            phone: merchant.phone,
+                            email: merchant.email,
+                            address: merchant.address,
+                            image_path: merchant.image_path,
+                          })
+                        }
+                      />
+                      <View style={styles.marginBottomStyle} />
+                    </>
+                  ))}
+                </>
+              )}
+            </ScrollView>
+          </>
+        )}
       </View>
     </SafeAreaView>
   );
