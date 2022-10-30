@@ -7,6 +7,8 @@ import LoginForm from '../../components/loginForm';
 import * as RootNavigation from '../../navigation/rootNavigation';
 import {API_URL} from '@env';
 import ModalPopupResponse from '../../components/shared-ui/modalPopupResponse';
+import * as Sentry from '@sentry/react-native';
+
 const styles = StyleSheet.create({
   formikContainer: {
     height:
@@ -53,15 +55,11 @@ const Login = () => {
       .post(`${API_URL}/login?${params}`)
       .then((response: AxiosResponse) => {
         if (response.data.status === false) {
-          console.log(response.data);
-
           //that means something is wrong
           setErrorMessage(response.data.status_message);
           toggleModal();
         } else {
           //console.log(response.data.data.client_id);
-
-          console.log(response.data);
           const user = {
             authKey: response.data.data.auth_key,
             clientId: response.data.data.client_id,
@@ -73,6 +71,7 @@ const Login = () => {
             otp: response.data.otp,
             userId: response.data.data.id,
           };
+          console.log(response.data.otp);
           // move to otp screen
           RootNavigation.navigate('Otp' as never, user as never);
         }
@@ -80,7 +79,10 @@ const Login = () => {
         setLoading(false);
       })
       .catch(error => {
-        console.log(error);
+        Sentry.captureException('Login Error: ' + error);
+        Sentry.captureException(
+          'Login Error Description: ' + error.response.data.message,
+        );
       });
   };
 

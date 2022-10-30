@@ -19,6 +19,7 @@ import Text from '../components/shared-ui/text';
 import {list} from '../constants';
 import theme from '../styles/themes';
 import Shimmering from '../components/shared-ui/shimmering';
+import * as Sentry from '@sentry/react-native';
 
 const OrderDetails = ({
   route,
@@ -53,6 +54,10 @@ const OrderDetails = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException('Order Details Error: ' + error);
+        Sentry.captureException(
+          'Order Details Description: ' + error.response.data.message,
+        );
       });
     // set loading true
     setLoading(false);
@@ -75,6 +80,10 @@ const OrderDetails = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException('Refresh Order Details Error: ' + error);
+        Sentry.captureException(
+          'Refresh Order Details Description: ' + error.response.data.message,
+        );
         setRefreshing(false);
       });
 

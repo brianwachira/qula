@@ -15,6 +15,7 @@ import {useStorage} from '../../hooks/useStorage';
 import Text from '../../components/shared-ui/text';
 import axios from 'axios';
 import {API_URL} from '@env';
+import * as Sentry from '@sentry/react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -104,7 +105,10 @@ const Otp = ({
         setLoading(false);
       })
       .catch(error => {
-        console.log(error);
+        Sentry.captureException('Verify Otp Error: ' + error);
+        Sentry.captureException(
+          'Verify Otp Error Description: ' + error.response.data.message,
+        );
       });
   };
 

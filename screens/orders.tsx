@@ -21,6 +21,7 @@ import axios, {AxiosResponse} from 'axios';
 import {API_URL} from '@env';
 import {list} from '../constants';
 import Shimmering from '../components/shared-ui/shimmering';
+import * as Sentry from '@sentry/react-native';
 
 const Orders = ({
   navigation,
@@ -66,6 +67,10 @@ const Orders = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException('Fetch Orders Error: ' + error);
+        Sentry.captureException(
+          'Fetch Orders Description: ' + error.response.data.message,
+        );
         // set loading false
         setLoading(false);
       });
@@ -89,6 +94,10 @@ const Orders = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException('Refresh Fetch Orders Error: ' + error);
+        Sentry.captureException(
+          'Refresh Fetch Orders Description: ' + error.response.data.message,
+        );
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

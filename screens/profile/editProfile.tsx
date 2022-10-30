@@ -21,6 +21,7 @@ import {API_URL, IMAGE_BASE_URL} from '@env';
 import axios from 'axios';
 import Button from '../../components/shared-ui/button';
 import ModalPopupResponse from '../../components/shared-ui/modalPopupResponse';
+import * as Sentry from '@sentry/react-native';
 
 // validation schema
 const validationSchema = Yup.object().shape({
@@ -102,6 +103,10 @@ const EditProfile = ({
         );
         // set loading to false
         setLoading(false);
+        Sentry.captureException('Edit Profile Error: ' + error);
+        Sentry.captureException(
+          'Edit Profile Description: ' + error.response.data.message,
+        );
       });
   };
 

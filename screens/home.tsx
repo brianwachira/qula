@@ -23,6 +23,7 @@ import axios from 'axios';
 import {API_URL} from '@env';
 import ShimmeringRestuarantCard from '../components/shimmeringRestuarantCard';
 import {list} from '../constants';
+import * as Sentry from '@sentry/react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -167,6 +168,10 @@ const Home = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException('fetch merchants Error: ' + error);
+        Sentry.captureException(
+          'Fetch Merchants Description: ' + error.response.data.message,
+        );
         //setLoading false
         setLoading(false);
       });
@@ -197,6 +202,10 @@ const Home = ({
       })
       .catch(error => {
         console.log(error);
+        Sentry.captureException('Refresh fetch merchants Error: ' + error);
+        Sentry.captureException(
+          'Refresh Fetch Merchants Description: ' + error.response.data.message,
+        );
         setRefreshing(false);
       });
     setRefreshing(false);

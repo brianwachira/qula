@@ -7,6 +7,7 @@ import Button from '../../components/shared-ui/button';
 import axios, {AxiosResponse} from 'axios';
 import {API_URL} from '@env';
 import ModalPopupResponse from '../../components/shared-ui/modalPopupResponse';
+import * as Sentry from '@sentry/react-native';
 
 // formik initial values
 const initialValues = {
@@ -60,7 +61,10 @@ const Signup = () => {
         setLoading(false);
       })
       .catch(error => {
-        console.log(error.response.data);
+        Sentry.captureException('Signup Error: ' + error);
+        Sentry.captureException(
+          'Signup Error Description: ' + error.response.data.message,
+        );
         //setLoading false
         setLoading(false);
       });
