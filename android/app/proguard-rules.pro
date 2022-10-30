@@ -12,3 +12,6 @@
 # react native reanimated rules
 -keep class com.swmansion.reanimated.** { *; }
 -keep class com.facebook.react.turbomodule.** { *; }
+
+# test fix for java.lang.NoSuchFieldException: fill
+-keep public class com.horcrux.svg.** {*;}

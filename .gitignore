@@ -65,6 +65,8 @@ buck-out/
 
 # .env
 .env
+.env.development
+.env.production
 
 # .vscode configs
 .vscode/*
