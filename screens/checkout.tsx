@@ -18,11 +18,12 @@ import theme from '../styles/themes';
 import ArrowLeftIcon from '../assets/icons/arrowLeftIcon';
 import {useStorage} from '../hooks/useStorage';
 import {encode} from '../utils/encoder';
-import axios, {AxiosError} from 'axios';
+import axios from 'axios';
 import {API_URL} from '@env';
 import ModalPopup from '../components/shared-ui/modalPopup';
 import CloseIcon from '../assets/icons/closeIcon';
 import TextInput from '../components/shared-ui/textInput';
+import * as Sentry from '@sentry/react-native';
 
 const Checkout = ({
   navigation,
@@ -69,7 +70,7 @@ const Checkout = ({
     });
     const payload = {
       userID: userId,
-      clientID: clientId,
+      clientID: products.restuarantId,
       products: orders,
     };
 
@@ -104,8 +105,12 @@ const Checkout = ({
         // setLoading to false
         setLoading(false);
       })
-      .catch((error: AxiosError) => {
+      .catch(error => {
         console.log(error.message);
+        Sentry.captureException('Make Order Error: ' + error);
+        Sentry.captureException(
+          'Make Order Error Description: ' + error.response.data.message,
+        );
         // setLoading to false
         setLoading(false);
       });
@@ -161,8 +166,12 @@ const Checkout = ({
           navigation.navigate('HomeTab', {screen: 'Orders'});
         }
       })
-      .catch((error: AxiosError) => {
+      .catch(error => {
         console.log(error.response);
+        Sentry.captureException('initiate payment Error: ' + error);
+        Sentry.captureException(
+          'Initiate Payment Error Description: ' + error.response.data.message,
+        );
       });
   };
 
